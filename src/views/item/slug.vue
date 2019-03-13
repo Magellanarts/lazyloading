@@ -45,7 +45,6 @@ export default {
     if (this.$route.params.docID) {
       this.getDataByDocID(this.$route.params.docID);
     } else {
-      console.log('sending name');
       this.getDataByName(this.$route.params.slug);
     }
   },
