@@ -13,7 +13,6 @@ export default {
 
     item.get()
       .then((doc) => {
-        console.log(doc.data().mainImage);
         commit(types.MUTATE_MAIN_IMAGE, doc.data().mainImage);
       });
   }),

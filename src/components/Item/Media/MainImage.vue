@@ -15,11 +15,10 @@ export default {
   },
   computed: {
     bgImage() {
-      if(this.mainImage) {
+      if (this.mainImage) {
         return require(`@/assets/img/placeholder/${this.mainImage}`);
-      } else {
-        return '';
       }
+      return '';
     },
   },
 };

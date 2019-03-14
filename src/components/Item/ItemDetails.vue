@@ -33,10 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  font-size: 28px;
-  margin-bottom: 40px;
-}
+
 
 ul,
 p {

@@ -29,27 +29,4 @@ h3 {
   font-size: 20px;
   margin-bottom: 8px;
 }
-
-.button {
-  border: none;
-  background: none;
-  box-shadow: 1px 1px 3px #555;
-  border-radius: 4px;
-  color: #555;
-  padding: 4px 8px;
-  cursor: pointer;
-  outline: none;
-  transition: all .15s linear;
-  font-size: 13px;
-  text-decoration: none;
-
-  &:not(:last-child) {
-    margin-right: 8px;
-  }
-
-  &:hover {
-    background-color: #555;
-    color: #fff;
-  }
-}
 </style>

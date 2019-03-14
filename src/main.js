@@ -1,9 +1,18 @@
+// TODO: Create Global Header
+// TODO: User Sign up
+// TODO: Account Page
+// TODO: List item form
+// TODO: Reviews for item
+// TODO: Hook up search
+// TODO: Search only nearby items
+
 import Vue from 'vue';
+import VueFire from 'vuefire';
+import firebase from 'firebase/app';
 import App from './App.vue';
 import router from './router';
 import store from './store/store';
-import VueFire from 'vuefire';
-import firebase from 'firebase/app';
+
 import 'firebase/firestore';
 
 require('@/assets/style/global.scss');

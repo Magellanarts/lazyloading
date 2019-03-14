@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <the-header />
-    <router-view/>
+    <transition name="fade" mode="out-in">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -18,5 +20,15 @@ export default {
 <style lang="scss">
 #app {
   padding: 0 7.5%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;;
 }
 </style>
