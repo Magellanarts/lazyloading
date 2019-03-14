@@ -1,4 +1,4 @@
-// TODO: Create Global Header
+// TODO: Replace Sign up/Login when user is signed in
 // TODO: User Sign up
 // TODO: Account Page
 // TODO: List item form
@@ -24,6 +24,7 @@ Vue.use(VueFire);
 firebase.initializeApp({
   projectId: 'lazyloading-c3f8a',
   databaseURL: 'https://lazyloading-c3f8a.firebaseio.com',
+  apiKey: 'AIzaSyCQb0GOSMlEM5RiQKVebLiQVENziV61JfQ',
 });
 
 export const db = firebase.firestore();

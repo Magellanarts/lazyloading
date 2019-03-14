@@ -1,8 +1,9 @@
+// TODO:
 <template>
   <div>
     <h1>Sign up</h1>
     <form
-      @submit.prevent="validateForm"
+      @submit.prevent="submitForm"
       novalidate
     >
       <div class="form-field">
@@ -66,12 +67,19 @@
           v-model="user.password"
           name="password"
           id="password"
+          min="6"
         >
         <span
           class="field-error-message"
-          v-if="errors.password"
+          v-if="errors.password && errors.matchingPasswords"
         >
           Field Required
+        </span>
+        <span
+          class="field-error-message"
+          v-if="!errors.matchingPasswords && errors.password"
+        >
+          Passwords must match
         </span>
       </div>
 
@@ -82,12 +90,19 @@
           v-model="user.confirmPassword"
           name="confirmPassword"
           id="confirmPassword"
+          min="6"
         >
         <span
           class="field-error-message"
-          v-if="errors.confirmPassword"
+          v-if="errors.confirmPassword && errors.matchingPasswords"
         >
           Field Required
+        </span>
+        <span
+          class="field-error-message"
+          v-if="!errors.matchingPasswords && errors.confirmPassword"
+        >
+          Passwords must match
         </span>
       </div>
 
@@ -99,11 +114,12 @@
 </template>
 
 <script>
-import { emailValidation, formValidation } from '@/mixins';
+import { formValidation } from '@/mixins';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export default {
   mixins: [
-    emailValidation,
     formValidation,
   ],
   data() {
@@ -122,8 +138,27 @@ export default {
         password: false,
         confirmPassword: false,
         emailInvalid: false,
+        matchingPasswords: false,
       },
     };
+  },
+  methods: {
+    async submitForm() {
+      const returnVal = await this.validateForm({ matchingPasswords: true });
+
+      // if returnVal is false, attempt signup
+      // false = no errors in validation
+      if (!returnVal) {
+        firebase.auth()
+          .createUserWithEmailAndPassword(this.user.email, this.user.password)
+          .then((user) => {
+            console.log(user);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
   },
 };
 </script>
