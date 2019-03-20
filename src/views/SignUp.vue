@@ -1,7 +1,5 @@
 <template>
   <div>
-
-    <button @click="logout">Logout</button>
     <h1>Sign up</h1>
     <form
       @submit.prevent="submitForm"

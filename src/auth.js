@@ -11,31 +11,41 @@ import 'firebase/auth';
 import algoliasearch from 'algoliasearch';
 
 Vue.use(VueFire);
+
+// Initialize firebase info
 firebase.initializeApp({
   projectId: 'lazyloading-c3f8a',
   databaseURL: 'https://lazyloading-c3f8a.firebaseio.com',
   apiKey: 'AIzaSyCQb0GOSMlEM5RiQKVebLiQVENziV61JfQ',
 });
 
+
+// When a user logs in or out, update the user info in store
+// TODO: may need to research to see if this is best way to handle this.
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // set user in store
     store.dispatch(SET_USER, user);
   } else {
-    console.log('no user');
+    // no user logged in
   }
 });
 
 export const db = firebase.firestore();
 
+// Initialize Algolia search info
 const algolia = algoliasearch(
   '9AURVLYOP7',
   '94f720be87cbb56ec79609495979cad9',
 );
 
 const index = algolia.initIndex('items');
-const records = [];
+
+
 /*
+// This was set up to get the existing items from firestore into Algolia
+const records = [];
+
 db.collection('items').get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {

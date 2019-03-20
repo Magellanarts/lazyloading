@@ -2,6 +2,7 @@
 import * as types from '../types';
 
 export default {
+  // Update user info in store
   [types.MUTATE_USER]: (state, user) => {
     state.user = user;
     state.userId = user.uid;

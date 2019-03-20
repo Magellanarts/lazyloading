@@ -1,11 +1,16 @@
-// TODO: Comment code
+// DONE TODO: Comment code logic
 // DONE TODO: Replace Sign up/Login when user is signed in
 // DONE TODO: User Sign up
 // TODO: Account Page
 // TODO: List item form
+// TODO: When creating tags object, create tagsSearchable. Makes sure tags searchable by Algolia
 // TODO: Reviews for item
 // INPROGRESS TODO: Hook up search
+// TODO: Set up Algolia to sync with firestore whenever an item gets added
+// TODO: Limit search results to 10. Add a View More button to take to a search page
 // TODO: Search only nearby items
+// TODO: Payment processing
+// TODO: Create form field components
 
 import Vue from 'vue';
 import InstantSearch from 'vue-instantsearch';

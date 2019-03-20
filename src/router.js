@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import store from './store/store';
 
 Vue.use(Router);
 
@@ -23,8 +22,12 @@ const router = new Router({
       name: 'log-in',
       component: () => import(/* webpackChunkName: "log-in" */'./views/LogIn.vue'),
       beforeEnter: (to, from, next) => {
-        if (localStorage.userId !== 'undefined') {
-          next('/dashboard');
+        if (localStorage.userId) {
+          if (localStorage.userId !== 'undefined') {
+            next('/dashboard');
+          } else {
+            next();
+          }
         } else {
           next();
         }
@@ -37,6 +40,16 @@ const router = new Router({
       meta: {
         authRequried: true,
       },
+      children: [
+        {
+          name: 'dashboard-list-item',
+          path: 'list-item',
+          component: () => import(/* webpackChunkName: "dashboard-list-item" */'./views/DashboardCreateItem.vue'),
+          meta: {
+            authRequried: true,
+          },
+        },
+      ],
     },
     {
       path: '/item',
@@ -69,8 +82,12 @@ const router = new Router({
 // if no user, redirect to log in page
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.authRequried)) {
-    if (localStorage.userId !== null && localStorage.userId !== undefined && localStorage.userId !== 'undefined') {
-      next();
+    if (localStorage.userId) {
+      if (localStorage.userId !== null && localStorage.userId !== undefined && localStorage.userId !== 'undefined') {
+        next();
+      } else {
+        next('/log-in');
+      }
     } else {
       next('/log-in');
     }
