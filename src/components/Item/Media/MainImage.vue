@@ -1,8 +1,12 @@
 <template>
   <div
-    class="image"
+    :ref="mainImage"
+    class="image-container"
+    :class="noBG ? 'no-bg' : ''"
     :style="{backgroundImage: `url(${bgImage})`}"
-    alt="Volleyball"></div>
+    alt="">
+      <img :src="bgImage">
+    </div>
 </template>
 
 <script>
@@ -11,6 +15,9 @@ export default {
     mainImage: {
       type: String,
       required: true,
+    },
+    noBG: {
+      type: Boolean,
     },
   },
   computed: {
@@ -24,11 +31,42 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.image {
-  width: 300px;
-  height: 300px;
-  background-size: cover;
-  margin-bottom: 8px;
-}
+<style lang="scss">
+  .image-container {
+    background-size: 0 0;
+
+    height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      flex: 0;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    &.no-bg {
+        background-size: 0 0;
+        background-image: none !important;
+    }
+
+    @media screen and (min-width: 760px) {
+      background-size: cover;
+      display: flex;
+      flex: 1;
+      height: 300px;
+      img {
+        display: none;
+      }
+
+      &.no-bg {
+        background-size: 0 0;
+        background-image: none !important;
+        img {
+          display: block;
+        }
+      }
+    }
+  }
 </style>

@@ -48,6 +48,9 @@ export default {
       this.getDataByName(this.$route.params.slug);
     }
   },
+  destroyed() {
+    this.updateMain(null);
+  },
 };
 </script>
 
@@ -61,6 +64,11 @@ export default {
   .item-header {
     display: flex;
     justify-content: space-between;
+
+    > :first-child {
+      flex: 1;
+      max-width: 300px;
+    }
 
     > :last-child {
       flex: 1;

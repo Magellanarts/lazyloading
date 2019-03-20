@@ -1,5 +1,5 @@
 import { firebaseAction } from 'vuexfire';
-import { db } from '@/main';
+import { db } from '@/auth';
 import * as types from '../types';
 
 export default {

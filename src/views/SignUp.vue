@@ -1,6 +1,7 @@
-// TODO:
 <template>
   <div>
+
+    <button @click="logout">Logout</button>
     <h1>Sign up</h1>
     <form
       @submit.prevent="submitForm"
@@ -68,6 +69,7 @@
           name="password"
           id="password"
           min="6"
+          @blur="dirtyInputs = true"
         >
         <span
           class="field-error-message"
@@ -77,20 +79,23 @@
         </span>
         <span
           class="field-error-message"
-          v-if="!errors.matchingPasswords && errors.password"
+          v-if="!errors.matchingPasswords && dirtyInputs"
         >
           Passwords must match
         </span>
       </div>
 
       <div class="form-field">
-        <label class="text-label text-label--two-lines" for="confirmPassword">Confirm<br>Password</label>
+        <label
+          class="text-label text-label--two-lines"
+          for="confirmPassword">Confirm<br>Password</label>
         <input
           type="password"
           v-model="user.confirmPassword"
           name="confirmPassword"
           id="confirmPassword"
           min="6"
+          @blur="dirtyInputs = true"
         >
         <span
           class="field-error-message"
@@ -100,7 +105,7 @@
         </span>
         <span
           class="field-error-message"
-          v-if="!errors.matchingPasswords && errors.confirmPassword"
+          v-if="!errors.matchingPasswords && dirtyInputs"
         >
           Passwords must match
         </span>
@@ -115,8 +120,8 @@
 
 <script>
 import { formValidation } from '@/mixins';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import { mapActions } from 'vuex';
+import * as types from '@/store/types';
 
 export default {
   mixins: [
@@ -124,6 +129,7 @@ export default {
   ],
   data() {
     return {
+      dirtyInputs: false,
       user: {
         firstName: null,
         lastName: null,
@@ -143,20 +149,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      signUpUser: types.SIGN_UP_USER,
+    }),
     async submitForm() {
       const returnVal = await this.validateForm({ matchingPasswords: true });
 
       // if returnVal is false, attempt signup
       // false = no errors in validation
       if (!returnVal) {
-        firebase.auth()
-          .createUserWithEmailAndPassword(this.user.email, this.user.password)
-          .then((user) => {
-            console.log(user);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        this.signUpUser(this.user);
       }
     },
   },

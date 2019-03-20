@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="item-header">
-          <item-media 
+          <item-media
             :mainImage="mainImage"
             :thumbnails="item.thumbnails"
           />
-          <item-details 
+          <item-details
             :item="item"
           />
         </div>
@@ -18,7 +18,7 @@ import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
 import { mapState } from 'vuex';
 import { mapActions } from 'vuex';
-import { db } from '../main';
+import { db } from '../auth';
 import * as types from '@/store/types';
 
 export default {
@@ -34,16 +34,16 @@ export default {
   },
   computed: mapState({
     item: state => state.item.curItem,
-    mainImage: state => state.item.mainImage
+    mainImage: state => state.item.mainImage,
   }),
   created() {
     // grab data from firestore for this item
     // data gets stored in store
     // item/curItem contains all item info
     // item/mainImage contains the main image
-    // - this is store separately so thumbnail 
+    // - this is store separately so thumbnail
     // - swapping can be done easily
-    this.getData(db.collection('items').doc('UODujNYfnu679DtJLj1Q'))
+    this.getData(db.collection('items').doc('UODujNYfnu679DtJLj1Q'));
   },
 };
 </script>

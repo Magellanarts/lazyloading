@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import store from './store/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -16,6 +17,26 @@ export default new Router({
       path: '/sign-up',
       name: 'sign-up',
       component: () => import(/* webpackChunkName: "sign-up" */'./views/SignUp.vue'),
+    },
+    {
+      path: '/log-in',
+      name: 'log-in',
+      component: () => import(/* webpackChunkName: "log-in" */'./views/LogIn.vue'),
+      beforeEnter: (to, from, next) => {
+        if (localStorage.userId !== 'undefined') {
+          next('/dashboard');
+        } else {
+          next();
+        }
+      },
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import(/* webpackChunkName: "dashboard" */'./views/Dashboard.vue'),
+      meta: {
+        authRequried: true,
+      },
     },
     {
       path: '/item',
@@ -43,3 +64,18 @@ export default new Router({
     },
   ],
 });
+
+// check to see if user is logged in to a page that requires authentication
+// if no user, redirect to log in page
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.authRequried)) {
+    if (localStorage.userId !== null && localStorage.userId !== undefined && localStorage.userId !== 'undefined') {
+      next();
+    } else {
+      next('/log-in');
+    }
+  }
+  next();
+});
+
+export default router;

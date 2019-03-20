@@ -1,13 +1,64 @@
 <template>
-  <form>
-    <input
-      placeholder="What are you looking for?"
-    />
-    <button
-      @click.prevent=""
-    >Submit</button>
-  </form>
+  <div>
+    <form>
+      <input
+        v-model="searchText"
+        placeholder="What are you looking for?"
+      />
+      <button
+        class="search-button"
+        @click.prevent="submitSearch"
+      >Submit</button>
+    </form>
+
+    <div v-if="results" class="search-results">
+      <h2>Results</h2>
+      <div class="search-results__list">
+        <item-card
+          v-for="result in results"
+          :key="result.objectID"
+          :item="result"
+        />
+      </div>
+    </div>
+  </div>
 </template>
+
+<script>
+import algoliasearch from 'algoliasearch/lite';
+import ItemCard from '@/components/Item/Card/ItemCard.vue';
+
+const algolia = algoliasearch(
+  '9AURVLYOP7',
+  '94f720be87cbb56ec79609495979cad9',
+);
+
+const index = algolia.initIndex('items');
+
+export default {
+  data() {
+    return {
+      searchText: '',
+      results: null,
+    };
+  },
+  components: {
+    ItemCard,
+  },
+  methods: {
+    submitSearch() {
+      const query = this.searchText;
+      index
+        .search({
+          query,
+        })
+        .then((response) => {
+          this.results = response.hits;
+        });
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 input {
@@ -24,7 +75,7 @@ input {
   display: block;
 }
 
-button {
+.search-button {
   min-width: 45%;
   padding: 8px 20px;
   border: none;
@@ -35,5 +86,21 @@ button {
   cursor: pointer;
   outline: none;
   -webkit-appearance: none;
+}
+
+.search-results {
+  padding: 48px 0;
+}
+
+.search-results__list {
+  @media screen and (min-width: 760px) {
+    display: flex;
+    justify-content: space-between;
+
+    > a {
+      flex: 1;
+      max-width: 32%;
+    }
+  }
 }
 </style>
