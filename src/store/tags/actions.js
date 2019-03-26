@@ -6,9 +6,11 @@ export default {
   [GET_TAG_ITEMS]: ({ commit }, tag) => {
     db.collection('items').where(`tags.${tag}`, '==', true).get()
       .then((querySnapshot) => {
-        const doc = querySnapshot.docs[0];
-        console.log(doc.data());
-        commit(MUTATE_TAGS, doc.data());
+        const items = [];
+        for (const item of querySnapshot.docs) {
+          items.push(item.data());
+        }
+        commit(MUTATE_TAGS, items);
       });
   },
 };

@@ -2,6 +2,7 @@
   <div class="form-field">
     <label
       class="text-label"
+      for="multiInput"
     >
         {{ label }}
     </label>
@@ -15,7 +16,7 @@
       >
         {{ value }}
       </span>
-      <input v-model="newValue" type="text" class="no-style"  @keydown.enter.prevent="handleEnter"/>
+      <input id="multiInput" name="multiInput" v-model="newValue" type="text" class="no-style"  @keydown.enter.prevent="handleEnter"/>
     </div>
   </div>
 </template>

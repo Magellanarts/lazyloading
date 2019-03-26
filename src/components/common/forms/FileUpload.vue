@@ -7,15 +7,14 @@
         @change="handleUpload"
         ref="name"
         accept="image/*"
-        :multiple="multiple ? 'multiple' : 'false'"
       />
 
       <div
         class="image-upload-button"
-        :class="photoUploaded? 'has-upload': ''"
+        :class="classObject"
         @click="uploadButtonClick"
       >
-        <img :ref="`${name}-img`">
+        <img :ref="`${name}-img`" :src="imgSrc">
         <span class="image-upload-button__label">
           Click to upload photo
         </span>
@@ -25,6 +24,8 @@
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/storage';
 // TODO: How to handle multi-file upload?
 //          Maybe multiple smaller upload boxes?
 //          Each time one is added, another will
@@ -34,6 +35,8 @@ export default {
   data() {
     return {
       photoUploaded: false,
+      imgSrc: '',
+
     };
   },
   props: {
@@ -44,6 +47,18 @@ export default {
     multiple: {
       type: Boolean,
       required: false,
+    },
+    curImage: {
+      type: String,
+      required: false,
+    },
+  },
+  computed: {
+    classObject() {
+      return {
+        'has-upload': this.photoUploaded,
+        multiple: this.multiple,
+      };
     },
   },
   methods: {
@@ -58,23 +73,29 @@ export default {
         this.photoUploaded = true;
 
         // insert uploaded photo
-        this.$refs[`${this.name}-img`].src = dataURL;
+        this.imgSrc = dataURL;
 
         // tell parent component the image has been uploaded
         // the parent component will be passed the file
         this.$emit('uploadComplete', upload.files);
-        console.log(upload.files);
-        // this.item.mainImage = upload.files[0];
-
-        // upload photo
-        // this.uploadImage(upload.files[0]);
       };
       reader.readAsDataURL(upload.files[0]);
     },
     uploadButtonClick() {
-      // console.log(this.name, this.$refs, this.$refs.name);
       this.$refs.name.click();
     },
+  },
+  mounted() {
+    if (this.curImage) {
+      // if a currentImage was passed in,
+      // that means we are editing an existing item
+      // grab the real url for the img and show
+      const storageRef = firebase.storage().ref();
+      storageRef.child(this.curImage).getDownloadURL()
+        .then((url) => {
+          this.imgSrc = url;
+        });
+    }
   },
 };
 </script>
@@ -99,6 +120,11 @@ export default {
   align-items: center;
   text-align: center;
   overflow: hidden;
+
+  &.multiple {
+    width: 100px;
+    height:  100px;
+  }
 
   &:after {
     content: '';

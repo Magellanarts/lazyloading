@@ -1,23 +1,44 @@
 /* eslint-disable no-restricted-syntax */
-import { firebaseAction } from 'vuexfire';
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import { db } from '@/auth';
-import * as types from '../types';
+import {
+  UPDATE_ITEM,
+  CREATE_ITEM,
+  UPDATE_MAIN_IMAGE,
+  MUTATE_MAIN_IMAGE,
+  GET_ITEM_DATA_BY_DOC_ID,
+  MUTATE_ITEM,
+  SET_ITEM_DETAILS,
+  GET_ITEM_DATA_BY_NAME,
+} from '../types';
 
 export default {
-  [types.UPDATE_ITEM]: ({ commit }, item) => {
+  [UPDATE_ITEM]: ({ }, item) => {
+    const storageRef = firebase.storage().ref();
     const itemToPublish = { ...item };
     // set up tags
     itemToPublish.tags = {};
     for (const tag of item.tagsSearchbale) {
       itemToPublish.tags[tag] = true;
     }
+
+
+    if (item.mainImage.constructor === FileList) {
+      // mainImage has changed, we need to upload it
+      const mainImage = item.mainImage[0];
+      itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
+      storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage)
+        .then((snapshot) => {
+          // itemToPublish.mainImage = snapshot.metadata.name;
+        });
+    }
+
     db.collection('items').doc(itemToPublish.ID)
       .update(itemToPublish);
   },
   // Create a new item
-  [types.CREATE_ITEM]: ({ commit, getters }, item) => {
+  [CREATE_ITEM]: ({ getters }, item) => {
     // Upload images to firestore
     const storageRef = firebase.storage().ref();
 
@@ -35,6 +56,7 @@ export default {
     // Main image First
     if (item.mainImage) {
       const mainImage = item.mainImage[0];
+      console.log(mainImage);
       itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
       storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage)
         .then((snapshot) => {
@@ -81,31 +103,31 @@ export default {
   },
   // Update main image on item page
   // Used for switching between thumbnails
-  [types.UPDATE_MAIN_IMAGE]: ({ commit }, payload) => {
-    commit(types.MUTATE_MAIN_IMAGE, payload);
+  [UPDATE_MAIN_IMAGE]: ({ commit }, payload) => {
+    commit(MUTATE_MAIN_IMAGE, payload);
   },
 
   // TODO: Unsync from firebase. Just pull data and put in store
   // Sync curItem in store to item from Firebase
-  [types.GET_ITEM_DATA_BY_DOC_ID]: ({ commit }, itemRef) => {
+  [GET_ITEM_DATA_BY_DOC_ID]: ({ commit }, itemRef) => {
     // After sync, set the item's main image into separate mainIMage var in store
     db.collection('items').doc(itemRef).get()
       .then((doc) => {
-        commit(types.MUTATE_ITEM, doc.data());
-        commit(types.MUTATE_MAIN_IMAGE, doc.data().mainImage);
+        commit(MUTATE_ITEM, doc.data());
+        commit(MUTATE_MAIN_IMAGE, doc.data().mainImage);
       });
   },
-  [types.SET_ITEM_DETAILS]: ({ commit }, item) => {
-    commit(types.MUTATE_ITEM, item);
+  [SET_ITEM_DETAILS]: ({ commit }, item) => {
+    commit(MUTATE_ITEM, item);
   },
   // Search for item in collection by slug
   // This is used when someone directly accesses an item page rather than coming via a
   // link that includes the doc ID (such as the tags list or search list)
-  [types.GET_ITEM_DATA_BY_NAME]: ({ dispatch }, itemRef) => {
+  [GET_ITEM_DATA_BY_NAME]: ({ dispatch }, itemRef) => {
     db.collection('items').where('slug', '==', itemRef).limit(1).get()
       .then((doc) => {
         // id of item we need is doc.docs[0].id
-        dispatch(types.GET_ITEM_DATA_BY_DOC_ID, doc.docs[0].id);
+        dispatch(GET_ITEM_DATA_BY_DOC_ID, doc.docs[0].id);
       });
   },
 };

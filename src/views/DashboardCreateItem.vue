@@ -63,19 +63,6 @@
         label="Tags"
         @tagChange="handleTagChange"
       />
-      <!-- text-input
-        v-for="(tag, index) in item.tagsSearchbale"
-        :key="index"
-        name="tag"
-        label="Tag"
-        v-model="item.tagsSearchbale[index]"
-        :errors="errors"
-        required
-      / -->
-
-      <!-- div class="form-field">
-        <button class="button" @click.prevent="item.tagsSearchbale.push('')">Add Tag</button>
-      </div -->
 
       <h4>Main Image</h4>
 
@@ -83,18 +70,21 @@
         name="mainImage"
         @uploadComplete="mainImageUploaded"
         :multiple="false"
+        :curImage="item.mainImage"
       />
 
       <h4>Other Images</h4>
-      <file-upload
+      <multi-file-upload
+        :images="item.otherImages"
+        @uploadComplete="otherImagesUploaded"
+      />
+      <!-- file-upload
+        v-for="(file, index) in item.otherImages"
+        :key="`value-${index}`"
         name="otherImages"
         @uploadComplete="otherImagesUploaded"
         multiple
-      />
-
-      <div v-for="file in item.otherImages" :key="file.lastModified">
-        {{ file.name }}
-      </div>
+      / -->
 
       <div class="form-field">
         <button class="button" type="submit">Submit</button>
@@ -112,6 +102,7 @@
 
 
 import TextInput from '@/components/common/forms/TextInput.vue';
+import MultiFileUpload from '@/components/common/forms/MultiFileUpload.vue';
 import FileUpload from '@/components/common/forms/FileUpload.vue';
 import MultiInput from '@/components/common/forms/MultiInput.vue';
 
@@ -122,7 +113,7 @@ import { formValidation } from '@/mixins';
 export default {
   data() {
     return {
-      numTags: 0,
+      numThumbs: 0,
       errors: {
         name: false,
         description: false,
@@ -157,6 +148,7 @@ export default {
     TextInput,
     FileUpload,
     MultiInput,
+    MultiFileUpload,
   },
   methods: {
     ...mapActions({
@@ -170,7 +162,6 @@ export default {
           matchingPasswords: false,
         },
       });
-      console.log('submit');
 
       // check for error,
       // TODO: Uncomment this when live
@@ -187,7 +178,8 @@ export default {
       this.item.mainImage = file;
     },
     otherImagesUploaded(file) {
-      this.item.otherImages = file;
+      // this.item.otherImages = file;
+      this.item.otherImages.push(file);
     },
     handleTagChange(tags) {
       this.item.tagsSearchbale = tags;
@@ -196,6 +188,9 @@ export default {
   created() {
     if (!this.item.tagsSearchbale) {
       this.item.tagsSearchbale = [];
+    }
+    if (!this.item.otherImages) {
+      this.item.otherImages = [];
     }
   },
 };

@@ -2,7 +2,15 @@ import { db } from '@/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import {
-  SIGN_UP_USER, LOG_IN_USER, GET_USER_DETAILS, MUTATE_USER_DETAILS, GET_USER_ITEMS, MUTATE_USER_ITEMS, LOG_OUT_USER, MUTATE_USER_ID, SET_USER_ID,
+  SIGN_UP_USER,
+  LOG_IN_USER,
+  GET_USER_DETAILS,
+  MUTATE_USER_DETAILS,
+  GET_USER_ITEMS,
+  MUTATE_USER_ITEMS,
+  LOG_OUT_USER,
+  MUTATE_USER_ID,
+  SET_USER_ID,
 } from '../types';
 
 import router from '@/router';
