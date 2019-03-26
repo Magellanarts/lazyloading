@@ -1,11 +1,12 @@
 /* eslint no-param-reassign: [2, { "props": false }] */
-import { firebaseMutations } from 'vuexfire';
-import * as types from '../types';
+import { MUTATE_ITEM, MUTATE_MAIN_IMAGE } from '../types';
 
 export default {
-  ...firebaseMutations,
   // Update mainImage on item detail page
-  [types.MUTATE_MAIN_IMAGE]: (state, payload) => {
+  [MUTATE_MAIN_IMAGE]: (state, payload) => {
     state.mainImage = payload;
+  },
+  [MUTATE_ITEM]: (state, item) => {
+    state.curItem = item;
   },
 };

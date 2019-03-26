@@ -5,109 +5,60 @@
       @submit.prevent="submitForm"
       novalidate
     >
-      <div class="form-field">
-        <label class="text-label" for="firstName">First Name</label>
-        <input
-          type="text"
-          v-model="user.firstName"
-          name="firstName"
-          id="firstName"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.firstName"
-        >
-          Field Required
-        </span>
-      </div>
+      <text-input
+        name="firstName"
+        label="First Name"
+        v-model="user.firstName"
+        :errors="errors"
+        type="text"
+        required
+      />
 
-      <div class="form-field">
-        <label class="text-label" for="lastName">Last Name</label>
-        <input
-          type="text"
-          v-model="user.lastName"
-          name="lastName"
-          id="lastName"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.lastName"
-        >
-          Field Required
-        </span>
-      </div>
+      <text-input
+        name="lastName"
+        label="Last Name"
+        v-model="user.lastName"
+        :errors="errors"
+        type="text"
+        required
+      />
 
-      <div class="form-field">
-        <label class="text-label" for="email">Email</label>
-        <input
-          type="email"
-          v-model="user.email"
-          name="email"
-          id="email"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.email && !errors.emailInvalid"
-        >
-          Field Required
-        </span>
-        <span
-          class="field-error-message"
-          v-if="errors.emailInvalid"
-        >
-          Invalid Email
-        </span>
-      </div>
+      <text-input
+        name="email"
+        label="Email"
+        v-model="user.email"
+        :errors="errors"
+        required
+        requiredField="emailInvalid"
+        requiredLabel="Invalid Email"
+      />
 
-      <div class="form-field">
-        <label class="text-label" for="password">Password</label>
-        <input
-          type="password"
-          v-model="user.password"
-          name="password"
-          id="password"
-          min="6"
-          @blur="dirtyInputs = true"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.password && errors.matchingPasswords"
-        >
-          Field Required
-        </span>
-        <span
-          class="field-error-message"
-          v-if="!errors.matchingPasswords && dirtyInputs"
-        >
-          Passwords must match
-        </span>
-      </div>
+      <text-input
+        name="password"
+        label="Password"
+        v-model="user.password"
+        :errors="errors"
+        type="password"
+        required
+        :min="6"
+        @inputBlur="dirtyInputs = true"
+        :secondaryRule="!errors.matchingPasswords && dirtyInputs"
+        secondaryRuleLabel="Passwords must match"
+      />
 
-      <div class="form-field">
-        <label
-          class="text-label text-label--two-lines"
-          for="confirmPassword">Confirm<br>Password</label>
-        <input
-          type="password"
-          v-model="user.confirmPassword"
-          name="confirmPassword"
-          id="confirmPassword"
-          min="6"
-          @blur="dirtyInputs = true"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.confirmPassword && errors.matchingPasswords"
-        >
-          Field Required
-        </span>
-        <span
-          class="field-error-message"
-          v-if="!errors.matchingPasswords && dirtyInputs"
-        >
-          Passwords must match
-        </span>
-      </div>
+      <text-input
+        name="confirmPassword"
+        label="Confirm Password"
+        v-model="user.confirmPassword"
+        :errors="errors"
+        type="password"
+        required
+        :min="6"
+        @inputBlur="dirtyInputs = true"
+        :secondaryRule="!errors.matchingPasswords && dirtyInputs"
+        secondaryRuleLabel="Passwords must match"
+        labelClass="text-label--two-lines"
+      />
 
       <div class="form-field">
         <button class="button" type="submit">Submit</button>
@@ -120,6 +71,7 @@
 import { formValidation } from '@/mixins';
 import { mapActions } from 'vuex';
 import * as types from '@/store/types';
+import TextInput from '@/components/common/forms/TextInput.vue';
 
 export default {
   mixins: [
@@ -146,12 +98,20 @@ export default {
       },
     };
   },
+  components: {
+    TextInput,
+  },
   methods: {
     ...mapActions({
       signUpUser: types.SIGN_UP_USER,
     }),
     async submitForm() {
-      const returnVal = await this.validateForm({ matchingPasswords: true });
+      const returnVal = await this.validateForm({
+        fields: this.user,
+        options: {
+          matchingPasswords: true,
+        },
+      });
 
       // if returnVal is false, attempt signup
       // false = no errors in validation
@@ -162,6 +122,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-</style>

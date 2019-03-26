@@ -5,6 +5,7 @@ import authGetters from './getters';
 const state = {
   user: null,
   userId: null,
+  userItems: [],
 };
 
 const actions = authActions;

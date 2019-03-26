@@ -3,13 +3,18 @@
     :ref="mainImage"
     class="image-container"
     :class="noBG ? 'no-bg' : ''"
-    :style="{backgroundImage: `url(${bgImage})`}"
+    :style="{backgroundImage: `url(${mainImage})`}"
     alt="">
-      <img :src="bgImage">
-    </div>
+      <img :src="mainImage">
+  </div>
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/storage';
+import { mapActions } from 'vuex';
+import * as types from '@/store/types';
+
 export default {
   props: {
     mainImage: {
@@ -20,13 +25,19 @@ export default {
       type: Boolean,
     },
   },
-  computed: {
-    bgImage() {
-      if (this.mainImage) {
-        return require(`@/assets/img/placeholder/${this.mainImage}`);
-      }
-      return '';
-    },
+  methods: {
+    ...mapActions({
+      updateMain: types.UPDATE_MAIN_IMAGE,
+    }),
+  },
+  created() {
+    if (this.mainImage) {
+      const storageRef = firebase.storage().ref();
+      storageRef.child(this.mainImage).getDownloadURL()
+        .then((url) => {
+          this.updateMain(url);
+        });
+    }
   },
 };
 </script>

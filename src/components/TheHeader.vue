@@ -78,6 +78,7 @@ export default {
   border: none;
   display: inline-block;
   cursor: pointer;
+  font-family: 'Nunito';
 
   &.active {
     color: rgb(86, 116, 247);

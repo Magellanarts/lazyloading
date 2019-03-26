@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Merriweather');
+@import url('https://fonts.googleapis.com/css?family=Merriweather|Nunito');
 
 $blue: rgb(86, 116, 247);
 
@@ -71,6 +71,16 @@ h2 {
   margin-bottom: 32px;
 }
 
+h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+h4 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
 .u-align-center {
 	text-align: center;
 }
@@ -121,6 +131,7 @@ label {
     left: 0;
     font-size: 12px;
     line-height: 16px;
+    max-width: 65px;
 
     &--two-lines {
       font-size: 10px;
@@ -130,10 +141,12 @@ label {
   }
 }
 
-input[type="text"],
+input[type="text"]:not(.no-style),
 input[type="email"],
 input[type="number"],
-input[type="password"] {
+input[type="password"],
+textarea,
+.styled-input {
   border: none;
   background: none;
   padding: 8px 8px 8px 75px;
@@ -142,6 +155,18 @@ input[type="password"] {
   width: 100%;
   box-sizing: border-box;
   font-size: 14px;
+}
+
+input.no-style {
+  border: none;
+  background: none;
+  font-size: 14px;
+  outline: none;
+}
+
+textarea {
+  min-height: 120px;
+  white-space: pre-wrap;
 }
 
 .field-error-message {

@@ -1,14 +1,16 @@
 import { db } from '@/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import * as types from '../types';
+import {
+  SIGN_UP_USER, LOG_IN_USER, GET_USER_DETAILS, MUTATE_USER_DETAILS, GET_USER_ITEMS, MUTATE_USER_ITEMS, LOG_OUT_USER, MUTATE_USER_ID, SET_USER_ID,
+} from '../types';
 
 import router from '@/router';
 
 export default {
   // Sign up user account
   // On Success, create user in users list too
-  [types.SIGN_UP_USER]: (user) => {
+  [SIGN_UP_USER]: ({ commit }, user) => {
     firebase.auth()
       .createUserWithEmailAndPassword(user.email, user.password)
       .then((res) => {
@@ -20,6 +22,7 @@ export default {
           password: user.password,
           email: user.email,
         });
+        router.push('/dashboard');
       })
       .catch((err) => {
         // TODO: Error handling
@@ -30,7 +33,7 @@ export default {
   },
   // Log user into their account
   // On Success, take them to dashboard
-  [types.LOG_IN_USER]: (user) => {
+  [LOG_IN_USER]: ({ commit }, user) => {
     firebase.auth()
       .signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
@@ -41,22 +44,40 @@ export default {
         console.log(err);
       });
   },
+  [GET_USER_DETAILS]: ({ commit, getters, dispatch }) => {
+    db.collection('users').doc(getters.userId).get()
+      .then((res) => {
+        commit(MUTATE_USER_DETAILS, res.data());
+        dispatch(GET_USER_ITEMS);
+      });
+  },
+  [GET_USER_ITEMS]: ({ commit, getters }) => {
+    const { user } = getters;
+    if (user) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const item of user.items) {
+        db.collection('items').doc(item).get()
+          .then((res) => {
+            const itemData = res.data();
+            itemData.ID = item;
+            commit(MUTATE_USER_ITEMS, itemData);
+          });
+      }
+    }
+  },
   // Log out user account
   // On Success, clear user info in store and send them to Home
-  [types.LOG_OUT_USER]: ({ commit }) => {
+  [LOG_OUT_USER]: ({ commit }) => {
     firebase.auth()
       .signOut()
       .then(() => {
-        commit(types.MUTATE_USER, {
-          user: false,
-          userId: '',
-        });
+        commit(MUTATE_USER_ID, '');
         // move user back to home
         router.push('/');
       });
   },
   // Update user info in store
-  [types.SET_USER]: ({ commit }, user) => {
-    commit(types.MUTATE_USER, user);
+  [SET_USER_ID]: ({ commit }, userId) => {
+    commit(MUTATE_USER_ID, userId);
   },
 };

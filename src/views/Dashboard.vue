@@ -1,18 +1,94 @@
 <template>
   <div>
-    <h1>Dashboard</h1>
 
-    <router-link to="/dashboard/list-item">List an Item</router-link>
+
+    <nav class="dashboard-nav">
+      <router-link to="/dashboard/list-item">List an Item</router-link>
+    </nav>
+
+    <template v-if="user">
+      <h1>Welcome {{ user.firstName }}!</h1>
+
+      <h4>Your active items:</h4>
+      <ul>
+        <li class="dashboard-item" v-for="item in userItems" :key="item.slug">
+          <div class="dashboard-item__name">{{ item.name }}</div>
+          <div class="dashboard-item__buttons">
+            <router-link
+              @click.native="setItem(item)"
+              :to="{
+                name: 'dashboard-list-item',
+                params: {
+                  itemName: item.name,
+                  itemPrice: item.dailyPrice,
+                  itemStreetAddress: item.streetAddress,
+                  itemDescription: item.description,
+                  itemCity: item.city,
+                  itemState: item.state
+                },
+              }"
+            >Edit</router-link>
+            <router-link :to="`item/${item.slug}`">View</router-link>
+          </div>
+        </li>
+      </ul>
+    </template>
+
 
     <router-view/>
   </div>
 </template>
 
 <script>
-export default {
+import { mapState, mapActions } from 'vuex';
+import { SET_ITEM_DETAILS } from '@/store/types';
+import { getUserDetails } from '@/auth';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
+export default {
+  computed: mapState({
+    user: state => state.auth.user,
+    userItems: state => state.auth.userItems,
+  }),
+  methods: {
+    ...mapActions({
+      setItem: SET_ITEM_DETAILS,
+    }),
+  },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.dashboard-item {
+  margin-bottom: 16px;
+}
+
+.dashboard-item__name {
+  margin-bottom: 8px;
+}
+
+.dashboard-item__buttons {
+  a {
+    display: inline-block;
+    color: rgb(86, 116, 247);
+    font-size: 14px;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+}
+.dashboard-nav {
+  margin-bottom: 32px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #aaa;
+
+  a {
+    font-size: 15px;
+    font-family: 'Nunito';
+    color: rgb(86, 116, 247);
+  }
+}
 </style>

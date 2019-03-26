@@ -3,7 +3,7 @@
     <div class="item-header">
       <item-media
         :mainImage="mainImage"
-        :thumbnails="item.thumbnails"
+        :item="item"
       />
       <item-details
         :item="item"

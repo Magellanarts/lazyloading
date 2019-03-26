@@ -40,16 +40,25 @@ const router = new Router({
       meta: {
         authRequried: true,
       },
-      children: [
+      /* children: [
         {
           name: 'dashboard-list-item',
-          path: 'list-item',
-          component: () => import(/* webpackChunkName: "dashboard-list-item" */'./views/DashboardCreateItem.vue'),
+          path: '/dashboard/list-item',
+          component: () => import('./views/DashboardCreateItem.vue'),
           meta: {
             authRequried: true,
           },
+          props: true,
         },
-      ],
+  ], */
+    },
+    {
+      name: 'dashboard-list-item',
+      path: '/dashboard/list-item',
+      component: () => import(/* webpackChunkName: "dashboard-list-item" */'./views/DashboardCreateItem.vue'),
+      meta: {
+        authRequried: true,
+      },
     },
     {
       path: '/item',

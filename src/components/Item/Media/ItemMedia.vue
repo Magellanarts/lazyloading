@@ -1,11 +1,13 @@
 <template>
   <div>
     <MainImage
+      v-if="mainImage"
       :mainImage="mainImage"
     />
     <Thumbnails
-      v-if="thumbnails"
-      :thumbnails="thumbnails"
+      v-if="item.otherImages"
+      :mainImage="item.mainImage"
+      :thumbnails="item.otherImages"
     />
   </div>
 </template>
@@ -20,9 +22,9 @@ export default {
       type: String,
       required: true,
     },
-    thumbnails: {
-      type: Array,
-      required: false,
+    item: {
+      type: Object,
+      required: true,
     },
   },
   components: {

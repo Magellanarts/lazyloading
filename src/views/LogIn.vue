@@ -6,45 +6,26 @@
       novalidate
     >
 
-      <div class="form-field">
-        <label class="text-label" for="email">Email</label>
-        <input
-          type="email"
-          v-model="user.email"
-          name="email"
-          id="email"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.email && !errors.emailInvalid"
-        >
-          Field Required
-        </span>
-        <span
-          class="field-error-message"
-          v-if="errors.emailInvalid"
-        >
-          Invalid Email
-        </span>
-      </div>
+      <text-input
+        name="email"
+        label="Email"
+        v-model="user.email"
+        :errors="errors"
+        required
+        requiredField="emailInvalid"
+        requiredLabel="Invalid Email"
+      />
 
-      <div class="form-field">
-        <label class="text-label" for="password">Password</label>
-        <input
-          type="password"
-          v-model="user.password"
-          name="password"
-          id="password"
-          min="6"
-          @blur="dirtyInputs = true"
-        >
-        <span
-          class="field-error-message"
-          v-if="errors.password"
-        >
-          Field Required
-        </span>
-      </div>
+      <text-input
+        name="password"
+        label="Password"
+        v-model="user.password"
+        :errors="errors"
+        type="password"
+        required
+        :min="6"
+        @inputBlur="dirtyInputs = true"
+      />
 
       <div class="form-field">
         <button class="button" type="submit">Submit</button>
@@ -57,6 +38,7 @@
 import { formValidation } from '@/mixins';
 import { mapActions } from 'vuex';
 import * as types from '@/store/types';
+import TextInput from '@/components/common/forms/TextInput.vue';
 
 export default {
   mixins: [
@@ -64,6 +46,7 @@ export default {
   ],
   data() {
     return {
+      dirtyInputs: false,
       user: {
         email: null,
         password: null,
@@ -75,12 +58,20 @@ export default {
       },
     };
   },
+  components: {
+    TextInput,
+  },
   methods: {
     ...mapActions({
       logInUser: types.LOG_IN_USER,
     }),
     async submitForm() {
-      const returnVal = await this.validateForm({ matchingPasswords: false });
+      const returnVal = await this.validateForm({
+        fields: this.user,
+        options: {
+          matchingPasswords: false,
+        },
+      });
 
       // if returnVal is false, attempt signup
       // false = no errors in validation
