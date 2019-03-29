@@ -16,7 +16,13 @@
       >
         {{ value }}
       </span>
-      <input id="multiInput" name="multiInput" v-model="newValue" type="text" class="no-style"  @keydown.enter.prevent="handleEnter"/>
+      <input
+        id="multiInput"
+        name="multiInput"
+        v-model="newValue"
+        type="text"
+        class="no-style"  @keydown.enter.prevent="handleEnter"
+      />
     </div>
   </div>
 </template>

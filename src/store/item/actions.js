@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 export default {
-  [UPDATE_ITEM]: ({ }, item) => {
+  [UPDATE_ITEM]: ({}, item) => {
     const storageRef = firebase.storage().ref();
     const itemToPublish = { ...item };
     // set up tags
@@ -22,7 +22,6 @@ export default {
     for (const tag of item.tagsSearchbale) {
       itemToPublish.tags[tag] = true;
     }
-
 
     if (item.mainImage.constructor === FileList) {
       // mainImage has changed, we need to upload it
@@ -33,6 +32,21 @@ export default {
           // itemToPublish.mainImage = snapshot.metadata.name;
         });
     }
+
+    if (item.otherImages) {
+      item.otherImages.forEach((photo, index) => {
+        if (photo.constructor === FileList) {
+          const photoDetails = photo[0];
+          itemToPublish.otherImages[index] = `${photoDetails.lastModified}-${photoDetails.size}-${photoDetails.name}`;
+
+          storageRef.child(`${photoDetails.lastModified}-${photoDetails.size}-${photoDetails.name}`).put(photo[0])
+            .then((snapshot) => {
+
+            });
+        }
+      });
+    }
+
 
     db.collection('items').doc(itemToPublish.ID)
       .update(itemToPublish);
@@ -106,8 +120,6 @@ export default {
   [UPDATE_MAIN_IMAGE]: ({ commit }, payload) => {
     commit(MUTATE_MAIN_IMAGE, payload);
   },
-
-  // TODO: Unsync from firebase. Just pull data and put in store
   // Sync curItem in store to item from Firebase
   [GET_ITEM_DATA_BY_DOC_ID]: ({ commit }, itemRef) => {
     // After sync, set the item's main image into separate mainIMage var in store

@@ -77,14 +77,8 @@
       <multi-file-upload
         :images="item.otherImages"
         @uploadComplete="otherImagesUploaded"
+        @imageDeleted="handleImageDelete"
       />
-      <!-- file-upload
-        v-for="(file, index) in item.otherImages"
-        :key="`value-${index}`"
-        name="otherImages"
-        @uploadComplete="otherImagesUploaded"
-        multiple
-      / -->
 
       <div class="form-field">
         <button class="button" type="submit">Submit</button>
@@ -105,9 +99,8 @@ import TextInput from '@/components/common/forms/TextInput.vue';
 import MultiFileUpload from '@/components/common/forms/MultiFileUpload.vue';
 import FileUpload from '@/components/common/forms/FileUpload.vue';
 import MultiInput from '@/components/common/forms/MultiInput.vue';
-
 import { mapActions, mapState } from 'vuex';
-import { CREATE_ITEM, UPDATE_ITEM } from '@/store/types';
+import { CREATE_ITEM, UPDATE_ITEM, SET_ITEM_DETAILS } from '@/store/types';
 import { formValidation } from '@/mixins';
 
 export default {
@@ -154,6 +147,7 @@ export default {
     ...mapActions({
       createItem: CREATE_ITEM,
       updateItem: UPDATE_ITEM,
+      clearItem: SET_ITEM_DETAILS,
     }),
     async submitForm() {
       const returnVal = await this.validateForm({
@@ -178,8 +172,13 @@ export default {
       this.item.mainImage = file;
     },
     otherImagesUploaded(file) {
-      // this.item.otherImages = file;
+      // the newly uploaded image is getting added correclty.
+      // in actions, will need to loop through each in array
+      // to see if any need to be uploaed to storage
       this.item.otherImages.push(file);
+    },
+    handleImageDelete(image) {
+      this.item.otherImages = this.item.otherImages.filter(e => e !== image);
     },
     handleTagChange(tags) {
       this.item.tagsSearchbale = tags;
@@ -189,9 +188,14 @@ export default {
     if (!this.item.tagsSearchbale) {
       this.item.tagsSearchbale = [];
     }
+
     if (!this.item.otherImages) {
       this.item.otherImages = [];
     }
+  },
+  destroyed() {
+    // clear out curItem details
+    this.clearItem({});
   },
 };
 </script>

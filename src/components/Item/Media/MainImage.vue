@@ -18,7 +18,6 @@ import * as types from '@/store/types';
 export default {
   props: {
     mainImage: {
-      type: String,
       required: true,
     },
     noBG: {

@@ -9,26 +9,32 @@
       />
     <button type="button" @click="uploadButtonClick">Add Image</button>
 
-    <div class="images">
-      <div v-for="(image, index) in localImages" :key="`image-${index}`" class="mfu-image-container">
-        <img :src="image" />
+    <div v-if="localURLs" class="images">
+      <div
+        v-for="(image, index) in localURLs"
+        :key="`image-${index}`"
+        class="mfu-image-container"
+        @click="deletePhoto(image.url, image.image)"
+        :data-index="image.index"
+      >
+        <img :src="image.url" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/storage';
+
 export default {
   data() {
     return {
-      numImages: this.images.length,
       photoUploaded: false,
       imgSrc: '',
       localImages: this.images,
+      localURLs: [],
     };
-  },
-  components: {
-
   },
   props: {
     images: {
@@ -44,15 +50,11 @@ export default {
         // get upload result
         const dataURL = reader.result;
 
-        this.numImages += this.numImages;
-
-
         // insert uploaded photo
-        this.localImages.push(dataURL);
+        this.localURLs.push({ url: dataURL, image: dataURL });
 
         // tell parent component the image has been uploaded
         // the parent component will be passed the file
-        console.log(upload.files);
         this.$emit('uploadComplete', upload.files);
       };
       reader.readAsDataURL(upload.files[0]);
@@ -60,6 +62,33 @@ export default {
     uploadButtonClick() {
       this.$refs.name.click();
     },
+    deletePhoto(url, image) {
+      // this.localURLs.splice(passedIndex, 1);
+      // this.localImages.splice(index, 1);
+      console.log(url, image);
+
+      this.localURLs = this.localURLs.filter(e => e.url !== url);
+      // this.localImages = this.localImages.filter(e => e !== image);
+      this.$emit('imageDeleted', image);
+    },
+  },
+  mounted() {
+    // this.localURLs = this.localImages.slice();
+    if (this.images) {
+      // if there are already images,
+      // that means we are editing an existing item
+      // grab the real url for the img and show
+      const storageRef = firebase.storage().ref();
+
+      this.localImages.forEach((image) => {
+        storageRef.child(image).getDownloadURL()
+          .then((url) => {
+            this.localURLs.push({ url, image });
+          });
+      });
+    } else {
+      this.localURLs = this.localImages.slice();
+    }
   },
 };
 </script>
@@ -82,13 +111,31 @@ export default {
   overflow: hidden;
   max-width: 100px;
 
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background-color: rgba(#ff0015, .4);
+    opacity: 0;
+  }
+
   &:not(:first-child) {
     margin-left: 8px;
+  }
+
+  &:hover {
+    &:after {
+      opacity: 1;
+    }
   }
 }
 img {
   position: absolute;
-  z-index: 5;
+  z-index: 2;
   scale: 1.25;
   top: 0;
   bottom: 0;

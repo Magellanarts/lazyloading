@@ -49,7 +49,6 @@ export default {
       required: false,
     },
     curImage: {
-      type: String,
       required: false,
     },
   },
