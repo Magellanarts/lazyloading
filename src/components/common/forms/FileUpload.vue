@@ -26,10 +26,6 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/storage';
-// TODO: How to handle multi-file upload?
-//          Maybe multiple smaller upload boxes?
-//          Each time one is added, another will
-//          automatically pop up next to it
 
 export default {
   data() {

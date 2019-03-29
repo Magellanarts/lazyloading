@@ -1,6 +1,9 @@
 <template>
 <div>
-  <h1>{{ item. name }}</h1>
+  <h1>{{ item.name }}</h1>
+
+  <h2>${{ item.dailyPrice }}</h2>
+  <h5>Deposit: {{ item.deposit }}</h5>
 
   <ul>
       <li v-for="detail in item.details" :key="detail.label">
@@ -33,7 +36,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  margin-bottom: 26px;
+}
 
+h2 {
+  margin-bottom: 6px;
+}
 
 ul,
 p {

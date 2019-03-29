@@ -2,6 +2,7 @@
   <div>
     <div class="item-header">
       <item-media
+        v-if="mainImage"
         :mainImage="mainImage"
         :item="item"
       />

@@ -1,6 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-restricted-syntax */
+// TODO: autogenerate slug
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import axios from 'axios';
+
 import { db } from '@/auth';
 import {
   UPDATE_ITEM,
@@ -47,9 +51,20 @@ export default {
       });
     }
 
-
-    db.collection('items').doc(itemToPublish.ID)
-      .update(itemToPublish);
+    if (!itemToPublish._geoloc) {
+      axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
+        .then((res) => {
+          itemToPublish._geoloc = {
+            lat: res.data[0].lat,
+            lng: res.data[0].lon,
+          };
+          db.collection('items').doc(itemToPublish.ID)
+            .update(itemToPublish);
+        });
+    } else {
+      db.collection('items').doc(itemToPublish.ID)
+        .update(itemToPublish);
+    }
   },
   // Create a new item
   [CREATE_ITEM]: ({ getters }, item) => {
@@ -70,7 +85,6 @@ export default {
     // Main image First
     if (item.mainImage) {
       const mainImage = item.mainImage[0];
-      console.log(mainImage);
       itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
       storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage)
         .then((snapshot) => {
@@ -82,6 +96,7 @@ export default {
     if (item.otherImages) {
       for (const photo of item.otherImages) {
         itemToPublish.otherImages.push(`${photo.lastModified}-${photo.size}-${photo.name}`);
+
         storageRef.child(`${photo.lastModified}-${photo.size}-${photo.name}`).put(photo)
           .then((snapshot) => {
             // itemToPublish.otherImages.push(snapshot.metadata.name);
@@ -97,23 +112,22 @@ export default {
       }
     }
 
-
-    // push to firestore
-    db.collection('items').add(itemToPublish)
+    axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
       .then((res) => {
-        // res.id has the id to add to user's item array
-        db.collection('users').doc(itemToPublish.user)
-          .update({
-            items: firebase.firestore.FieldValue.arrayUnion(res.id),
+        itemToPublish._geoloc = {
+          lat: res.data[0].lat,
+          lng: res.data[0].lon,
+        };
+        // push to firestore
+        db.collection('items').add(itemToPublish)
+          .then((res) => {
+            // res.id has the id to add to user's item array
+            db.collection('users').doc(itemToPublish.user)
+              .update({
+                items: firebase.firestore.FieldValue.arrayUnion(res.id),
+              });
           });
       });
-
-    // TODO: get long/lat to store in firestore
-    // https://developer.mapquest.com/user/me/apps
-    // https://markus.oberlehner.net/blog/using-location-data-with-vue-and-open-street-map/
-    // https://github.com/geofirestore/geofirestore-js
-    // http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=san%20diego,%20ca
-    // TODO: add the id for this new item to the user
   },
   // Update main image on item page
   // Used for switching between thumbnails

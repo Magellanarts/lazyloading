@@ -25,6 +25,15 @@
       />
 
       <text-input
+        name="deposit"
+        label="Deposit"
+        v-model="item.deposit"
+        :errors="errors"
+        required
+      />
+
+
+      <text-input
         name="description"
         label="Description"
         v-model="item.description"
@@ -90,7 +99,6 @@
 <script>
 // TODO: Choose from popular tags?
 // TODO: Automatically show potential tags based on other fields (name, description, etc.)?
-// TODO: clear curItem after leave
 
 // Get lat/lon http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=QUERYGOESHERE
 
@@ -113,6 +121,7 @@ export default {
         dailyPrice: false,
         city: false,
         state: false,
+        deposit: false,
         streetAddress: false,
       },
     };

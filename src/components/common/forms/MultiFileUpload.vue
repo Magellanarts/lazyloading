@@ -6,8 +6,9 @@
         @change="handleUpload"
         ref="name"
         accept="image/*"
+        multiple
       />
-    <button type="button" @click="uploadButtonClick">Add Image</button>
+    <button type="button" @click="uploadButtonClick">Add Images</button>
 
     <div v-if="localURLs" class="images">
       <div
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+// TODO: Make sure deleting works when you delete a just added image
 import firebase from 'firebase/app';
 import 'firebase/storage';
 
@@ -44,20 +46,24 @@ export default {
   methods: {
     handleUpload(event) {
       const upload = event.target;
-      const reader = new FileReader();
 
-      reader.onload = () => {
-        // get upload result
-        const dataURL = reader.result;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const file of upload.files) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          // get upload result
+          const dataURL = reader.result;
 
-        // insert uploaded photo
-        this.localURLs.push({ url: dataURL, image: dataURL });
+          // insert uploaded photo
+          this.localURLs.push({ url: dataURL, image: dataURL });
 
-        // tell parent component the image has been uploaded
-        // the parent component will be passed the file
-        this.$emit('uploadComplete', upload.files);
-      };
-      reader.readAsDataURL(upload.files[0]);
+          // tell parent component the image has been uploaded
+          // the parent component will be passed the file
+          this.$emit('uploadComplete', file);
+        };
+
+        reader.readAsDataURL(file);
+      }
     },
     uploadButtonClick() {
       this.$refs.name.click();
@@ -65,7 +71,6 @@ export default {
     deletePhoto(url, image) {
       // this.localURLs.splice(passedIndex, 1);
       // this.localImages.splice(index, 1);
-      console.log(url, image);
 
       this.localURLs = this.localURLs.filter(e => e.url !== url);
       // this.localImages = this.localImages.filter(e => e !== image);

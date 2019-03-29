@@ -47,9 +47,20 @@ const algolia = algoliasearch(
 
 const index = algolia.initIndex('items');
 
+if ('geolocation' in navigator) {
+  /* geolocation is available */
+  navigator.geolocation.getCurrentPosition((position) => {
+  // do_something(position.coords.latitude, position.coords.longitude);
+    localStorage.setItem('lat', position.coords.latitude);
+    localStorage.setItem('lon', position.coords.longitude);
+  });
+} else {
+  /* geolocation IS NOT available */
+}
 
+/*
 // This was set up to get the existing items from firestore into Algolia
-/* const records = [];
+const records = [];
 
 db.collection('items').get()
   .then((snapshot) => {

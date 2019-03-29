@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="mainImage"
     :ref="mainImage"
     class="image-container"
     :class="noBG ? 'no-bg' : ''"
