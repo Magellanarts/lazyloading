@@ -56,7 +56,7 @@ export default {
     }
 
     if (!itemToPublish._geoloc) {
-      axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
+      axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
         .then((res) => {
           itemToPublish._geoloc = {
             lat: parseFloat(res.data[0].lat),
@@ -117,7 +117,7 @@ export default {
     // create slug
     itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.city} ${itemToPublish.state}`);
 
-    axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
+    axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
       .then((response) => {
         itemToPublish._geoloc = {
           lat: parseFloat(response.data[0].lat),

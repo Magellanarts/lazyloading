@@ -90,7 +90,7 @@ export default {
             });
         } else {
           // Get lat/long of location
-          axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${this.location}`)
+          axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${this.location}`)
             .then((res) => {
               aroundLatLng = `${res.data[0].lat}, ${res.data[0].lon}`;
 
