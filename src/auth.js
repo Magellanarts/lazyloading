@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueFire from 'vuefire';
 
 import store from '@/store/store';
-import { SET_USER_ID, GET_USER_DETAILS, GET_USER_ITEMS } from '@/store/types';
+import { SET_USER_ID, GET_USER_DETAILS } from '@/store/types';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -22,11 +22,9 @@ firebase.initializeApp({
 
 export function getUserDetails(user) {
   store.dispatch(SET_USER_ID, user.uid);
-  store.dispatch(GET_USER_DETAILS);
+  // store.dispatch(GET_USER_DETAILS);
 }
 
-// When a user logs in or out, update the user info in store
-// TODO: may need to research to see if this is best way to handle this.
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // set user in store
@@ -42,7 +40,7 @@ export const db = firebase.firestore();
 // Initialize Algolia search info
 const algolia = algoliasearch(
   '9AURVLYOP7',
-  '94f720be87cbb56ec79609495979cad9',
+  '99e4ec81fd5a69e533c04ecc64dccd57',
 );
 
 const index = algolia.initIndex('items');
@@ -58,6 +56,14 @@ if ('geolocation' in navigator) {
   /* geolocation IS NOT available */
 }
 
+
+export const updateAlgolia = (item) => {
+  index.saveObject(item).then(() => {
+    console.log('Documents imported into Algolia');
+    process.exit(0);
+  });
+};
+
 /*
 // This was set up to get the existing items from firestore into Algolia
 const records = [];
@@ -71,7 +77,6 @@ db.collection('items').get()
       childData.objectID = childKey;
 
       records.push(childData);
-      console.log(doc.id, '=>', doc.data());
     });
 
     // Add or update new objects

@@ -1,6 +1,7 @@
 <template>
   <router-link class="item-card" :to="`/item/${item.slug}`">
     <item-card-thumbnail
+      v-if="item.mainImage"
       :mainImage="item.mainImage"
     />
     <item-card-details

@@ -5,7 +5,8 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import axios from 'axios';
 
-import { db } from '@/auth';
+import { db, updateAlgolia } from '@/auth';
+import { slugify } from '@/mixins';
 import {
   UPDATE_ITEM,
   CREATE_ITEM,
@@ -27,15 +28,21 @@ export default {
       itemToPublish.tags[tag] = true;
     }
 
-    if (item.mainImage.constructor === FileList) {
-      // mainImage has changed, we need to upload it
-      const mainImage = item.mainImage[0];
-      itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
-      storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage)
-        .then((snapshot) => {
-          // itemToPublish.mainImage = snapshot.metadata.name;
-        });
+    // create slug
+    if (!itemToPublish.slug) {
+      itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.city} ${itemToPublish.state}`);
     }
+
+
+    if (item.mainImage) {
+      if (item.mainImage.constructor === FileList) {
+      // mainImage has changed, we need to upload it
+        const mainImage = item.mainImage[0];
+        itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
+        storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage);
+      }
+    }
+
 
     if (item.otherImages) {
       item.otherImages.forEach((photo, index) => {
@@ -43,10 +50,7 @@ export default {
           const photoDetails = photo[0];
           itemToPublish.otherImages[index] = `${photoDetails.lastModified}-${photoDetails.size}-${photoDetails.name}`;
 
-          storageRef.child(`${photoDetails.lastModified}-${photoDetails.size}-${photoDetails.name}`).put(photo[0])
-            .then((snapshot) => {
-
-            });
+          storageRef.child(`${photoDetails.lastModified}-${photoDetails.size}-${photoDetails.name}`).put(photo[0]);
         }
       });
     }
@@ -55,23 +59,27 @@ export default {
       axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
         .then((res) => {
           itemToPublish._geoloc = {
-            lat: res.data[0].lat,
-            lng: res.data[0].lon,
+            lat: parseFloat(res.data[0].lat),
+            lng: parseFloat(res.data[0].lon),
           };
           db.collection('items').doc(itemToPublish.ID)
-            .update(itemToPublish);
+            .update(itemToPublish).then(() => {
+              itemToPublish.objectID = itemToPublish.ID;
+              updateAlgolia(itemToPublish);
+            });
         });
     } else {
       db.collection('items').doc(itemToPublish.ID)
-        .update(itemToPublish);
+        .update(itemToPublish).then(() => {
+          itemToPublish.objectID = itemToPublish.ID;
+          updateAlgolia(itemToPublish);
+        });
     }
   },
   // Create a new item
   [CREATE_ITEM]: ({ getters }, item) => {
     // Upload images to firestore
     const storageRef = firebase.storage().ref();
-
-    // item.mainImage = item.mainImage[0];
 
     // copy item object so we can reassign some values
     const itemToPublish = { ...item };
@@ -86,10 +94,7 @@ export default {
     if (item.mainImage) {
       const mainImage = item.mainImage[0];
       itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
-      storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage)
-        .then((snapshot) => {
-          // itemToPublish.mainImage = snapshot.metadata.name;
-        });
+      storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage);
     }
 
     // Secondary Images
@@ -97,10 +102,7 @@ export default {
       for (const photo of item.otherImages) {
         itemToPublish.otherImages.push(`${photo.lastModified}-${photo.size}-${photo.name}`);
 
-        storageRef.child(`${photo.lastModified}-${photo.size}-${photo.name}`).put(photo)
-          .then((snapshot) => {
-            // itemToPublish.otherImages.push(snapshot.metadata.name);
-          });
+        storageRef.child(`${photo.lastModified}-${photo.size}-${photo.name}`).put(photo);
       }
     }
 
@@ -112,11 +114,14 @@ export default {
       }
     }
 
+    // create slug
+    itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.city} ${itemToPublish.state}`);
+
     axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
-      .then((res) => {
+      .then((response) => {
         itemToPublish._geoloc = {
-          lat: res.data[0].lat,
-          lng: res.data[0].lon,
+          lat: parseFloat(response.data[0].lat),
+          lng: parseFloat(response.data[0].lon),
         };
         // push to firestore
         db.collection('items').add(itemToPublish)
@@ -126,6 +131,10 @@ export default {
               .update({
                 items: firebase.firestore.FieldValue.arrayUnion(res.id),
               });
+
+            // update algolia
+            itemToPublish.objectID = itemToPublish.ID;
+            updateAlgolia(itemToPublish);
           });
       });
   },

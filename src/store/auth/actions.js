@@ -11,6 +11,7 @@ import {
   LOG_OUT_USER,
   MUTATE_USER_ID,
   SET_USER_ID,
+  GET_USER_ID,
 } from '../types';
 
 import router from '@/router';
@@ -59,6 +60,10 @@ export default {
         dispatch(GET_USER_ITEMS);
       });
   },
+  [GET_USER_ID]: ({ getters }) => new Promise((resolve) => {
+    console.log(getters.userId);
+    resolve(getters.userId);
+  }),
   [GET_USER_ITEMS]: ({ commit, getters }) => {
     const { user } = getters;
     if (user) {

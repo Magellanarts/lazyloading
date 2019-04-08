@@ -17,15 +17,28 @@
       >Submit</button>
     </form>
 
-    <div v-if="results" class="search-results">
+    <div v-show="results" class="search-results">
       <h2>Results</h2>
-      <div class="search-results__list">
-        <item-card
-          v-for="result in results"
-          :key="result.objectID"
-          :item="result"
-        />
-      </div>
+
+      <!-- div class="ui-tabs">
+        <div class="ui-tab"
+          :class="listView? 'active': ''"
+          @click="toggleView"
+        >List</div>
+        <div class="ui-tab"
+          :class="mapView? 'active': ''"
+          @click="toggleView"
+        >Map</div>
+      </div -->
+        <div
+          class="search-results__list"
+        >
+          <item-card
+            v-for="result in results"
+            :key="result.objectID"
+            :item="result"
+          />
+        </div>
     </div>
   </div>
 </template>
@@ -34,7 +47,8 @@
 import algoliasearch from 'algoliasearch/lite';
 import ItemCard from '@/components/Item/Card/ItemCard.vue';
 import axios from 'axios';
-
+// import gmapsInit from '@/gmaps';
+// https://markus.oberlehner.net/blog/using-the-google-maps-api-with-vue/
 const algolia = algoliasearch(
   '9AURVLYOP7',
   '94f720be87cbb56ec79609495979cad9',
@@ -48,6 +62,8 @@ export default {
       searchText: '',
       location: '',
       results: null,
+      mapView: false,
+      listView: true,
     };
   },
   components: {
@@ -57,34 +73,48 @@ export default {
     submitSearch() {
       const query = this.searchText;
       if (this.location) {
-        // Get lat/long of location
-        axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${this.location}`)
-          .then((res) => {
-            let aroundLatLng;
-            if (this.location === 'My Location' && localStorage.lat && localStorage.lon) {
-              aroundLatLng = `${localStorage.lat}, ${localStorage.lon}`;
-            } else {
+        let aroundLatLng;
+        if (this.location === 'My Location' && localStorage.lat && localStorage.lon) {
+          aroundLatLng = `${localStorage.lat}, ${localStorage.lon}`;
+
+          const searchQuery = {
+            query,
+            aroundLatLng,
+            aroundRadius: 3000,
+          };
+
+          index
+            .search(searchQuery)
+            .then((response) => {
+              this.results = response.hits;
+            });
+        } else {
+          // Get lat/long of location
+          axios.get(`http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${this.location}`)
+            .then((res) => {
               aroundLatLng = `${res.data[0].lat}, ${res.data[0].lon}`;
-            }
 
-            const searchQuery = {
-              query,
-              aroundLatLng,
-              aroundRadius: 3000,
-            };
+              const searchQuery = {
+                query,
+                aroundLatLng,
+                aroundRadius: 3000,
+              };
 
-            console.log(searchQuery);
-
-            index
-              .search(searchQuery)
-              .then((response) => {
-                this.results = response.hits;
-              });
-          });
+              index
+                .search(searchQuery)
+                .then((response) => {
+                  this.results = response.hits;
+                });
+            });
+        }
       }
     },
+    toggleView() {
+      this.mapView = !this.mapView;
+      this.listView = !this.listView;
+    },
   },
-  mounted() {
+  async mounted() {
     if (localStorage.lat) {
       this.location = 'My Location';
     }
@@ -100,6 +130,31 @@ export default {
     @media screen and (min-width: 760px) {
      display: flex;
     }
+}
+
+.gmap {
+  height: 500px;
+}
+
+.ui-tabs {
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.ui-tab {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border-bottom: none;
+  margin-left: 6px;
+  cursor: pointer;
+
+  &.active {
+    background: #ccc;
+    color: #fff;
+  }
 }
 
 input {

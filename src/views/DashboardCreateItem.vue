@@ -32,7 +32,6 @@
         required
       />
 
-
       <text-input
         name="description"
         label="Description"
@@ -93,6 +92,15 @@
         <button class="button" type="submit">Submit</button>
       </div>
     </form>
+
+    <transition name="fade" mode="out-in">
+      <alert-modal
+        v-show="submitSuccess"
+        ref="success-modal"
+        heading="Saved"
+        type="success"
+      />
+    </transition>
   </div>
 </template>
 
@@ -100,9 +108,7 @@
 // TODO: Choose from popular tags?
 // TODO: Automatically show potential tags based on other fields (name, description, etc.)?
 
-// Get lat/lon http://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=QUERYGOESHERE
-
-
+import AlertModal from '@/components/common/AlertModal.vue';
 import TextInput from '@/components/common/forms/TextInput.vue';
 import MultiFileUpload from '@/components/common/forms/MultiFileUpload.vue';
 import FileUpload from '@/components/common/forms/FileUpload.vue';
@@ -110,10 +116,12 @@ import MultiInput from '@/components/common/forms/MultiInput.vue';
 import { mapActions, mapState } from 'vuex';
 import { CREATE_ITEM, UPDATE_ITEM, SET_ITEM_DETAILS } from '@/store/types';
 import { formValidation } from '@/mixins';
+import { setTimeout } from 'timers';
 
 export default {
   data() {
     return {
+      submitSuccess: false,
       numThumbs: 0,
       errors: {
         name: false,
@@ -151,6 +159,7 @@ export default {
     FileUpload,
     MultiInput,
     MultiFileUpload,
+    AlertModal,
   },
   methods: {
     ...mapActions({
@@ -169,6 +178,8 @@ export default {
       // check for error,
       // TODO: Uncomment this when live
       // if (!returnVal) {
+      // success, show saved modal
+      this.showModal();
       if (this.item.ID) {
         this.updateItem(this.item);
       } else {
@@ -176,6 +187,12 @@ export default {
       }
 
       // }
+    },
+    showModal() {
+      this.submitSuccess = true;
+      setTimeout(() => {
+        this.submitSuccess = false;
+      }, 2500);
     },
     mainImageUploaded(file) {
       this.item.mainImage = file;

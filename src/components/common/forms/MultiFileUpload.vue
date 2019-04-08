@@ -69,11 +69,9 @@ export default {
       this.$refs.name.click();
     },
     deletePhoto(url, image) {
-      // this.localURLs.splice(passedIndex, 1);
-      // this.localImages.splice(index, 1);
-
       this.localURLs = this.localURLs.filter(e => e.url !== url);
       // this.localImages = this.localImages.filter(e => e !== image);
+      console.log(image.constructor);
       this.$emit('imageDeleted', image);
     },
   },
