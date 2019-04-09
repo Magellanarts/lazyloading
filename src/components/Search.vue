@@ -20,25 +20,60 @@
     <div v-show="results" class="search-results">
       <h2>Results</h2>
 
-      <!-- div class="ui-tabs">
+      <div class="ui-tabs">
         <div class="ui-tab"
           :class="listView? 'active': ''"
-          @click="toggleView"
-        >List</div>
+          @click="mapView = false;
+      listView = true;"
+        >
+        List
+        </div>
         <div class="ui-tab"
           :class="mapView? 'active': ''"
-          @click="toggleView"
-        >Map</div>
-      </div -->
-        <div
-          class="search-results__list"
+          @click="mapView = true;
+      listView = false;"
         >
-          <item-card
-            v-for="result in results"
-            :key="result.objectID"
-            :item="result"
-          />
+          Map
         </div>
+      </div>
+
+      <div>
+        <div
+          v-show="listView"
+          class="ui-tab-view"
+        >
+          <div class="search-results__list">
+            <item-card
+              v-for="result in results"
+              :key="result.objectID"
+              :item="result"
+            />
+          </div>
+        </div>
+
+        <div
+
+        class="ui-tab-view"
+        v-show="mapView">
+          <GmapMap
+            v-if="results"
+            :center="{lat:results[0]._geoloc.lat, lng:results[0]._geoloc.lng}"
+            :zoom="13"
+
+            style="width: 100%; height: 400px"
+          >
+            <GmapCircle
+              :key="result.ID"
+              v-for="result in results"
+              :center="{lat:result._geoloc.lat, lng:result._geoloc.lng}"
+              :radius="600"
+              :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
+                }"
+            />
+          </GmapMap>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -108,10 +143,6 @@ export default {
             });
         }
       }
-    },
-    toggleView() {
-      this.mapView = !this.mapView;
-      this.listView = !this.listView;
     },
   },
   async mounted() {

@@ -54,7 +54,8 @@ export default {
         }
       });
     }
-
+    // TODO: Fix in case the address updates. we'll need to update coordinates.
+    // Maybe set a field to true if the address has changed on form
     if (!itemToPublish._geoloc) {
       axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
         .then((res) => {

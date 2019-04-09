@@ -22,14 +22,12 @@
 
       style="width: 100%; height: 400px"
     >
-      <!-- GmapMarker
-        :key="index"
-        v-for="(m, index) in markers"
-        :position="m.position"
-        :clickable="true"
-        :draggable="true"
-        @click="center=m.position"
-      / -->
+      <GmapCircle
+        :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
+        :radius="1000"
+        :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
+          }"
+      />
     </GmapMap>
 
     <!-- Owner / -->
@@ -39,7 +37,7 @@
 <script>
 import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
-import GMap from '@/components/common/GMap.vue';
+
 import { mapState, mapActions } from 'vuex';
 import * as types from '@/store/types';
 
@@ -47,7 +45,6 @@ export default {
   components: {
     ItemMedia,
     ItemDetails,
-    GMap,
   },
   methods: {
     ...mapActions({
