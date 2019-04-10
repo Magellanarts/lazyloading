@@ -31,6 +31,7 @@ firebase.auth().onAuthStateChanged((user) => {
     getUserID(user);
   } else {
     // no user logged in
+    getUserID({ uid: '' });
   }
 });
 

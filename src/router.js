@@ -102,13 +102,15 @@ router.beforeEach((to, from, next) => {
       next('/log-in');
     } */
     if (store.getters.userId === null) {
+      console.log('null');
       store.watch(store.getters.getUserMethod, (userId) => {
         if (userId) {
           next();
-        } else next('/log-in');
+        } else {
+          next('/log-in');
+        }
       });
       return;
-      // next();
     } if (store.getters.userId) {
       next();
     } else {
