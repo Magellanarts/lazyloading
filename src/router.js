@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import store from '@/store/store';
 
 Vue.use(Router);
 
@@ -91,7 +92,7 @@ const router = new Router({
 // if no user, redirect to log in page
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.authRequried)) {
-    if (localStorage.userId) {
+    /* if (localStorage.userId) {
       if (localStorage.userId !== null && localStorage.userId !== undefined && localStorage.userId !== 'undefined') {
         next();
       } else {
@@ -99,6 +100,19 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       next('/log-in');
+    } */
+    if (store.getters.userId === null) {
+      store.watch(store.getters.getUserMethod, (userId) => {
+        if (userId) {
+          next();
+        } else next('/log-in');
+      });
+      return;
+      // next();
+    } if (store.getters.userId) {
+      next();
+    } else {
+      next();
     }
   }
   next();

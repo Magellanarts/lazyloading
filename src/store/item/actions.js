@@ -18,6 +18,7 @@ import {
   GET_ITEM_DATA_BY_NAME,
 } from '../types';
 
+
 export default {
   [UPDATE_ITEM]: ({}, item) => {
     const storageRef = firebase.storage().ref();
@@ -145,25 +146,28 @@ export default {
     commit(MUTATE_MAIN_IMAGE, payload);
   },
   // Sync curItem in store to item from Firebase
-  [GET_ITEM_DATA_BY_DOC_ID]: ({ commit }, itemRef) => {
+  [GET_ITEM_DATA_BY_DOC_ID]: ({ commit }, itemRef) => new Promise((resolve, reject) => {
     // After sync, set the item's main image into separate mainIMage var in store
     db.collection('items').doc(itemRef).get()
       .then((doc) => {
         commit(MUTATE_ITEM, doc.data());
         commit(MUTATE_MAIN_IMAGE, doc.data().mainImage);
+        resolve(doc.data());
       });
-  },
+  }),
   [SET_ITEM_DETAILS]: ({ commit }, item) => {
     commit(MUTATE_ITEM, item);
   },
   // Search for item in collection by slug
   // This is used when someone directly accesses an item page rather than coming via a
   // link that includes the doc ID (such as the tags list or search list)
-  [GET_ITEM_DATA_BY_NAME]: ({ dispatch }, itemRef) => {
+  [GET_ITEM_DATA_BY_NAME]: ({ dispatch }, itemRef) => new Promise((resolve, reject) => {
     db.collection('items').where('slug', '==', itemRef).limit(1).get()
       .then((doc) => {
         // id of item we need is doc.docs[0].id
-        dispatch(GET_ITEM_DATA_BY_DOC_ID, doc.docs[0].id);
+        dispatch(GET_ITEM_DATA_BY_DOC_ID, doc.docs[0].id).then((res) => {
+          resolve(res);
+        });
       });
-  },
+  }),
 };

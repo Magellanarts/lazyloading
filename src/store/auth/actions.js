@@ -28,7 +28,6 @@ export default {
         db.collection('users').doc(res.user.uid).set({
           firstName: user.firstName,
           lastName: user.lastName,
-          password: user.password,
           email: user.email,
         });
         router.push('/dashboard');
@@ -53,13 +52,13 @@ export default {
         console.log(err);
       });
   },
-  [GET_USER_DETAILS]: ({ commit, getters, dispatch }) => {
+  [GET_USER_DETAILS]: ({ commit, getters }) => new Promise((resolve) => {
     db.collection('users').doc(getters.userId).get()
       .then((res) => {
         commit(MUTATE_USER_DETAILS, res.data());
-        dispatch(GET_USER_ITEMS);
+        resolve(res.data());
       });
-  },
+  }),
   [GET_USER_ID]: ({ getters }) => new Promise((resolve) => {
     console.log(getters.userId);
     resolve(getters.userId);

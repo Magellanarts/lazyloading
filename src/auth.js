@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueFire from 'vuefire';
 
 import store from '@/store/store';
-import { SET_USER_ID, GET_USER_DETAILS } from '@/store/types';
+import { SET_USER_ID } from '@/store/types';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -20,15 +20,15 @@ firebase.initializeApp({
   storageBucket: 'lazyloading-c3f8a.appspot.com',
 });
 
-export function getUserDetails(user) {
+export function getUserID(user) {
+  localStorage.setItem('userId', user.uid);
   store.dispatch(SET_USER_ID, user.uid);
-  // store.dispatch(GET_USER_DETAILS);
 }
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // set user in store
-    getUserDetails(user);
+    getUserID(user);
   } else {
     // no user logged in
   }

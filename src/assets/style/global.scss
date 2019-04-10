@@ -119,6 +119,13 @@ h5 {
     background-color: #555;
     color: #fff;
   }
+
+  &.action {
+    background: $blue;
+    color: #fff;
+    font-size: 20px;
+    padding: 8px 16px;
+  }
 }
 
 .form-field {

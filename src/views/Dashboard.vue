@@ -39,7 +39,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SET_ITEM_DETAILS, GET_USER_DETAILS } from '@/store/types';
+import { SET_ITEM_DETAILS, GET_USER_DETAILS, GET_USER_ITEMS } from '@/store/types';
 
 export default {
   computed: mapState({
@@ -51,18 +51,13 @@ export default {
     ...mapActions({
       setItem: SET_ITEM_DETAILS,
       getUserDetails: GET_USER_DETAILS,
+      getUserItems: GET_USER_ITEMS,
     }),
   },
-  mounted() {
-    // get user items
-    // set on a 2 second delay to wait for userId to be set by Firebase.auth() in auth.js
-    // TODO: alternative to a setTimeout? Promise?
+  async mounted() {
     if (!this.user) {
-      setTimeout(() => {
-        if (this.userId) {
-          this.getUserDetails();
-        }
-      }, 1400);
+      await this.getUserDetails();
+      this.getUserItems();
     }
   },
 };

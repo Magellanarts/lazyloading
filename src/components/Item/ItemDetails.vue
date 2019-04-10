@@ -5,6 +5,10 @@
   <h2>${{ item.dailyPrice }}</h2>
   <h5>Deposit: {{ item.deposit }}</h5>
 
+  <div class="item-actions">
+    <button class="button action" type="button">Rent me!</button>
+  </div>
+
   <ul>
       <li v-for="detail in item.details" :key="detail.label">
         {{ detail.label}}: {{ detail.value }}
@@ -16,6 +20,7 @@
   <item-tags
     :tags="item.tags"
   />
+
 </div>
 </template>
 
@@ -55,5 +60,10 @@ li:not(:last-child) {
 
 .description {
   margin-bottom: 40px;
+}
+
+.item-actions {
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 </style>

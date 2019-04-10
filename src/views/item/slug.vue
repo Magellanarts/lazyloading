@@ -10,25 +10,23 @@
         :item="item"
       />
     </div>
-    <!-- GMap
-      v-if="item._geoloc"
-      :lat="item._geoloc.lat"
-      :lng="item._geoloc.lng"
-    / -->
-    <GmapMap
-      v-if="item._geoloc"
-      :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
-      :zoom="13"
 
-      style="width: 100%; height: 400px"
-    >
-      <GmapCircle
+    <div class="map-container">
+      <GmapMap
+        v-if="item._geoloc"
         :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
-        :radius="1000"
-        :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
-          }"
-      />
-    </GmapMap>
+        :zoom="13"
+
+        style="width: 100%; height: 400px"
+      >
+        <GmapCircle
+          :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
+          :radius="1000"
+          :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
+            }"
+        />
+      </GmapMap>
+    </div>
 
     <!-- Owner / -->
   </div>
@@ -39,9 +37,15 @@ import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
 
 import { mapState, mapActions } from 'vuex';
+import { db } from '@/auth';
 import * as types from '@/store/types';
 
 export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
   components: {
     ItemMedia,
     ItemDetails,
@@ -57,7 +61,7 @@ export default {
     item: state => state.item.curItem,
     mainImage: state => state.item.mainImage,
   }),
-  created() {
+  async created() {
     // grab data from firestore for this item
     // data gets stored in store
     // item/curItem contains all item info
@@ -65,9 +69,14 @@ export default {
     // - this is store separately so thumbnail
     // - swapping can be done easily
     if (this.$route.params.docID) {
-      this.getDataByDocID(this.$route.params.docID);
+      await this.getDataByDocID(this.$route.params.docID);
     } else {
-      this.getDataByName(this.$route.params.slug);
+      const fetchedItem = await this.getDataByName(this.$route.params.slug);
+      // get user info for this item
+      db.collection('users').doc(fetchedItem.user).get()
+        .then((res) => {
+          this.user = res.data();
+        });
     }
   },
   destroyed() {
@@ -82,6 +91,10 @@ export default {
   line-height: 1.5;
 }
 
+.map-container {
+  margin-bottom: 32px;
+}
+
 .gmap {
   height: 400px;
 }
@@ -90,6 +103,7 @@ export default {
   .item-header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 32px;
 
     > :first-child {
       flex: 1;
