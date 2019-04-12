@@ -28,13 +28,17 @@
       </GmapMap>
     </div>
 
-    <!-- Owner / -->
+    <Owner
+      v-if="user"
+      :owner="user"
+    />
   </div>
 </template>
 
 <script>
 import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
+import Owner from '@/components/Owner.vue';
 
 import { mapState, mapActions } from 'vuex';
 import { db } from '@/auth';
@@ -49,6 +53,7 @@ export default {
   components: {
     ItemMedia,
     ItemDetails,
+    Owner,
   },
   methods: {
     ...mapActions({

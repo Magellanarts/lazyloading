@@ -137,20 +137,6 @@ export default {
   computed: mapState({
     item: state => state.item.curItem,
   }),
-  props: {
-    itemName: {
-      type: String,
-      required: false,
-    },
-    itemPrice: {
-      type: String,
-      required: false,
-    },
-    itemDescription: {
-      type: String,
-      required: false,
-    },
-  },
   mixins: [
     formValidation,
   ],
@@ -176,17 +162,15 @@ export default {
       });
 
       // check for error,
-      // TODO: Uncomment this when live
-      // if (!returnVal) {
+      if (!returnVal) {
       // success, show saved modal
-      this.showModal();
-      if (this.item.ID) {
-        this.updateItem(this.item);
-      } else {
-        this.createItem(this.item);
+        this.showModal();
+        if (this.item.ID) {
+          this.updateItem(this.item);
+        } else {
+          this.createItem(this.item);
+        }
       }
-
-      // }
     },
     showModal() {
       this.submitSuccess = true;

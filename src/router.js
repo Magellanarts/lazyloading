@@ -62,6 +62,14 @@ const router = new Router({
       },
     },
     {
+      name: 'dashboard-edit-address',
+      path: '/dashboard/edit-address',
+      component: () => import(/* webpackChunkName: "dashboard-edit-address" */'./views/DashboardEditAddress.vue'),
+      meta: {
+        authRequried: true,
+      },
+    },
+    {
       path: '/item',
       name: 'item',
       // route level code-splitting
@@ -102,7 +110,6 @@ router.beforeEach((to, from, next) => {
       next('/log-in');
     } */
     if (store.getters.userId === null) {
-      console.log('null');
       store.watch(store.getters.getUserMethod, (userId) => {
         if (userId) {
           next();

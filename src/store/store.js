@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import item from './item/item';
 import tags from './tags/tags';
 import auth from './auth/auth';
+import address from './address/address';
 
 Vue.use(Vuex);
 
@@ -11,5 +12,6 @@ export default new Vuex.Store({
     item,
     tags,
     auth,
+    address,
   },
 });

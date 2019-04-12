@@ -38,3 +38,8 @@ export const GET_USER_ID = 'auth/GET_USER_ID';
 export const MUTATE_USER_ID = 'auth/MUTATE_USER_ID';
 export const MUTATE_USER_DETAILS = 'auth/MUTATE_USER_DETAILS';
 export const MUTATE_USER_ITEMS = 'auth/MUTATE_USER_ITEMS';
+
+/* -------------------
+  Address
+---------------------*/
+export const SET_ADDRESS_DETAILS = 'item/SET_ADDRESS_DETAILS';

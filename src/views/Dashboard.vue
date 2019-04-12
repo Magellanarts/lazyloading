@@ -2,10 +2,17 @@
   <div>
     <nav class="dashboard-nav">
       <router-link to="/dashboard/list-item">List an Item</router-link>
+      <router-link to="/dashboard/edit-address">Add address</router-link>
     </nav>
 
     <template v-if="user">
       <h1>Welcome {{ user.firstName }}!</h1>
+
+      <div class="dashboard-section">
+        <h4>Your Addresses</h4>
+
+        <router-link class="button" to="/dashboard/edit-address">Add Address</router-link>
+      </div>
 
       <h4>Your active items:</h4>
       <ul>
@@ -64,6 +71,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dashboard-section {
+  margin-bottom: 48px;
+}
+
 .dashboard-item {
   margin-bottom: 16px;
 }
@@ -92,6 +103,10 @@ export default {
     font-size: 15px;
     font-family: 'Nunito';
     color: rgb(86, 116, 247);
+
+    &:not(:first-child) {
+      margin-left: 16px;
+    }
   }
 }
 </style>
