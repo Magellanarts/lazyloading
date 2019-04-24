@@ -10,6 +10,16 @@
 
       <div class="dashboard-section">
         <h4>Your Addresses</h4>
+        <ul>
+          <li class="dashboard-item" v-for="address in userAddresses" :key="address.ID">
+            <div class="dashboard-item__name">{{ address.label }}</div>
+            <div class="dashboard-item__buttons">
+              <router-link
+              :to="`/dashboard/edit-address/${address.ID}`"
+              >Edit</router-link>
+            </div>
+          </li>
+        </ul>
 
         <router-link class="button" to="/dashboard/edit-address">Add Address</router-link>
       </div>
@@ -46,25 +56,30 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SET_ITEM_DETAILS, GET_USER_DETAILS, GET_USER_ITEMS } from '@/store/types';
+import {
+  SET_ITEM_DETAILS, GET_USER_DETAILS, GET_USER_ITEMS, GET_USER_ADDRESSES,
+} from '@/store/types';
 
 export default {
   computed: mapState({
     user: state => state.auth.user,
     userId: state => state.auth.userId,
     userItems: state => state.auth.userItems,
+    userAddresses: state => state.auth.userAddresses,
   }),
   methods: {
     ...mapActions({
       setItem: SET_ITEM_DETAILS,
       getUserDetails: GET_USER_DETAILS,
       getUserItems: GET_USER_ITEMS,
+      getUserAddresses: GET_USER_ADDRESSES,
     }),
   },
   async mounted() {
     if (!this.user) {
       await this.getUserDetails();
       this.getUserItems();
+      this.getUserAddresses();
     }
   },
 };

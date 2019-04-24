@@ -1,5 +1,7 @@
 /* eslint no-param-reassign: [2, { "props": false }] */
-import { MUTATE_USER_DETAILS, MUTATE_USER_ID, MUTATE_USER_ITEMS } from '../types';
+import {
+  MUTATE_USER_DETAILS, MUTATE_USER_ID, MUTATE_USER_ITEMS, MUTATE_USER_ADDRESSES,
+} from '../types';
 
 export default {
   // Update user info in store
@@ -14,5 +16,8 @@ export default {
   },
   [MUTATE_USER_ITEMS]: (state, item) => {
     state.userItems.push(item);
+  },
+  [MUTATE_USER_ADDRESSES]: (state, address) => {
+    state.userAddresses.push(address);
   },
 };

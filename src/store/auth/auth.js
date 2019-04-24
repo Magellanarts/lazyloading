@@ -6,6 +6,7 @@ const state = {
   user: null,
   userId: null,
   userItems: [],
+  userAddresses: [],
 };
 
 const actions = authActions;

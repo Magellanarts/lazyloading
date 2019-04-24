@@ -18,10 +18,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import * as types from '@/store/types';
 import firebase from 'firebase/app';
 import 'firebase/storage';
+import { itemBus } from '@/views/item/slug.vue';
 
 export default {
   data() {
@@ -41,9 +40,9 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      updateMain: types.UPDATE_MAIN_IMAGE,
-    }),
+    updateMain(url) {
+      itemBus.$emit('updateMain', url);
+    },
   },
   created() {
     const storageRef = firebase.storage().ref();

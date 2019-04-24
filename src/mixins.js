@@ -2,7 +2,6 @@
 export const formValidation = {
   methods: {
     validateForm({ fields, options }) {
-      console.log(fields);
       let errors = false;
       // check for valid email
       if (fields.email) {

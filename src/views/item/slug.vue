@@ -2,18 +2,19 @@
   <div>
     <div class="item-header">
       <item-media
-        v-if="mainImage"
-        :mainImage="mainImage"
+        v-if="item"
+        :mainImage="item.mainImage"
         :item="item"
       />
       <item-details
+        v-if="item"
         :item="item"
       />
     </div>
 
     <div class="map-container">
       <GmapMap
-        v-if="item._geoloc"
+        v-if="item"
         :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
         :zoom="13"
 
@@ -39,15 +40,26 @@
 import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
 import Owner from '@/components/Owner.vue';
+import Vue from 'vue';
 
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
+
+import {
+  GET_ITEM_DATA_BY_DOC_ID,
+  GET_ITEM_DATA_BY_NAME,
+} from '@/actions/item';
+
 import { db } from '@/auth';
-import * as types from '@/store/types';
+
+export const itemBus = new Vue();
+
 
 export default {
   data() {
     return {
+      item: null,
       user: null,
+      mainImage: '',
     };
   },
   components: {
@@ -55,16 +67,21 @@ export default {
     ItemDetails,
     Owner,
   },
-  methods: {
+  /* methods: {
     ...mapActions({
       getDataByDocID: types.GET_ITEM_DATA_BY_DOC_ID,
       getDataByName: types.GET_ITEM_DATA_BY_NAME,
       updateMain: types.UPDATE_MAIN_IMAGE,
     }),
+  }, */
+  methods: {
+    setMain(val) {
+      this.item.mainImage = val;
+    },
   },
   computed: mapState({
-    item: state => state.item.curItem,
-    mainImage: state => state.item.mainImage,
+    // item: state => state.item.curItem,
+    // mainImage: state => state.item.mainImage,
   }),
   async created() {
     // grab data from firestore for this item
@@ -74,18 +91,22 @@ export default {
     // - this is store separately so thumbnail
     // - swapping can be done easily
     if (this.$route.params.docID) {
-      await this.getDataByDocID(this.$route.params.docID);
+      this.item = await GET_ITEM_DATA_BY_DOC_ID(this.$route.params.docID);
+      // await this.getDataByDocID(this.$route.params.docID);
     } else {
-      const fetchedItem = await this.getDataByName(this.$route.params.slug);
+      this.item = await GET_ITEM_DATA_BY_NAME(this.$route.params.slug);
+
       // get user info for this item
-      db.collection('users').doc(fetchedItem.user).get()
+      db.collection('users').doc(this.item.user).get()
         .then((res) => {
           this.user = res.data();
         });
     }
   },
-  destroyed() {
-    this.updateMain(null);
+  mounted() {
+    itemBus.$on('updateMain', (value) => {
+      this.setMain(value);
+    });
   },
 };
 </script>

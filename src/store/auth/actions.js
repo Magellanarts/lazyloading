@@ -12,6 +12,8 @@ import {
   MUTATE_USER_ID,
   SET_USER_ID,
   GET_USER_ID,
+  GET_USER_ADDRESSES,
+  MUTATE_USER_ADDRESSES,
 } from '../types';
 
 import router from '@/router';
@@ -73,6 +75,20 @@ export default {
             const itemData = res.data();
             itemData.ID = item;
             commit(MUTATE_USER_ITEMS, itemData);
+          });
+      }
+    }
+  },
+  [GET_USER_ADDRESSES]: ({ commit, getters }) => {
+    const { user } = getters;
+    if (user) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const address of user.addresses) {
+        db.collection('addresses').doc(address).get()
+          .then((res) => {
+            const addressData = res.data();
+            addressData.ID = address;
+            commit(MUTATE_USER_ADDRESSES, addressData);
           });
       }
     }

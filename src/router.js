@@ -63,11 +63,17 @@ const router = new Router({
     },
     {
       name: 'dashboard-edit-address',
-      path: '/dashboard/edit-address',
+      path: '/dashboard/edit-address/',
       component: () => import(/* webpackChunkName: "dashboard-edit-address" */'./views/DashboardEditAddress.vue'),
       meta: {
         authRequried: true,
       },
+      children: [
+        {
+          name: 'edit-address/id',
+          path: ':id',
+        },
+      ],
     },
     {
       path: '/item',
