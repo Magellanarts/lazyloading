@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 <template>
   <div>
     <form
@@ -45,13 +46,19 @@
       <h4>Location</h4>
 
       <div class="form-field">
-        <select name="address" v-model="item.address" v-if="userAddresses">
+        <select
+          name="address"
+          v-model="item.address"
+          v-if="userAddresses"
+          @change="setLatLng"
+        >
           <option>Choose Existing Address</option>
           <option
             v-for="address in userAddresses"
             :key="address.ID" :value="address.ID"
             :selected="{true: item.address == address.ID}"
-
+            :lat="address._geoloc.lat"
+            :lng="address._geoloc.lng"
           >
             {{ address.label }}
           </option>
@@ -139,6 +146,7 @@ export default {
         otherImages: [],
         mainImage: '',
         address: '',
+        _geoloc: {},
       },
       errors: {
         name: false,
@@ -202,6 +210,13 @@ export default {
     },
     handleTagChange(tags) {
       this.item.tagsSearchbale = tags;
+    },
+    setLatLng(event) {
+      const { options } = event.target;
+      this.item._geoloc = {
+        lat: parseFloat(options[options.selectedIndex].attributes.lat.nodeValue),
+        lng: parseFloat(options[options.selectedIndex].attributes.lng.nodeValue),
+      };
     },
   },
   async created() {

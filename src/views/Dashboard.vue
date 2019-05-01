@@ -86,13 +86,14 @@ export default {
 
 .dashboard-item__name {
   margin-bottom: 8px;
+  font-size: 16px;
 }
 
 .dashboard-item__buttons {
   a {
     display: inline-block;
     color: rgb(86, 116, 247);
-    font-size: 14px;
+    font-size: 13px;
 
     &:not(:last-child) {
       margin-right: 8px;

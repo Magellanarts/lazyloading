@@ -11,6 +11,7 @@
 // TODO: Action to ‘rent’ item
 //        start chat?
 //        add to cart?
+// TODO: Calendar of availability
 
 
 import Vue from 'vue';
