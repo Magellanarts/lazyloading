@@ -18,21 +18,17 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import * as types from '@/store/types';
+import { GET_TAG_ITEMS } from '@/actions/tag';
 
 export default {
-  methods: {
-    ...mapActions({
-      getItems: types.GET_TAG_ITEMS,
-    }),
+  data() {
+    return {
+      items: null,
+    };
   },
-  computed: mapState({
-    items: state => state.tags.items,
-  }),
-  created() {
+  async created() {
     // grab list of items with this tag
-    this.getItems(this.$route.params.slug);
+    this.items = await GET_TAG_ITEMS(this.$route.params.slug);
   },
 };
 </script>

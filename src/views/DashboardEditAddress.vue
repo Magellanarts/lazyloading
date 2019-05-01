@@ -1,10 +1,10 @@
 <template>
   <div>
-
     <h1>Edit Your Address</h1>
     <form
         @submit.prevent="submitForm"
         novalidate
+        v-if="$route.params.id && address.label || !$route.params.id"
       >
         <text-input
           name="label"
@@ -22,11 +22,10 @@
           required
           labelClass="text-label--two-lines"
         />
-
         <text-input
           name="streetAddress2"
           label="Street Address 2"
-          v-model="address.streetAddress"
+          v-model="address.streetAddress2"
           :errors="errors"
           labelClass="text-label--two-lines"
         />
@@ -75,13 +74,26 @@
 import AlertModal from '@/components/common/AlertModal.vue';
 import TextInput from '@/components/common/forms/TextInput.vue';
 
-import { mapActions, mapState } from 'vuex';
 import { formValidation } from '@/mixins';
+
+import {
+  UPDATE_ADDRESS,
+  CREATE_ADDRESS,
+  GET_ADDRESS,
+} from '@/actions/address';
 
 export default {
   data() {
     return {
       submitSuccess: false,
+      address: {
+        label: '',
+        city: '',
+        streetAddress: '',
+        streetAddress2: '',
+        state: '',
+        zipCode: '',
+      },
       errors: {
         label: false,
         city: false,
@@ -92,24 +104,23 @@ export default {
       },
     };
   },
-  computed: mapState({
-    address: state => state.address.curAddress,
-  }),
   methods: {
     async submitForm() {
       const returnVal = await this.validateForm({
         fields: this.address,
       });
-
       // check for error,
       if (!returnVal) {
       // success, show saved modal
         this.showModal();
-        /* if (this.item.ID) {
-          this.updateItem(this.item);
+        // send to firebase
+        if (this.$route.params.id) {
+          // we are editing an address and not adding a new one
+          UPDATE_ADDRESS(this.address);
         } else {
-          this.createItem(this.item);
-        } */
+          this.address.user = this.$store.getters.userId;
+          CREATE_ADDRESS(this.address);
+        }
       }
     },
     showModal() {
@@ -126,9 +137,11 @@ export default {
   mixins: [
     formValidation,
   ],
+  async created() {
+    if (this.$route.params.id) {
+      this.address = await GET_ADDRESS(this.$route.params.id);
+      this.address.id = this.$route.params.id;
+    }
+  },
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

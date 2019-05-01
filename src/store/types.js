@@ -31,6 +31,7 @@ export const LOG_IN_USER = 'auth/LOG_IN_USER';
 export const SET_USER_ID = 'auth/SET_USER_ID';
 export const GET_USER_DETAILS = 'auth/GET_USER_DETAILS';
 export const GET_USER_ITEMS = 'auth/GET_USER_ITEMS';
+export const GET_USER_ADDRESSES = 'auth/GET_USER_ADDRESSES';
 export const LOG_OUT_USER = 'auth/LOG_OUT_USER';
 export const GET_USER_ID = 'auth/GET_USER_ID';
 
@@ -38,6 +39,7 @@ export const GET_USER_ID = 'auth/GET_USER_ID';
 export const MUTATE_USER_ID = 'auth/MUTATE_USER_ID';
 export const MUTATE_USER_DETAILS = 'auth/MUTATE_USER_DETAILS';
 export const MUTATE_USER_ITEMS = 'auth/MUTATE_USER_ITEMS';
+export const MUTATE_USER_ADDRESSES = 'auth/MUTATE_USER_ADDRESSES';
 
 /* -------------------
   Address

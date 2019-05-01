@@ -83,6 +83,7 @@ export default {
     required: {
       type: Boolean,
       required: false,
+      default: false,
     },
     requiredField: {
       required: false,

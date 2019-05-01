@@ -13,8 +13,7 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { mapActions } from 'vuex';
-import * as types from '@/store/types';
+import { itemBus } from '@/views/item/slug.vue';
 
 export default {
   props: {
@@ -25,17 +24,12 @@ export default {
       type: Boolean,
     },
   },
-  methods: {
-    ...mapActions({
-      updateMain: types.UPDATE_MAIN_IMAGE,
-    }),
-  },
   created() {
     if (this.mainImage) {
       const storageRef = firebase.storage().ref();
       storageRef.child(this.mainImage).getDownloadURL()
         .then((url) => {
-          this.updateMain(url);
+          itemBus.$emit('updateMain', url);
         });
     }
   },

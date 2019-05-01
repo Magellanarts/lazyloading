@@ -52,14 +52,12 @@
         </div>
 
         <div
-
         class="ui-tab-view"
         v-show="mapView">
           <GmapMap
             v-if="results"
             :center="{lat:results[0]._geoloc.lat, lng:results[0]._geoloc.lng}"
             :zoom="13"
-
             style="width: 100%; height: 400px"
           >
             <GmapCircle
@@ -73,7 +71,6 @@
           </GmapMap>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -155,7 +152,6 @@ export default {
 
 <style lang="scss" scoped>
 .inputs-container {
-
   margin-bottom: 32px;
 
     @media screen and (min-width: 760px) {
@@ -201,12 +197,10 @@ input {
   display: block;
   width: 90%;
 
-
    @media screen and (min-width: 760px) {
-       flex: 1;
-         margin: 0 1%;
+      flex: 1;
+      margin: 0 1%;
    }
-
 }
 
 .search-button {
