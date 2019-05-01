@@ -3,6 +3,7 @@
     <form
       @submit.prevent="submitForm"
       novalidate
+      v-if="$route.params.id && item.name || !$route.params.id"
     >
       <text-input
         name="name"
@@ -43,27 +44,23 @@
 
       <h4>Location</h4>
 
-      <text-input
-        name="streetAddress"
-        label="Street Address"
-        v-model="item.streetAddress"
-        :errors="errors"
-        labelClass="text-label--two-lines"
-      />
+      <div class="form-field">
+        <select name="address" v-model="item.address" v-if="userAddresses">
+          <option>Choose Existing Address</option>
+          <option
+            v-for="address in userAddresses"
+            :key="address.ID" :value="address.ID"
+            :selected="{true: item.address == address.ID}"
 
-      <text-input
-        name="city"
-        label="City"
-        v-model="item.city"
-        :errors="errors"
-      />
+          >
+            {{ address.label }}
+          </option>
+        </select>
 
-      <text-input
-        name="state"
-        label="State"
-        v-model="item.state"
-        :errors="errors"
-      />
+        <br>
+
+        <router-link class="button" to="/dashboard/edit-address">Add New Address</router-link>
+      </div>
 
       <h4>Tags</h4>
       <multi-input
@@ -113,8 +110,17 @@ import TextInput from '@/components/common/forms/TextInput.vue';
 import MultiFileUpload from '@/components/common/forms/MultiFileUpload.vue';
 import FileUpload from '@/components/common/forms/FileUpload.vue';
 import MultiInput from '@/components/common/forms/MultiInput.vue';
-import { mapActions, mapState } from 'vuex';
-import { CREATE_ITEM, UPDATE_ITEM, SET_ITEM_DETAILS } from '@/store/types';
+
+import {
+  GET_ITEM_DATA_BY_DOC_ID,
+  UPDATE_ITEM,
+  CREATE_ITEM,
+} from '@/actions/item';
+
+import {
+  GET_USER_ADDRESSES,
+} from '@/actions/user';
+
 import { formValidation } from '@/mixins';
 import { setTimeout } from 'timers';
 
@@ -123,6 +129,17 @@ export default {
     return {
       submitSuccess: false,
       numThumbs: 0,
+      userAddresses: [],
+      item: {
+        name: '',
+        dailyPrice: '',
+        deposit: '',
+        description: '',
+        tagsSearchbale: [],
+        otherImages: [],
+        mainImage: '',
+        address: '',
+      },
       errors: {
         name: false,
         description: false,
@@ -134,12 +151,10 @@ export default {
       },
     };
   },
-  computed: mapState({
-    item: state => state.item.curItem,
-  }),
   mixins: [
     formValidation,
   ],
+
   components: {
     TextInput,
     FileUpload,
@@ -148,11 +163,6 @@ export default {
     AlertModal,
   },
   methods: {
-    ...mapActions({
-      createItem: CREATE_ITEM,
-      updateItem: UPDATE_ITEM,
-      clearItem: SET_ITEM_DETAILS,
-    }),
     async submitForm() {
       const returnVal = await this.validateForm({
         fields: this.item,
@@ -166,9 +176,9 @@ export default {
       // success, show saved modal
         this.showModal();
         if (this.item.ID) {
-          this.updateItem(this.item);
+          UPDATE_ITEM(this.item);
         } else {
-          this.createItem(this.item);
+          CREATE_ITEM(this.item, this.$store.getters.userId);
         }
       }
     },
@@ -184,7 +194,7 @@ export default {
     otherImagesUploaded(file) {
       // the newly uploaded image is getting added correclty.
       // in actions, will need to loop through each in array
-      // to see if any need to be uploaed to storage
+      // to see if any need to be uploaded to storage
       this.item.otherImages.push(file);
     },
     handleImageDelete(image) {
@@ -194,18 +204,17 @@ export default {
       this.item.tagsSearchbale = tags;
     },
   },
-  created() {
-    if (!this.item.tagsSearchbale) {
-      this.item.tagsSearchbale = [];
+  async created() {
+    this.userAddresses = await GET_USER_ADDRESSES();
+    if (this.$route.params.id) {
+      this.item = await GET_ITEM_DATA_BY_DOC_ID(this.$route.params.id);
     }
-
-    if (!this.item.otherImages) {
-      this.item.otherImages = [];
-    }
-  },
-  destroyed() {
-    // clear out curItem details
-    this.clearItem({});
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  select {
+    margin-bottom: 20px;
+  }
+</style>

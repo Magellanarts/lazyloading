@@ -31,17 +31,7 @@
           <div class="dashboard-item__buttons">
             <router-link
               @click.native="setItem(item)"
-              :to="{
-                name: 'dashboard-list-item',
-                params: {
-                  itemName: item.name,
-                  itemPrice: item.dailyPrice,
-                  itemStreetAddress: item.streetAddress,
-                  itemDescription: item.description,
-                  itemCity: item.city,
-                  itemState: item.state
-                },
-              }"
+              :to="`/dashboard/list-item/${item.ID}`"
             >Edit</router-link>
             <router-link :to="`item/${item.slug}`">View</router-link>
           </div>

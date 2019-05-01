@@ -2,6 +2,15 @@
 // TODO: Reviews for item
 // TODO: Limit search results to 10. Add a View More button to take to a search page
 // TODO: Payment processing
+// TODO: fix forms. not every field should be required
+// TODO: Show User name on product
+//        link to user’s page?
+//          need to build user’s page
+//        other items offered by this user
+// TODO: other similar items in the area
+// TODO: Action to ‘rent’ item
+//        start chat?
+//        add to cart?
 
 
 import Vue from 'vue';

@@ -60,6 +60,12 @@ const router = new Router({
       meta: {
         authRequried: true,
       },
+      children: [
+        {
+          name: 'list-item/id',
+          path: ':id',
+        },
+      ],
     },
     {
       name: 'dashboard-edit-address',
