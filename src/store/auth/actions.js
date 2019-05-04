@@ -69,13 +69,15 @@ export default {
     const { user } = getters;
     if (user) {
       // eslint-disable-next-line no-restricted-syntax
-      for (const item of user.items) {
-        db.collection('items').doc(item).get()
-          .then((res) => {
-            const itemData = res.data();
-            itemData.ID = item;
-            commit(MUTATE_USER_ITEMS, itemData);
-          });
+      if (user.items) {
+        for (const item of user.items) {
+          db.collection('items').doc(item).get()
+            .then((res) => {
+              const itemData = res.data();
+              itemData.ID = item;
+              commit(MUTATE_USER_ITEMS, itemData);
+            });
+        }
       }
     }
   },
@@ -83,13 +85,15 @@ export default {
     const { user } = getters;
     if (user) {
       // eslint-disable-next-line no-restricted-syntax
-      for (const address of user.addresses) {
-        db.collection('addresses').doc(address).get()
-          .then((res) => {
-            const addressData = res.data();
-            addressData.ID = address;
-            commit(MUTATE_USER_ADDRESSES, addressData);
-          });
+      if (user.addresses) {
+        for (const address of user.addresses) {
+          db.collection('addresses').doc(address).get()
+            .then((res) => {
+              const addressData = res.data();
+              addressData.ID = address;
+              commit(MUTATE_USER_ADDRESSES, addressData);
+            });
+        }
       }
     }
   },

@@ -3,6 +3,7 @@
     <nav class="dashboard-nav">
       <router-link to="/dashboard/list-item">List an Item</router-link>
       <router-link to="/dashboard/edit-address">Add address</router-link>
+      <router-link to="/dashboard/messages">Messages</router-link>
     </nav>
 
     <template v-if="user">
@@ -10,8 +11,8 @@
 
       <div class="dashboard-section">
         <h4>Your Addresses</h4>
-        <ul>
-          <li class="dashboard-item" v-for="address in userAddresses" :key="address.ID">
+        <ul v-if="userAddresses">
+          <li class="dashboard-item"  v-for="address in userAddresses" :key="address.ID">
             <div class="dashboard-item__name">{{ address.label }}</div>
             <div class="dashboard-item__buttons">
               <router-link
@@ -25,7 +26,7 @@
       </div>
 
       <h4>Your active items:</h4>
-      <ul>
+      <ul v-if="userItems">
         <li class="dashboard-item" v-for="item in userItems" :key="item.slug">
           <div class="dashboard-item__name">{{ item.name }}</div>
           <div class="dashboard-item__buttons">

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import axios from 'axios';
 import { slugify } from '@/mixins';
+import store from '@/store/store';
 
 import { db, updateAlgolia } from '@/auth';
 
@@ -116,4 +116,11 @@ export const CREATE_ITEM = (item, userID) => {
       itemToPublish.objectID = itemToPublish.ID;
       updateAlgolia(itemToPublish);
     });
+};
+
+
+export const BOOK_DATES = (dates, item) => {
+  db.collection('items').doc(item).update({
+    rentalDates: firebase.firestore.FieldValue.arrayUnion(...dates),
+  });
 };

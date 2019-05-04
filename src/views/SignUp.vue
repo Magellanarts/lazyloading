@@ -11,6 +11,7 @@
         v-model="user.firstName"
         :errors="errors"
         type="text"
+        labelClass="text-label--two-lines"
         required
       />
 

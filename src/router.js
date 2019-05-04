@@ -41,17 +41,6 @@ const router = new Router({
       meta: {
         authRequried: true,
       },
-      /* children: [
-        {
-          name: 'dashboard-list-item',
-          path: '/dashboard/list-item',
-          component: () => import('./views/DashboardCreateItem.vue'),
-          meta: {
-            authRequried: true,
-          },
-          props: true,
-        },
-  ], */
     },
     {
       name: 'dashboard-list-item',
@@ -63,6 +52,20 @@ const router = new Router({
       children: [
         {
           name: 'list-item/id',
+          path: ':id',
+        },
+      ],
+    },
+    {
+      name: 'dashboard-messages',
+      path: '/dashboard/messages',
+      component: () => import(/* webpackChunkName: "dashboard-messages" */'./views/DashboardMessages.vue'),
+      meta: {
+        authRequried: true,
+      },
+      children: [
+        {
+          name: 'messages/id',
           path: ':id',
         },
       ],

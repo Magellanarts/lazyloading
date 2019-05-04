@@ -9,9 +9,9 @@
 //        other items offered by this user
 // TODO: other similar items in the area
 // TODO: Action to ‘rent’ item
+//        Renting is in place but doesn't include a purchase transaction
 //        start chat?
 //        add to cart?
-// TODO: Calendar of availability
 
 
 import Vue from 'vue';
@@ -24,6 +24,7 @@ import store from './store/store';
 import './auth';
 
 import App from './App.vue';
+
 
 Vue.use(VueGoogleMaps, {
   load: {

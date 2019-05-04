@@ -7,8 +7,9 @@
         :item="item"
       />
       <item-details
-        v-if="item"
+        v-if="item && user"
         :item="item"
+        :user="user"
       />
     </div>
 
@@ -28,18 +29,12 @@
         />
       </GmapMap>
     </div>
-
-    <Owner
-      v-if="user"
-      :owner="user"
-    />
   </div>
 </template>
 
 <script>
 import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
-import Owner from '@/components/Owner.vue';
 import Vue from 'vue';
 
 import { mapState } from 'vuex';
@@ -65,7 +60,6 @@ export default {
   components: {
     ItemMedia,
     ItemDetails,
-    Owner,
   },
   /* methods: {
     ...mapActions({

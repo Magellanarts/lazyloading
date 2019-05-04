@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+import 'firebase/storage';
 import store from '@/store/store';
 
 import { db } from '@/auth';
@@ -20,8 +22,12 @@ export const GET_USER_ADDRESSES = () => new Promise((resolve) => {
           });
       }
     });
-
-
-  /* db.collection('addresses').doc(id).get()
-    .then(doc => resolve(doc.data())); */
 });
+
+
+export const ADD_RENTAL = (rental, user) => {
+  db.collection('users').doc(user)
+    .update({
+      rentals: firebase.firestore.FieldValue.arrayUnion(rental),
+    });
+};
