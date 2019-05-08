@@ -65,7 +65,9 @@
               v-for="result in results"
               :center="{lat:result._geoloc.lat, lng:result._geoloc.lng}"
               :radius="600"
-              :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
+              :options="{
+                strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',
+                fillOpacity:.4,
                 }"
             />
           </GmapMap>

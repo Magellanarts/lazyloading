@@ -3,6 +3,7 @@
   <Owner
     v-if="user"
     :owner="user"
+    :item="item"
   />
 
   <h1>{{ item.name }}</h1>
@@ -27,7 +28,8 @@
   <div class="item-actions">
     <div v-if="dates">
       <div>Total Days: {{ dates.length }}</div>
-      <div>Total Price: ${{ dates.length * item.dailyPrice }}</div>
+      <div> + Deposit: {{ item.deposit }}</div>
+      <div>Total Price: ${{ parseInt((dates.length * item.dailyPrice)) + parseInt(item.deposit) }}</div>
     </div>
     <button @click="rentItem" class="button action" type="button">Rent me!</button>
   </div>

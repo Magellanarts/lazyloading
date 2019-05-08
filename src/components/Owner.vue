@@ -1,10 +1,15 @@
 <template>
   <div class="owner-block">
     <div class="owner-name">{{ owner.firstName }} {{ owner.lastName }}</div>
-    <div class="message-seller">Message Owner</div>
+    <div class="message-seller" @click="showOwner = true">Message Owner</div>
 
-    <div class="owner-message">
-      <h5>Contact owner about this item</h5>
+    <div
+      class="owner-message"
+      :class="{ 'is-open' : showOwner}"
+    >
+
+      <div class="close-owner" @click="showOwner = false" />
+      <h5>Contact {{ owner.firstName }} about {{ item.name }}</h5>
 
       <form
       @submit.prevent="submitForm"
@@ -32,6 +37,7 @@ export default {
   data() {
     return {
       message: '',
+      showOwner: false,
       errors: {
         message: false,
       },
@@ -42,6 +48,10 @@ export default {
   },
   props: {
     owner: {
+      type: Object,
+      required: true,
+    },
+    item: {
       type: Object,
       required: true,
     },
@@ -88,25 +98,58 @@ export default {
 
 .owner-message {
   position: fixed;
-  top: 16%;
+  top: 20%;
   margin: auto;
   left: 0;
   right: 0;
-  bottom: 16%;
-  width: 70%;
+  width: 60%;
   max-width: 700px;
   box-shadow: 0px 0px 6px 4px rgb(86, 116, 247);
   z-index: 50;
   background: rgb(250, 250, 250);
   border-radius: 4px;
   box-sizing: border-box;
-  padding: 32px;
+  padding: 40px 32px 32px;
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s linear;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.close-owner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: auto;
+    left: 0;
+    width: 2px;
+    height: 25px;
+    background: rgb(86, 116, 247);
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
 }
 
 h5 {
   font-size: 18px;
-}
-textarea {
-  padding-left: 0;
 }
 </style>
