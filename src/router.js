@@ -58,15 +58,18 @@ const router = new Router({
     },
     {
       name: 'dashboard-messages',
-      path: '/dashboard/messages',
+      path: '/dashboard/messages/',
       component: () => import(/* webpackChunkName: "dashboard-messages" */'./views/DashboardMessages.vue'),
       meta: {
         authRequried: true,
       },
       children: [
         {
-          name: 'messages/id',
           path: ':id',
+          component: () => import(/* webpackChunkName: "dashboard-chat-window" */'./views/DashboardMessagesChat.vue'),
+          meta: {
+            authRequried: true,
+          },
         },
       ],
     },

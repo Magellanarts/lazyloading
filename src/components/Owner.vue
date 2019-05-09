@@ -33,6 +33,10 @@
 <script>
 import TextInput from '@/components/common/forms/TextInput.vue';
 
+import {
+  MESSAGE_OWNER,
+} from '@/actions/conversations';
+
 export default {
   data() {
     return {
@@ -74,6 +78,10 @@ export default {
         //  add conversation ID to owner
         //  add conversation ID to renter
         //  add conversation ID to item
+        MESSAGE_OWNER(this.item.ID, this.item.user, this.message, this.item.name);
+
+        this.showOwner = false;
+        this.message = '';
       }
     },
   },

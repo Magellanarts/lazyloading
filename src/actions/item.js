@@ -56,6 +56,7 @@ export const UPDATE_ITEM = (item) => {
     });
   }
 
+
   db.collection('items').doc(itemToPublish.ID)
     .update(itemToPublish).then(() => {
       itemToPublish.objectID = itemToPublish.ID;
@@ -107,6 +108,12 @@ export const CREATE_ITEM = (item, userID) => {
   db.collection('items').add(itemToPublish)
     .then((res) => {
       // res.id has the id to add to user's item array
+      // update item with it's ID
+      itemToPublish.ID = res.id;
+
+      db.collection('items').doc(itemToPublish.ID)
+        .update(itemToPublish);
+
       db.collection('users').doc(itemToPublish.user)
         .update({
           items: firebase.firestore.FieldValue.arrayUnion(res.id),
@@ -123,4 +130,18 @@ export const BOOK_DATES = (dates, item) => {
   db.collection('items').doc(item).update({
     rentalDates: firebase.firestore.FieldValue.arrayUnion(...dates),
   });
+};
+
+
+export const ADD_CONVO_TO_ITEM = (convo, item, userId, ownerId) => {
+  const conversation = {
+    conversationId: convo,
+    userId,
+    ownerId,
+  };
+
+  db.collection('items').doc(item)
+    .update({
+      conversations: firebase.firestore.FieldValue.arrayUnion(conversation),
+    });
 };

@@ -11,7 +11,6 @@
   <h2>${{ item.dailyPrice }}</h2>
   <h5>Deposit: {{ item.deposit }}</h5>
 
-
   <div class="rental-period">
     <h5>Rental Period:</h5>
     <date-picker
@@ -52,10 +51,14 @@
 <script>
 import VueHotelDatepicker from '@northwalker/vue-hotel-datepicker';
 
-
 import {
   RENT_ITEM,
 } from '@/actions/rentals';
+
+import {
+  GET_CONVERSATION,
+} from '@/actions/conversations';
+
 
 import moment from 'moment';
 import Owner from '@/components/Owner.vue';
@@ -96,6 +99,9 @@ export default {
       return [];
     },
   },
+  async mounted() {
+  //   GET_CONVERSATION(this)
+  },
   methods: {
     handleDate(date) {
       // reset dates
@@ -117,7 +123,7 @@ export default {
       }
     },
     rentItem() {
-      RENT_ITEM(this.item.ID, this.dates, this.item.user, this.dates.length, this.dates.length * this.item.dailyPrice, this.item.name);
+      RENT_ITEM(this.item.ID, this.dates, this.item.user, this.dates.length, parseInt((this.dates.length * this.item.dailyPrice)) + parseInt(this.item.deposit), this.item.deposit, this.item.name);
     },
   },
 };

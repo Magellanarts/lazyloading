@@ -10,23 +10,50 @@ import {
   ADD_RENTAL,
 } from '@/actions/user';
 
-export const RENT_ITEM = (itemId, dates, ownerId, totalDays, totalPrice, name) => {
+import {
+  GET_CONVERSATION_BY_FIELDS,
+  ADD_MESSAGE,
+  CREATE_CONVERSATION,
+} from '@/actions/conversations';
+
+
+export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, deposit, name) => {
   const { userId } = store.getters;
-  console.log(itemId, dates, ownerId, userId);
 
   // update item's booked dates
-  BOOK_DATES(dates, itemId);
+  // BOOK_DATES(dates, itemId);
 
   // add transaction to rental table
   const rental = {
-    owner: ownerId,
-    user: userId,
-    item: itemId,
+    ownerId,
+    userId,
+    itemId,
     dates,
     totalDays,
     totalPrice,
+    deposit,
     name,
   };
+
+  const convos = await GET_CONVERSATION_BY_FIELDS(itemId, ownerId, userId);
+
+  const message = {
+    message: `${name} has been rented`,
+    sender: 'SYSTEM',
+    timestamp: new Date(),
+  };
+
+
+  if (convos.length > 0) {
+    // this user has already contacted the owner about this item
+    // add the message to their existing convo
+    ADD_MESSAGE(message, convos[0].id);
+  } else {
+    // create new conversation
+    CREATE_CONVERSATION(itemId, ownerId, message, name);
+  }
+
+
   db.collection('rentals').add(rental).then((res) => {
     // res.id has id of rental transaction
 
