@@ -62,7 +62,6 @@ export default {
       });
   }),
   [GET_USER_ID]: ({ getters }) => new Promise((resolve) => {
-    console.log(getters.userId);
     resolve(getters.userId);
   }),
   [GET_USER_ITEMS]: ({ commit, getters }) => {

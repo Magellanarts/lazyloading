@@ -67,7 +67,6 @@ export default {
 }
 
 .messages-chat {
-  padding: 15px;
   flex: 1;
 }
 </style>

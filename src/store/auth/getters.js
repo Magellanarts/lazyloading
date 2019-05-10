@@ -10,4 +10,7 @@ export default {
   user(state) {
     return state.user;
   },
+  userName(state) {
+    return state.name;
+  },
 };
