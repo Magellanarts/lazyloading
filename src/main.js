@@ -10,8 +10,6 @@
 // TODO: other similar items in the area
 // TODO: Action to ‘rent’ item
 //        Renting is in place but doesn't include a purchase transaction
-//        start chat?
-//        add to cart?
 
 
 import Vue from 'vue';
@@ -53,7 +51,7 @@ Vue.use(VueGoogleMaps, {
 
 require('@/assets/style/global.scss');
 
-
+console.log(process.env);
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
