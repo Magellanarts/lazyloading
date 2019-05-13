@@ -22,7 +22,6 @@ firebase.initializeApp({
 
 export function getUserID(user) {
   localStorage.setItem('userId', user.uid);
-  console.log(user);
   store.dispatch(SET_USER_ID, user.uid);
   store.dispatch(GET_USER_DETAILS, user.uid);
 }

@@ -47,7 +47,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import * as types from '@/store/types';
+import { STORE_LOG_OUT_USER } from '@/store/types';
 
 export default {
   computed: mapState({
@@ -55,7 +55,7 @@ export default {
   }),
   methods: {
     ...mapActions({
-      logoutUser: types.LOG_OUT_USER,
+      logoutUser: STORE_LOG_OUT_USER,
     }),
     logout() {
       this.logoutUser();

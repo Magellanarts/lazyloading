@@ -64,12 +64,12 @@ export const CREATE_CONVERSATION = (itemId, partnerId, message, name) => {
   });
 };
 
-export const ADD_MESSAGE = (message, convoId) => {
+export const ADD_MESSAGE = (message, convoId) => new Promise((resolve) => {
   db.collection('conversations').doc(convoId)
     .update({
       messages: firebase.firestore.FieldValue.arrayUnion(message),
-    });
-};
+    }).then(doc => resolve(doc));
+});
 
 export const GET_CONVERSATION_BY_ID = convoID => new Promise((resolve) => {
   // After sync, set the item's main image into separate mainIMage var in store

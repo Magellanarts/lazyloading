@@ -51,9 +51,12 @@ Vue.use(VueGoogleMaps, {
 
 require('@/assets/style/global.scss');
 
-console.log(process.env);
 Vue.config.productionTip = false;
-Vue.config.devtools = true;
+
+
+if (process.env.NODE_ENV === 'development') {
+  Vue.config.devtools = true;
+}
 
 Vue.use(InstantSearch);
 

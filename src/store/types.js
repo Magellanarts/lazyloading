@@ -32,7 +32,7 @@ export const SET_USER_ID = 'auth/SET_USER_ID';
 export const GET_USER_DETAILS = 'auth/GET_USER_DETAILS';
 export const GET_USER_ITEMS = 'auth/GET_USER_ITEMS';
 export const GET_USER_ADDRESSES = 'auth/GET_USER_ADDRESSES';
-export const LOG_OUT_USER = 'auth/LOG_OUT_USER';
+export const STORE_LOG_OUT_USER = 'auth/STORE_LOG_OUT_USER';
 export const GET_USER_ID = 'auth/GET_USER_ID';
 
 // Mutations
@@ -45,3 +45,9 @@ export const MUTATE_USER_ADDRESSES = 'auth/MUTATE_USER_ADDRESSES';
   Address
 ---------------------*/
 export const SET_ADDRESS_DETAILS = 'item/SET_ADDRESS_DETAILS';
+
+
+/* -------------------
+  Conversations
+---------------------*/
+export const STORE_BIND_CONVO = 'conversations/STORE_BIND_CONVO';
