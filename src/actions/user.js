@@ -4,7 +4,45 @@ import 'firebase/storage';
 import store from '@/store/store';
 
 import { db } from '@/auth';
+import router from '@/router';
 
+
+// Sign up user account
+// On Success, create user in users list too
+export const SIGN_UP_USER = (user) => {
+  firebase.auth()
+    .createUserWithEmailAndPassword(user.email, user.password)
+    .then((res) => {
+      // uid is res.user.uid
+      // add user to users collection in firestore
+      db.collection('users').doc(res.user.uid).set({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      });
+      router.push('/dashboard');
+    })
+    .catch((err) => {
+      // TODO: Error handling
+      // If failed, handle error
+      // Probably because email is already in use as account
+      console.log(err);
+    });
+};
+
+// Log user into their account
+// On Success, take them to dashboard
+export const LOG_IN_USER = (user) => {
+  firebase.auth()
+    .signInWithEmailAndPassword(user.email, user.password)
+    .then(() => {
+      router.push('/dashboard');
+    })
+    .catch((err) => {
+      // TODO: Error Handling
+      console.log(err);
+    });
+};
 
 // eslint-disable-next-line import/prefer-default-export
 export const GET_USER_ADDRESSES = () => new Promise((resolve) => {

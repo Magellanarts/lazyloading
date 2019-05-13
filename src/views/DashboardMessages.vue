@@ -47,11 +47,19 @@ export default {
   display: flex;
   border: 1px solid #ddd;
   min-height: 60vh;
+  flex-direction: column;
+
+   @media screen and (min-width: 760px) {
+    flex-direction: row;
+   }
 }
 
 .messages-list {
-  flex: 0 0 225px;
   border-right: 1px solid #ddd;
+
+  @media screen and (min-width: 760px) {
+    flex: 0 0 225px;
+  }
 }
 
 .message-box {

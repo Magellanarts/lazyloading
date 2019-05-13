@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 <template>
   <div>
     <form
@@ -213,6 +212,7 @@ export default {
     },
     setLatLng(event) {
       const { options } = event.target;
+      // eslint-disable-next-line no-underscore-dangle
       this.item._geoloc = {
         lat: parseFloat(options[options.selectedIndex].attributes.lat.nodeValue),
         lng: parseFloat(options[options.selectedIndex].attributes.lng.nodeValue),

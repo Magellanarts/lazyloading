@@ -28,7 +28,9 @@
     <div v-if="dates">
       <div>Total Days: {{ dates.length }}</div>
       <div> + Deposit: {{ item.deposit }}</div>
-      <div>Total Price: ${{ parseInt((dates.length * item.dailyPrice)) + parseInt(item.deposit) }}</div>
+      <div>Total Price: ${{
+        parseInt((dates.length * item.dailyPrice), 10) + parseInt(item.deposit, 10)
+        }}</div>
     </div>
     <button @click="rentItem" class="button action" type="button">Rent me!</button>
   </div>
@@ -54,11 +56,6 @@ import VueHotelDatepicker from '@northwalker/vue-hotel-datepicker';
 import {
   RENT_ITEM,
 } from '@/actions/rentals';
-
-import {
-  GET_CONVERSATION,
-} from '@/actions/conversations';
-
 
 import moment from 'moment';
 import Owner from '@/components/Owner.vue';
@@ -123,7 +120,15 @@ export default {
       }
     },
     rentItem() {
-      RENT_ITEM(this.item.ID, this.dates, this.item.user, this.dates.length, parseInt((this.dates.length * this.item.dailyPrice)) + parseInt(this.item.deposit), this.item.deposit, this.item.name);
+      RENT_ITEM(
+        this.item.ID,
+        this.dates,
+        this.item.user,
+        this.dates.length,
+        parseInt((this.dates.length * this.item.dailyPrice), 10) + parseInt(this.item.deposit, 10),
+        this.item.deposit,
+        this.item.name,
+      );
     },
   },
 };

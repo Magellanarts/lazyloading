@@ -119,7 +119,9 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.authRequried)) {
     /* if (localStorage.userId) {
-      if (localStorage.userId !== null && localStorage.userId !== undefined && localStorage.userId !== 'undefined') {
+      if (localStorage.userId !== null &&
+        localStorage.userId !== undefined &&
+        localStorage.userId !== 'undefined') {
         next();
       } else {
         next('/log-in');

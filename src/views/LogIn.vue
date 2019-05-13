@@ -36,8 +36,7 @@
 
 <script>
 import { formValidation } from '@/mixins';
-import { mapActions } from 'vuex';
-import * as types from '@/store/types';
+import { LOG_IN_USER } from '@/actions/user';
 import TextInput from '@/components/common/forms/TextInput.vue';
 
 export default {
@@ -62,9 +61,6 @@ export default {
     TextInput,
   },
   methods: {
-    ...mapActions({
-      logInUser: types.LOG_IN_USER,
-    }),
     async submitForm() {
       const returnVal = await this.validateForm({
         fields: this.user,
@@ -76,7 +72,7 @@ export default {
       // if returnVal is false, attempt signup
       // false = no errors in validation
       if (!returnVal) {
-        this.logInUser(this.user);
+        LOG_IN_USER(this.user);
       }
     },
   },

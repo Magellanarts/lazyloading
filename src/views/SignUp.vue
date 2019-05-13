@@ -70,9 +70,11 @@
 
 <script>
 import { formValidation } from '@/mixins';
-import { mapActions } from 'vuex';
-import * as types from '@/store/types';
 import TextInput from '@/components/common/forms/TextInput.vue';
+
+import {
+  SIGN_UP_USER,
+} from '@/actions/user';
 
 export default {
   mixins: [
@@ -103,9 +105,6 @@ export default {
     TextInput,
   },
   methods: {
-    ...mapActions({
-      signUpUser: types.SIGN_UP_USER,
-    }),
     async submitForm() {
       const returnVal = await this.validateForm({
         fields: this.user,
@@ -117,7 +116,7 @@ export default {
       // if returnVal is false, attempt signup
       // false = no errors in validation
       if (!returnVal) {
-        this.signUpUser(this.user);
+        SIGN_UP_USER(this.user);
       }
     },
   },

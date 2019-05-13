@@ -17,7 +17,3 @@ export default {
   mutations,
   actions,
 };
-
-
-// TODO: Clean this file up. Add separate actions file
-// Then use the messages view to push changes to conversations table in firebase
