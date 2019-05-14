@@ -17,17 +17,32 @@ import {
   GET_ITEM_DATA_BY_NAME,
 } from '../types';
 
+const handleSecondaryImages = (otherImages) => {
+  const imagesObject = {};
+
+  for (const photo of otherImages) {
+    imagesObject.otherImages.push(`${photo.lastModified}-${photo.size}-${photo.name}`);
+
+    imagesObject.child(`${photo.lastModified}-${photo.size}-${photo.name}`).put(photo);
+  }
+  return imagesObject;
+};
 
 export default {
   [UPDATE_ITEM]: ({}, item) => {
     const storageRef = firebase.storage().ref();
     const itemToPublish = { ...item };
     // set up tags
-
     itemToPublish.tags = {};
     for (const tag of item.tagsSearchbale) {
       itemToPublish.tags[tag] = true;
     }
+
+    // create slug
+    if (!itemToPublish.slug) {
+      itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.city} ${itemToPublish.state}`);
+    }
+
 
     if (item.mainImage) {
       if (item.mainImage.constructor === FileList) {
@@ -37,6 +52,7 @@ export default {
         storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage);
       }
     }
+
 
     if (item.otherImages) {
       item.otherImages.forEach((photo, index) => {
@@ -48,7 +64,6 @@ export default {
         }
       });
     }
-
     if (!itemToPublish._geoloc) {
       axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
         .then((res) => {
@@ -93,6 +108,11 @@ export default {
 
     // Secondary Images
     if (item.otherImages) {
+      /* for (const photo of item.otherImages) {
+        itemToPublish.otherImages.push(`${photo.lastModified}-${photo.size}-${photo.name}`);
+
+        storageRef.child(`${photo.lastModified}-${photo.size}-${photo.name}`).put(photo);
+      } */
       itemToPublish.otherImages = handleSecondaryImages(item.otherImages);
     }
 
@@ -107,7 +127,6 @@ export default {
     // create slug
     itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.city} ${itemToPublish.state}`);
 
-    // get lat and long
     axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${itemToPublish.streetAddress} ${itemToPublish.city}, ${itemToPublish.state}`)
       .then((response) => {
         itemToPublish._geoloc = {

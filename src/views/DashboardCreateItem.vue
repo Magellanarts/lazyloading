@@ -119,8 +119,7 @@ import MultiInput from '@/components/common/forms/MultiInput.vue';
 
 import {
   GET_ITEM_DATA_BY_DOC_ID,
-  UPDATE_ITEM,
-  CREATE_ITEM,
+  EDIT_ITEM,
 } from '@/actions/item';
 
 import {
@@ -182,11 +181,12 @@ export default {
       if (!returnVal) {
       // success, show saved modal
         this.showModal();
-        if (this.item.ID) {
+        EDIT_ITEM(this.item);
+        /* if (this.item.ID) {
           UPDATE_ITEM(this.item);
         } else {
           CREATE_ITEM(this.item, this.$store.getters.userId);
-        }
+        } */
       }
     },
     showModal() {

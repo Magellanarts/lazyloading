@@ -13,6 +13,8 @@
       />
     </div>
 
+    <div ref="card"></div>
+
     <div class="map-container">
       <GmapMap
         v-if="item"
@@ -47,6 +49,10 @@ import {
 import { db } from '@/auth';
 
 export const itemBus = new Vue();
+
+const stripe = Stripe('pk_test_tiPyFmOrxJ1hulX0WdvY1X2E00JOK6AKFA');
+const elements = stripe.elements();
+let card;
 
 
 export default {
@@ -98,6 +104,8 @@ export default {
     }
   },
   mounted() {
+    card = elements.create('card');
+    card.mount(this.$refs.card);
     itemBus.$on('updateMain', (value) => {
       this.setMain(value);
     });

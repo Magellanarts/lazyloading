@@ -16,9 +16,7 @@ import {
 
 import router from '@/router';
 
-// TODO: Change some of these to /actions intead of in /store
 export default {
-
   [GET_USER_DETAILS]: ({ commit, getters }) => new Promise((resolve) => {
     db.collection('users').doc(getters.userId).get()
       .then((res) => {
@@ -33,11 +31,13 @@ export default {
     const { user } = getters;
     if (user) {
       if (user.items) {
-        user.items.forEeach((item) => {
-          db.collection('items').doc(item).get()
+        // Object.keys(user.items).forEach(key => {
+        // user.items.forEeach((item) => {
+        Object.keys(user.items).forEach((item) => {
+          db.collection('items').doc(user.items[item]).get()
             .then((res) => {
               const itemData = res.data();
-              itemData.ID = item;
+              itemData.ID = user.items[item];
               commit(MUTATE_USER_ITEMS, itemData);
             });
         });
@@ -47,13 +47,13 @@ export default {
   [GET_USER_ADDRESSES]: ({ commit, getters }) => {
     const { user } = getters;
     if (user) {
-      // eslint-disable-next-line no-restricted-syntax
       if (user.addresses) {
-        user.addresses.forEach((address) => {
-          db.collection('addresses').doc(address).get()
+        // user.addresses.forEach((address) => {
+        Object.keys(user.addresses).forEach((address) => {
+          db.collection('addresses').doc(user.addresses[address]).get()
             .then((res) => {
               const addressData = res.data();
-              addressData.ID = address;
+              addressData.ID = user.addresses[address];
               commit(MUTATE_USER_ADDRESSES, addressData);
             });
         });
