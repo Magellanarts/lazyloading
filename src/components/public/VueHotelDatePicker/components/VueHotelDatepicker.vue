@@ -454,14 +454,14 @@ export default {
                 color: #ffffff;
                 border-left: none;
                 // background-color: #B2D7FF;
-                background-color: #0088FF;
+                background-color: #5673F7;
                 transition: all .2s ease;
               }
               &.end-date {
                 color: #ffffff;
                 border-right: none;
                 // background-color: #B2D7FF;
-                background-color: #0088FF;
+                background-color: #5673F7;
                 transition: all .2s ease;
               }
             }

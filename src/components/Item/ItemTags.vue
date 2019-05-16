@@ -26,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 h3 {
   font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 </style>

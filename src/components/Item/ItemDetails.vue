@@ -10,14 +10,14 @@
     <h4>Deposit: ${{ item.deposit }}</h4>
 
     <div class="description" v-html="item.description" />
+
+
     <item-tags
       :tags="item.tags"
     />
   </div>
 
   <div class="item__renting">
-
-
     <div class="rental-period">
       <h2>Availability</h2>
       <date-picker
@@ -30,11 +30,13 @@
       />
     </div>
 
-
-    <item-actions
-      :item="item"
-      :dates="dates"
-    />
+    <div class="rental-checkout">
+      <item-actions
+        v-if="dates"
+        :item="item"
+        :dates="dates"
+      />
+    </div>
   </div>
 </div>
 </template>
@@ -121,6 +123,11 @@ li:not(:last-child) {
   margin-bottom: 10px;
 }
 
+.description {
+  font-size:  18px;
+  line-height: 26px;
+  margin-bottom: 40px;
+}
 .vhd-container {
   width: 100%;
 }
@@ -132,26 +139,100 @@ li:not(:last-child) {
   flex-direction: column;
 
   @media screen and (min-width: 760px) {
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
   }
 }
 
-.rental-period {
-  margin-bottom: 22px;
+.item-details__content {
+  margin-bottom: 48px;
+}
 
-  .vhd-input {
-    padding-left: 8px;
-    min-width: 10px;
+
+@media screen and (min-width: 600px) {
+  .item__renting {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .rental-period {
+    max-width: 300px;
+    flex: 0 0 300px;
+  }
+
+  .rental-checkout {
+     flex: 0 0 200px;
+     max-width: 200px;
+     width: 200px;
+     padding-left: 24px;
   }
 }
 
 @media screen and (min-width: 760px) {
+
+   .rental-checkout {
+     flex: 1;
+     max-width: 100%;
+     width: 100%;
+     padding-left: 0;
+     flex: 0 0 275px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .rental-period {
+    max-width: 400px;
+    flex: 0 0 400px;
+  }
+
   .item-details__content {
     flex: 1;
+    max-width: 100%;
   }
+
+  .rental-checkout {
+    flex: 0 0 300px;
+    max-width: 300px;
+    width: 300px;
+  }
+}
+
+
+@media screen and (min-width: 1100px) {
+  .item-details {
+    flex-direction: row;
+  }
+  .item-details__content {
+    flex: 0 0 400px;
+  }
+
   .item__renting {
-    flex: 0 0 350px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .rental-period {
+    max-width: 300px;
+    flex: 0 0 300px;
+  }
+ .rental-checkout {
+    flex: 0 0 200px;
+    max-width: 200px;
+    width: 200px;
+    padding-left: 24px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .item-details__content {
+    flex: 0 0 500px;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  .item-details__content {
+    flex: 0 0 600px;
   }
 }
 </style>

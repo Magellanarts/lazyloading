@@ -5,12 +5,6 @@
       :item="item"
     />
 
-    <Thumbnails
-      v-if="item"
-      :mainImage="item.mainImage"
-      :thumbnails="item.otherImages"
-    />
-
     <item-details
       v-if="item && user"
       :item="item"
@@ -29,7 +23,7 @@
 import ItemDetails from '@/components/Item/ItemDetails.vue';
 import ItemMap from '@/components/Item/ItemMap.vue';
 import ItemHeader from '@/components/Item/ItemHeader.vue';
-import Thumbnails from '@/components/Item/Media/Thumbnails.vue';
+
 import Vue from 'vue';
 
 import {
@@ -73,7 +67,6 @@ export default {
   components: {
     ItemHeader,
     ItemDetails,
-    Thumbnails,
     ItemMap,
   },
   methods: {

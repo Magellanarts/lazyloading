@@ -1,12 +1,20 @@
 <template>
   <div class="l-site-container item-header">
-    <MainImage
-      v-if="item"
-      :mainImage="item.mainImage"
-    />
+    <div>
+      <MainImage
+        v-if="item"
+        :mainImage="item.mainImage"
+      />
+
+      <ThumbnailsMini
+        v-if="item"
+        :mainImage="item.mainImage"
+        :thumbnails="item.otherImages"
+      />
+    </div>
 
     <div class="item_title">
-      <h2><span>Daily Price</span>${{ item.dailyPrice }}</h2>
+      <h2><span>(Daily Price)</span> ${{ item.dailyPrice }}</h2>
       <h1>{{ item.name }}</h1>
     </div>
   </div>
@@ -14,6 +22,7 @@
 
 <script>
 import MainImage from '@/components/Item/Media/MainImage.vue';
+import ThumbnailsMini from '@/components/Item/Media/ThumbnailsMini.vue';
 
 export default {
   props: {
@@ -24,6 +33,7 @@ export default {
   },
   components: {
     MainImage,
+    ThumbnailsMini,
   },
 };
 </script>
@@ -36,6 +46,7 @@ export default {
   display: flex;
   flex-direction: column;
   background: #fff;
+  position: relative;
 }
 
 .item_title {
@@ -97,8 +108,7 @@ export default {
       margin-bottom: 0;
     }
 
-    h2,
-    h3 {
+    h2 {
       text-align: right;
       font-size: 30px;
     }

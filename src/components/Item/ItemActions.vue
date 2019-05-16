@@ -1,8 +1,10 @@
 <template>
   <div class="item-actions">
     <div class="pricing" v-if="dates">
-      <div class="pricing__sub">Total Days: {{ dates.length }}</div>
-      <div class="pricing__sub"> + Deposit: {{ item.deposit }}</div>
+      <div class="pricing__sub">Total Days: {{ dates.length }}</div><br />
+      <div class="pricing__sub border-bottom"> x Daily Price: {{ item.dailyPrice }}</div><br />
+      <div class="pricing__sub pricing__subtotal"> Subtotal: {{ dates.length * item.dailyPrice }}</div><br />
+      <div class="pricing__sub border-bottom"> + Deposit: {{ item.deposit }}</div>
       <div class="pricing__total">Total Price: ${{
         parseInt((dates.length * item.dailyPrice), 10) + parseInt(item.deposit, 10)
         }}</div>
@@ -46,6 +48,7 @@ export default {
 .item-actions {
   padding-top: 16px;
   padding-bottom: 16px;
+  font-family: 'Nunito';
 }
 
 .pricing {
@@ -53,11 +56,44 @@ export default {
 }
 
 .pricing__sub {
-  font-size: 14px;
+  font-size: 18px;
+  line-height: 1.25;
+  padding-bottom: 6px;
+  display: inline-block;
+
+  &.border-bottom {
+    border-bottom: 1px solid #555;
+    margin-bottom: 5px;
+  }
+}
+
+.pricing__subtotal {
+  font-size: 25px;
+  line-height: 1.25;
+  font-weight: 700;
 }
 
 .pricing__total {
-  font-size: 18px;
+  font-size: 30px;
+  line-height: 32px;
   margin-bottom: 18px;
+  font-weight: 700;
 }
+/*
+@media screen and (min-width: 1100px) {
+  .pricing__sub {
+    font-size: 18px;
+  }
+
+  .pricing__subtotal {
+    font-size: 22px;
+    line-height: 32px;
+  }
+
+  .pricing__total {
+    font-size: 26px;
+    line-height: 36px;
+  }
+}
+*/
 </style>

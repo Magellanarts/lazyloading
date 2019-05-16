@@ -95,7 +95,9 @@ export default {
 }
 
 .owner-name {
-  font-style: italic;
+  font-size: 18px;
+  line-height: 24px;
+  padding-bottom: 4px;
 }
 
 .message-seller {
