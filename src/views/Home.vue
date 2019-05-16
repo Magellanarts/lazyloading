@@ -1,5 +1,5 @@
 <template>
-  <div class="home u-align-center">
+  <div class="l-site-container home u-align-center">
     <h1>Share some sports equipment</h1>
 
     <search />

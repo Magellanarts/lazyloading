@@ -8,6 +8,7 @@
 </template>
 
 <script>
+// "@northwalker/vue-hotel-datepicker": "^2.0.1",
 import TheHeader from '@/components/TheHeader.vue';
 
 export default {
@@ -18,10 +19,6 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-  padding: 0 7.5%;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity .5s;

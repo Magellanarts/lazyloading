@@ -4,10 +4,11 @@
     :ref="mainImage"
     class="image-container"
     :class="noBG ? 'no-bg' : ''"
-    :style="{backgroundImage: `url(${mainImage})`}"
+
     alt="">
       <img :src="mainImage">
   </div>
+  <!-- :style="{backgroundImage: `url(${mainImage})`}" -->
 </template>
 
 <script>
@@ -39,17 +40,13 @@ export default {
 <style lang="scss">
   .image-container {
     background-size: 0 0;
-
-    height: 460px;
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    img {
-      flex: 0;
-      max-width: 100%;
-      max-height: 100%;
-    }
+    order: 2;
+
 
     &.no-bg {
         background-size: 0 0;
@@ -60,9 +57,13 @@ export default {
       background-size: cover;
       display: flex;
       flex: 1;
-      height: 300px;
+      // height: auto;
+      margin-bottom: 0;
+      order: 0;
+
       img {
-        display: none;
+        display:  block !important;
+        // visibility: hidden;
       }
 
       &.no-bg {
@@ -72,6 +73,10 @@ export default {
           display: block;
         }
       }
+    }
+
+    @media screen and (min-width: 1100px) {
+      height: 600px;
     }
   }
 </style>

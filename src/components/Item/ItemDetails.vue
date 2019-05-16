@@ -1,61 +1,47 @@
 <template>
-<div>
-  <Owner
-    v-if="user"
-    :owner="user"
-    :item="item"
-  />
+<div class="l-site-container item-details">
+  <div class="item-details__content">
+    <Owner
+      v-if="user"
+      :owner="user"
+      :item="item"
+    />
 
-  <h1>{{ item.name }}</h1>
+    <h4>Deposit: ${{ item.deposit }}</h4>
 
-  <h2>${{ item.dailyPrice }}</h2>
-  <h5>Deposit: {{ item.deposit }}</h5>
-
-  <div class="rental-period">
-    <h5>Rental Period:</h5>
-    <date-picker
-      placeholder="Check Availability"
-      mobile="mobile"
-      format="MM/DD/YYYY"
-      @update="handleDate"
-      :disabledDates="item.rentalDates"
-      :selectForward="true"
+    <div class="description" v-html="item.description" />
+    <item-tags
+      :tags="item.tags"
     />
   </div>
 
+  <div class="item__renting">
 
-  <div class="item-actions">
-    <div v-if="dates">
-      <div>Total Days: {{ dates.length }}</div>
-      <div> + Deposit: {{ item.deposit }}</div>
-      <div>Total Price: ${{
-        parseInt((dates.length * item.dailyPrice), 10) + parseInt(item.deposit, 10)
-        }}</div>
+
+    <div class="rental-period">
+      <h2>Availability</h2>
+      <date-picker
+        placeholder="Check Availability"
+        mobile="mobile"
+        format="MM/DD/YYYY"
+        @update="handleDate"
+        :disabledDates="item.rentalDates"
+        :selectForward="true"
+      />
     </div>
-    <button @click="rentItem" class="button action" type="button">Rent me!</button>
+
+
+    <item-actions
+      :item="item"
+      :dates="dates"
+    />
   </div>
-
-  <ul>
-      <li v-for="detail in item.details" :key="detail.label">
-        {{ detail.label}}: {{ detail.value }}
-      </li>
-  </ul>
-
-  <div class="description" v-html="item.description" />
-
-  <item-tags
-    :tags="item.tags"
-  />
-
 </div>
 </template>
 
 <script>
-import VueHotelDatepicker from '@northwalker/vue-hotel-datepicker';
-
-import {
-  RENT_ITEM,
-} from '@/actions/rentals';
+import VueHotelDatepicker from '@/components/public/VueHotelDatePicker/components/VueHotelDatepicker.vue';
+import ItemActions from '@/components/Item/ItemActions.vue';
 
 import moment from 'moment';
 import Owner from '@/components/Owner.vue';
@@ -64,7 +50,7 @@ import ItemTags from './ItemTags.vue';
 export default {
   data() {
     return {
-      dates: '',
+      dates: null,
     };
   },
   props: {
@@ -81,6 +67,7 @@ export default {
     ItemTags,
     DatePicker: VueHotelDatepicker,
     Owner,
+    ItemActions,
   },
   computed: {
     bookedFutureDates() {
@@ -95,9 +82,6 @@ export default {
       }
       return [];
     },
-  },
-  async mounted() {
-  //   GET_CONVERSATION(this)
   },
   methods: {
     handleDate(date) {
@@ -119,26 +103,11 @@ export default {
         }
       }
     },
-    rentItem() {
-      RENT_ITEM(
-        this.item.ID,
-        this.dates,
-        this.item.user,
-        this.dates.length,
-        parseInt((this.dates.length * this.item.dailyPrice), 10) + parseInt(this.item.deposit, 10),
-        this.item.deposit,
-        this.item.name,
-      );
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  margin-bottom: 26px;
-}
-
 h2 {
   margin-bottom: 6px;
 }
@@ -152,17 +121,37 @@ li:not(:last-child) {
   margin-bottom: 10px;
 }
 
-.description {
-  margin-bottom: 40px;
+.vhd-container {
+  width: 100%;
 }
 
-.item-actions {
-  padding-top: 16px;
-  padding-bottom: 16px;
+.item-details {
+  padding-top: 64px;
+  padding-bottom: 64px;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 760px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
-.rental-period .vhd-input {
-  padding-left: 8px;
-  min-width: 10px;
+.rental-period {
+  margin-bottom: 22px;
+
+  .vhd-input {
+    padding-left: 8px;
+    min-width: 10px;
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .item-details__content {
+    flex: 1;
+  }
+  .item__renting {
+    flex: 0 0 350px;
+  }
 }
 </style>

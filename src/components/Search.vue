@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search-container">
     <form>
       <div class="inputs-container">
         <input
@@ -153,6 +153,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search-container {
+  max-width: 960px;
+  margin: 0 auto;
+}
 .inputs-container {
   margin-bottom: 32px;
 

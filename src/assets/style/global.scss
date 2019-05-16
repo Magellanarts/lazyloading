@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather|Nunito');
 
-$blue: rgb(86, 116, 247);
+$blue: rgb(86, 116, 247); // #5673F7
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -63,12 +63,10 @@ a {
 
 h1 {
   font-size: 28px;
-  margin-bottom: 40px;
 }
 
 h2 {
   font-size: 24px;
-  margin-bottom: 32px;
 }
 
 h3 {
@@ -84,6 +82,11 @@ h4 {
 h5 {
   font-size: 16px;
   margin-bottom: 12px;
+}
+
+.l-site-container {
+  padding-left: 7.5%;
+  padding-right: 7.5%;
 }
 
 .u-align-center {
@@ -110,6 +113,7 @@ h5 {
   transition: all .15s linear;
   font-size: 13px;
   text-decoration: none;
+  display: inline-block;
 
   &:not(:last-child) {
     margin-right: 8px;

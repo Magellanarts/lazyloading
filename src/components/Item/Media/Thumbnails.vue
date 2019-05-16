@@ -46,12 +46,13 @@ export default {
   },
   created() {
     const storageRef = firebase.storage().ref();
-    for (const thumb of this.thumbnails) {
+
+    this.thumbnails.forEach((thumb) => {
       storageRef.child(thumb).getDownloadURL()
         .then((url) => {
           this.thumbUrls.push(url);
         });
-    }
+    });
 
     storageRef.child(this.mainImage).getDownloadURL()
       .then((url) => {
@@ -62,14 +63,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.thumbnail-container {
+.thumbnails-container {
   font-size: 0;
+  background: #eee;
 }
 
 .thumbnail {
     background-size: cover;
-    height: 50px;
-    width: 50px;
+    height: 150px;
+    width: 150px;
     display: inline-block;
     cursor: pointer;
 }

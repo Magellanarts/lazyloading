@@ -1,5 +1,13 @@
 <template>
-  <div class="site-header">
+  <div class="l-site-container site-header">
+    <router-link
+          active-class="active"
+          class="site-logo"
+          to="/"
+          exact
+        >
+          <img src="@/assets/img/ll-logo.svg" />
+        </router-link>
     <nav>
         <router-link
           active-class="active"
@@ -29,7 +37,8 @@
           v-if="userId"
           active-class="active"
           class="nav-link"
-          to="/dashboard"
+          to="/dashboard/user"
+          :class="{'active': subIsActive('/dashboard')}"
         >
           Dashboard
         </router-link>
@@ -60,6 +69,10 @@ export default {
     logout() {
       this.logoutUser();
     },
+    subIsActive(input) {
+      const paths = Array.isArray(input) ? input : [input];
+      return paths.some(path => this.$route.path.indexOf(path) === 0);
+    },
   },
 };
 </script>
@@ -69,27 +82,37 @@ export default {
   padding-top: 25px;
   padding-bottom: 25px;
   text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to left, rgb(86, 116, 247), rgba(86, 116, 247, .92));
+}
+
+.site-logo {
+  width: 120px;
+  display: block;
 }
 
 .nav-link {
   text-decoration: none;
   margin: 0 12px;
-  color: rgb(50, 50, 50);
+  color: #fff;
   border: none;
   display: inline-block;
   cursor: pointer;
   font-family: 'Nunito';
+  transition: .1s linear;
 
   &.active {
-    color: rgb(86, 116, 247);
+    color: darken(rgb(86, 116, 247),45%);
 
     &:hover {
-      color: rgb(116, 146, 255);
+      color: darken(rgb(86, 116, 247),20%);
     }
   }
 
   &:hover {
-    color: rgb(125, 125, 125);
+    color: rgba(255,255,255,.6);
   }
 }
 </style>

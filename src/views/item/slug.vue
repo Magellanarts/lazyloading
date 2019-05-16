@@ -1,45 +1,36 @@
 <template>
   <div>
-    <div class="item-header">
-      <item-media
-        v-if="item"
-        :mainImage="item.mainImage"
-        :item="item"
-      />
-      <item-details
-        v-if="item && user"
-        :item="item"
-        :user="user"
-      />
-    </div>
+    <item-header
+      v-if="item"
+      :item="item"
+    />
 
-    <div ref="card"></div>
+    <Thumbnails
+      v-if="item"
+      :mainImage="item.mainImage"
+      :thumbnails="item.otherImages"
+    />
 
-    <div class="map-container">
-      <GmapMap
-        v-if="item"
-        :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
-        :zoom="13"
+    <item-details
+      v-if="item && user"
+      :item="item"
+      :user="user"
+    />
 
-        style="width: 100%; height: 400px"
-      >
-        <GmapCircle
-          :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
-          :radius="1000"
-          :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
-            }"
-        />
-      </GmapMap>
-    </div>
+    <item-map
+      v-if="item"
+      :item="item"
+    />
+    <!-- div ref="card"></div -->
   </div>
 </template>
 
 <script>
-import ItemMedia from '@/components/Item/Media/ItemMedia.vue';
 import ItemDetails from '@/components/Item/ItemDetails.vue';
+import ItemMap from '@/components/Item/ItemMap.vue';
+import ItemHeader from '@/components/Item/ItemHeader.vue';
+import Thumbnails from '@/components/Item/Media/Thumbnails.vue';
 import Vue from 'vue';
-
-import { mapState } from 'vuex';
 
 import {
   GET_ITEM_DATA_BY_DOC_ID,
@@ -54,6 +45,22 @@ const stripe = Stripe('pk_test_tiPyFmOrxJ1hulX0WdvY1X2E00JOK6AKFA');
 const elements = stripe.elements();
 let card;
 
+const style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4',
+    },
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a',
+  },
+};
+
 
 export default {
   data() {
@@ -64,25 +71,16 @@ export default {
     };
   },
   components: {
-    ItemMedia,
+    ItemHeader,
     ItemDetails,
+    Thumbnails,
+    ItemMap,
   },
-  /* methods: {
-    ...mapActions({
-      getDataByDocID: types.GET_ITEM_DATA_BY_DOC_ID,
-      getDataByName: types.GET_ITEM_DATA_BY_NAME,
-      updateMain: types.UPDATE_MAIN_IMAGE,
-    }),
-  }, */
   methods: {
     setMain(val) {
       this.item.mainImage = val;
     },
   },
-  computed: mapState({
-    // item: state => state.item.curItem,
-    // mainImage: state => state.item.mainImage,
-  }),
   async created() {
     // grab data from firestore for this item
     // data gets stored in store
@@ -104,44 +102,11 @@ export default {
     }
   },
   mounted() {
-    card = elements.create('card');
-    card.mount(this.$refs.card);
+  //  card = elements.create('card', { style });
+  //  card.mount(this.$refs.card);
     itemBus.$on('updateMain', (value) => {
       this.setMain(value);
     });
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.item-header {
-  margin: 20px 0;
-  line-height: 1.5;
-}
-
-.map-container {
-  margin-bottom: 32px;
-}
-
-.gmap {
-  height: 400px;
-}
-
-@media screen and (min-width: 760px) {
-  .item-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 32px;
-
-    > :first-child {
-      flex: 1;
-      max-width: 300px;
-    }
-
-    > :last-child {
-      flex: 1;
-      padding-left: 5%;
-    }
-  }
-}
-</style>

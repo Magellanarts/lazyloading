@@ -4,17 +4,12 @@
       v-if="mainImage"
       :mainImage="mainImage"
     />
-    <Thumbnails
-      v-if="item.otherImages"
-      :mainImage="item.mainImage"
-      :thumbnails="item.otherImages"
-    />
+
   </div>
 </template>
 
 <script>
 import MainImage from './MainImage.vue';
-import Thumbnails from './Thumbnails.vue';
 
 export default {
   props: {
@@ -29,7 +24,6 @@ export default {
   },
   components: {
     MainImage,
-    Thumbnails,
   },
 };
 </script>

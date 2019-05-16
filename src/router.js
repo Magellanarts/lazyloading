@@ -41,49 +41,57 @@ const router = new Router({
       meta: {
         authRequried: true,
       },
-    },
-    {
-      name: 'dashboard-list-item',
-      path: '/dashboard/list-item',
-      component: () => import(/* webpackChunkName: "dashboard-list-item" */'./views/DashboardCreateItem.vue'),
-      meta: {
-        authRequried: true,
-      },
       children: [
         {
-          name: 'list-item/id',
-          path: ':id',
-        },
-      ],
-    },
-    {
-      name: 'dashboard-messages',
-      path: '/dashboard/messages/',
-      component: () => import(/* webpackChunkName: "dashboard-messages" */'./views/DashboardMessages.vue'),
-      meta: {
-        authRequried: true,
-      },
-      children: [
-        {
-          path: ':id',
-          component: () => import(/* webpackChunkName: "dashboard-chat-window" */'./views/DashboardMessagesChat.vue'),
+          path: '/dashboard/user',
+          component: () => import(/* webpackChunkName: "dashboard-user" */'./views/DashboardMain.vue'),
           meta: {
             authRequried: true,
           },
         },
-      ],
-    },
-    {
-      name: 'dashboard-edit-address',
-      path: '/dashboard/edit-address/',
-      component: () => import(/* webpackChunkName: "dashboard-edit-address" */'./views/DashboardEditAddress.vue'),
-      meta: {
-        authRequried: true,
-      },
-      children: [
         {
-          name: 'edit-address/id',
-          path: ':id',
+          path: '/dashboard/list-item',
+          component: () => import(/* webpackChunkName: "dashboard-list-item" */'./views/DashboardCreateItem.vue'),
+          meta: {
+            authRequried: true,
+          },
+          children: [
+            {
+              name: 'list-item/id',
+              path: ':id',
+            },
+          ],
+        },
+        {
+          name: 'dashboard-messages',
+          path: '/dashboard/messages/',
+          component: () => import(/* webpackChunkName: "dashboard-messages" */'./views/DashboardMessages.vue'),
+          meta: {
+            authRequried: true,
+          },
+          children: [
+            {
+              path: ':id',
+              component: () => import(/* webpackChunkName: "dashboard-chat-window" */'./views/DashboardMessagesChat.vue'),
+              meta: {
+                authRequried: true,
+              },
+            },
+          ],
+        },
+        {
+          name: 'dashboard-edit-address',
+          path: '/dashboard/edit-address/',
+          component: () => import(/* webpackChunkName: "dashboard-edit-address" */'./views/DashboardEditAddress.vue'),
+          meta: {
+            authRequried: true,
+          },
+          children: [
+            {
+              name: 'edit-address/id',
+              path: ':id',
+            },
+          ],
         },
       ],
     },
