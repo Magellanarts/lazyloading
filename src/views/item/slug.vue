@@ -15,7 +15,7 @@
       v-if="item"
       :item="item"
     />
-    <!-- div ref="card"></div -->
+
   </div>
 </template>
 
@@ -30,27 +30,6 @@ import {
 } from '@/actions/item';
 
 import { db } from '@/auth';
-
-const stripe = Stripe('pk_test_tiPyFmOrxJ1hulX0WdvY1X2E00JOK6AKFA');
-const elements = stripe.elements();
-let card;
-
-const style = {
-  base: {
-    color: '#32325d',
-    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    fontSmoothing: 'antialiased',
-    fontSize: '16px',
-    '::placeholder': {
-      color: '#aab7c4',
-    },
-  },
-  invalid: {
-    color: '#fa755a',
-    iconColor: '#fa755a',
-  },
-};
-
 
 export default {
   data() {
@@ -84,10 +63,6 @@ export default {
           this.user = res.data();
         });
     }
-  },
-  mounted() {
-  //  card = elements.create('card', { style });
-  //  card.mount(this.$refs.card);
   },
 };
 </script>

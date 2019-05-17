@@ -110,13 +110,11 @@ export default {
 
 .owner-message {
   position: fixed;
-  top: 20%;
+  top: 0;
   margin: auto;
   left: 0;
   right: 0;
-  width: 60%;
-  max-width: 700px;
-  box-shadow: 0px 0px 6px 4px rgb(86, 116, 247);
+  bottom: 0;
   z-index: 50;
   background: rgb(250, 250, 250);
   border-radius: 4px;
@@ -129,6 +127,14 @@ export default {
   &.is-open {
     opacity: 1;
     visibility: visible;
+  }
+
+  @media screen and (min-width: 600px) {
+    top: 20%;
+    bottom: auto;
+    width: 60%;
+    max-width: 700px;
+    box-shadow: 0px 0px 6px 4px rgb(86, 116, 247);
   }
 }
 

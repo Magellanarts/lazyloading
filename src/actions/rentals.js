@@ -18,10 +18,11 @@ import {
 
 
 export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, deposit, name) => {
-  const { userId } = store.getters;
+  console.log('rented');
+  /* const { userId } = store.getters;
 
   // update item's booked dates
-  // BOOK_DATES(dates, itemId);
+  BOOK_DATES(dates, itemId);
 
   // add transaction to rental table
   const rental = {
@@ -62,7 +63,7 @@ export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, d
 
     // add transaction reference to owner's rentals list
     ADD_RENTAL(res.id, ownerId);
-  });
+  }); */
 };
 
 

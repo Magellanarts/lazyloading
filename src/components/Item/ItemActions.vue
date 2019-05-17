@@ -52,8 +52,9 @@ export default {
 }
 
 .pricing {
-  text-align: right;
+  text-align: center;
 }
+
 
 .pricing__sub {
   font-size: 18px;
@@ -75,25 +76,15 @@ export default {
 
 .pricing__total {
   font-size: 30px;
-  line-height: 32px;
+  line-height: 38px;
   margin-bottom: 18px;
   font-weight: 700;
 }
-/*
-@media screen and (min-width: 1100px) {
-  .pricing__sub {
-    font-size: 18px;
-  }
 
-  .pricing__subtotal {
-    font-size: 22px;
-    line-height: 32px;
-  }
-
-  .pricing__total {
-    font-size: 26px;
-    line-height: 36px;
+@media screen and (min-width: 600px){
+  .pricing {
+    padding-top: 16px;
+    text-align: right;
   }
 }
-*/
 </style>

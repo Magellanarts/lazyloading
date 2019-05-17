@@ -11,6 +11,8 @@
 // TODO: Action to ‘rent’ item
 //        Renting is in place but doesn't include a purchase transaction
 
+// https://paletton.com/#uid=53S0u0knNXQc0ZwirYGt8VYFPRD
+
 
 import Vue from 'vue';
 import InstantSearch from 'vue-instantsearch';

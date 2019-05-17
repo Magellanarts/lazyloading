@@ -31,13 +31,17 @@
     </div>
 
     <div class="rental-checkout">
-      <item-actions
-        v-if="dates"
-        :item="item"
-        :dates="dates"
-      />
+      <transition name="slide" mode="out-in">
+        <item-actions
+          v-if="dates.length > 1"
+          :item="item"
+          :dates="dates"
+        />
+      </transition>
     </div>
   </div>
+
+  <checkout-form />
 </div>
 </template>
 
@@ -48,11 +52,12 @@ import ItemActions from '@/components/Item/ItemActions.vue';
 import moment from 'moment';
 import Owner from '@/components/Owner.vue';
 import ItemTags from './ItemTags.vue';
+import CheckoutForm from '@/components/common/CheckoutForm.vue';
 
 export default {
   data() {
     return {
-      dates: null,
+      dates: [],
     };
   },
   props: {
@@ -70,6 +75,7 @@ export default {
     DatePicker: VueHotelDatepicker,
     Owner,
     ItemActions,
+    CheckoutForm,
   },
   computed: {
     bookedFutureDates() {
@@ -110,8 +116,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
 h2 {
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 ul,
@@ -148,13 +156,49 @@ li:not(:last-child) {
   margin-bottom: 48px;
 }
 
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity .5s;
+  animation: fade-in .6s forwards;
+}
+
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+}
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(20%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 @media screen and (min-width: 600px) {
+
+  .slide-enter-active,
+  .slide-leave-active {
+    animation: slide-in .6s forwards;
+  }
   .item__renting {
     display: flex;
     flex: 1;
     justify-content: space-between;
   }
+
 
   .rental-period {
     max-width: 300px;
