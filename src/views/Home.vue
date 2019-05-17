@@ -10,6 +10,18 @@
 // @ is an alias to /src
 import Search from '@/components/Search.vue';
 
+if ('geolocation' in navigator) {
+  /* geolocation is available */
+  navigator.geolocation.getCurrentPosition((position) => {
+  // do_something(position.coords.latitude, position.coords.longitude);
+    localStorage.setItem('lat', position.coords.latitude);
+    localStorage.setItem('lon', position.coords.longitude);
+  });
+} else {
+  /* geolocation IS NOT available */
+}
+
+
 export default {
   name: 'home',
   components: {

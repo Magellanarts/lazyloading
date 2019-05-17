@@ -21,9 +21,11 @@ firebase.initializeApp({
 });
 
 export function getUserID(user) {
-  localStorage.setItem('userId', user.uid);
-  store.dispatch(SET_USER_ID, user.uid);
-  store.dispatch(GET_USER_DETAILS, user.uid);
+  if (user.uid) {
+    localStorage.setItem('userId', user.uid);
+    store.dispatch(SET_USER_ID, user.uid);
+    store.dispatch(GET_USER_DETAILS, user.uid);
+  }
 }
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -46,18 +48,6 @@ const algolia = algoliasearch(
 );
 
 const index = algolia.initIndex('items');
-
-if ('geolocation' in navigator) {
-  /* geolocation is available */
-  navigator.geolocation.getCurrentPosition((position) => {
-  // do_something(position.coords.latitude, position.coords.longitude);
-    localStorage.setItem('lat', position.coords.latitude);
-    localStorage.setItem('lon', position.coords.longitude);
-  });
-} else {
-  /* geolocation IS NOT available */
-}
-
 
 export const updateAlgolia = (item) => {
   index.saveObject(item).then(() => {
