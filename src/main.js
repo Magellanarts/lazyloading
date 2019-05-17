@@ -15,7 +15,7 @@
 import Vue from 'vue';
 import InstantSearch from 'vue-instantsearch';
 import * as VueGoogleMaps from 'vue2-google-maps';
-
+import Vue2TouchEvents from 'vue2-touch-events';
 import router from './router';
 import store from './store/store';
 
@@ -23,6 +23,8 @@ import './auth';
 
 import App from './App.vue';
 
+// handle swipe
+Vue.use(Vue2TouchEvents);
 
 Vue.use(VueGoogleMaps, {
   load: {

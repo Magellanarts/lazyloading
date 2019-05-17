@@ -4,7 +4,7 @@
     :ref="mainImage"
     class="image-container"
     :class="noBG ? 'no-bg' : ''"
-
+    v-touch:swipe="swipeHandler"
     alt="">
       <img :src="mainImage">
   </div>
@@ -14,7 +14,7 @@
 <script>
 import firebase from 'firebase/app';
 import 'firebase/storage';
-import { itemBus } from '@/views/item/slug.vue';
+import { itemBus } from '@/components/Item/ItemHeader.vue';
 
 export default {
   props: {
@@ -23,6 +23,11 @@ export default {
     },
     noBG: {
       type: Boolean,
+    },
+  },
+  methods: {
+    swipeHandler(direction) {
+      itemBus.$emit('handleSwipe', direction);
     },
   },
   created() {
@@ -44,9 +49,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-
     order: 2;
-
 
     &.no-bg {
         background-size: 0 0;

@@ -24,16 +24,12 @@ import ItemDetails from '@/components/Item/ItemDetails.vue';
 import ItemMap from '@/components/Item/ItemMap.vue';
 import ItemHeader from '@/components/Item/ItemHeader.vue';
 
-import Vue from 'vue';
-
 import {
   GET_ITEM_DATA_BY_DOC_ID,
   GET_ITEM_DATA_BY_NAME,
 } from '@/actions/item';
 
 import { db } from '@/auth';
-
-export const itemBus = new Vue();
 
 const stripe = Stripe('pk_test_tiPyFmOrxJ1hulX0WdvY1X2E00JOK6AKFA');
 const elements = stripe.elements();
@@ -69,11 +65,6 @@ export default {
     ItemDetails,
     ItemMap,
   },
-  methods: {
-    setMain(val) {
-      this.item.mainImage = val;
-    },
-  },
   async created() {
     // grab data from firestore for this item
     // data gets stored in store
@@ -97,9 +88,6 @@ export default {
   mounted() {
   //  card = elements.create('card', { style });
   //  card.mount(this.$refs.card);
-    itemBus.$on('updateMain', (value) => {
-      this.setMain(value);
-    });
   },
 };
 </script>

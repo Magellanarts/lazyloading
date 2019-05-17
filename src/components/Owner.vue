@@ -31,6 +31,8 @@
 </template>
 
 <script>
+// TODO: if user is not logged in, they can't message owner.
+// Instead, have them see a modal that tells them to sign up
 import TextInput from '@/components/common/forms/TextInput.vue';
 
 import {

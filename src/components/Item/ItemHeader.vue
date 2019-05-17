@@ -7,6 +7,7 @@
       />
 
       <ThumbnailsMini
+        ref="thumbs"
         v-if="item"
         :mainImage="item.mainImage"
         :thumbnails="item.otherImages"
@@ -21,8 +22,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import MainImage from '@/components/Item/Media/MainImage.vue';
 import ThumbnailsMini from '@/components/Item/Media/ThumbnailsMini.vue';
+
+export const itemBus = new Vue();
 
 export default {
   props: {
@@ -31,9 +35,24 @@ export default {
       required: true,
     },
   },
+  methods: {
+    setMain(val) {
+      this.item.mainImage = val;
+    },
+  },
   components: {
     MainImage,
     ThumbnailsMini,
+  },
+  mounted() {
+    itemBus.$on('updateMain', (value) => {
+      this.setMain(value);
+    });
+
+    // handle main image swipe
+    itemBus.$on('handleSwipe', (direction) => {
+      this.$refs.thumbs.parentSwipe(direction);
+    });
   },
 };
 </script>
