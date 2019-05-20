@@ -44,7 +44,7 @@ export default {
         .then((result) => {
           // result.token has token
           console.log(result.token);
-          fetch('http://localhost:9000/purchase', {
+          fetch(`${process.env.VUE_APP_LAMBDA_ENDPOINT}purchase`, {
             method: 'POST',
             body: JSON.stringify({
               token: result.token,
