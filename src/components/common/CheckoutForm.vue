@@ -38,11 +38,26 @@ export default {
     submitPayment() {
       stripe.createToken(card)
         .then((result) => {
-          console.log(result);
+          // result.token has token
+          console.log(result.token);
+          fetch('http://localhost:9000/purchase', {
+            method: 'POST',
+            body: JSON.stringify({
+              token: result.token,
+              amount: '1',
+            }),
+          })
+            .then((res) => {
+              console.log(res);
+            });
         });
     },
   },
 };
+
+
+// Token is being created, and read in purchase.js.
+// Next, submit the stripe.create() with relevant info
 </script>
 
 <style lang="scss" scoped>
