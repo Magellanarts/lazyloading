@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 require('dotenv').config();
 
-// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.VUE_APP_STRIPE_SECRET_KEY);
 
 const statusCode = 200;
 const headers = {
@@ -28,7 +28,7 @@ exports.handler = function (event, context, callback) {
   if (
     !data.token
     || !data.amount
-    // || !data.idempotency_key
+    || !data.idempotency_key
   ) {
     console.error('Required information is missing.');
 
@@ -38,4 +38,21 @@ exports.handler = function (event, context, callback) {
       body: JSON.stringify({ status: 'missing-information' }),
     });
   }
+
+  // everything needed is there,
+  // submit payment
+  console.log('about to send');
+  (async () => {
+    console.log(data.token);
+    const charge = await stripe.charges.create({
+      amount: 100,
+      currency: 'usd',
+      description: 'Testing a charge',
+      source: data.token.id,
+    }, {
+      idempotency_key: data.idempotency_key,
+    });
+
+    console.log(charge);
+  })();
 };

@@ -9,7 +9,11 @@
 </template>
 
 <script>
-const stripe = Stripe('pk_test_tiPyFmOrxJ1hulX0WdvY1X2E00JOK6AKFA');
+import uuid from 'uuid/v4';
+
+require('dotenv').config();
+
+const stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
 const elements = stripe.elements();
 let card;
 
@@ -44,7 +48,8 @@ export default {
             method: 'POST',
             body: JSON.stringify({
               token: result.token,
-              amount: '1',
+              amount: '5',
+              idempotency_key: uuid(),
             }),
           })
             .then((res) => {
