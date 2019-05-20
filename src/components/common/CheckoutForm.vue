@@ -48,7 +48,7 @@ export default {
             method: 'POST',
             body: JSON.stringify({
               token: result.token,
-              amount: '5',
+              amount: '500',
               idempotency_key: uuid(),
             }),
           })

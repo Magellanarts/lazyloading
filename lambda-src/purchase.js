@@ -12,7 +12,6 @@ const headers = {
 exports.handler = function (event, context, callback) {
   // -- We only care to do anything if this is our POST request.
   if (event.httpMethod !== 'POST' || !event.body) {
-    console.log(event.body);
     callback(null, {
       statusCode,
       headers,
@@ -22,7 +21,6 @@ exports.handler = function (event, context, callback) {
 
   // -- Parse the body contents into an object.
   const data = JSON.parse(event.body);
-  console.log(data.amount);
 
   // -- Make sure we have all required data. Otherwise, escape.
   if (
@@ -38,21 +36,16 @@ exports.handler = function (event, context, callback) {
       body: JSON.stringify({ status: 'missing-information' }),
     });
   }
-
   // everything needed is there,
   // submit payment
-  console.log('about to send');
   (async () => {
-    console.log(data.token);
     const charge = await stripe.charges.create({
-      amount: 100,
+      amount: data.amount,
       currency: 'usd',
       description: 'Testing a charge',
       source: data.token.id,
     }, {
       idempotency_key: data.idempotency_key,
     });
-
-    console.log(charge);
   })();
 };
