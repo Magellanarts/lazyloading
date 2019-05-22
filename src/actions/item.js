@@ -211,6 +211,13 @@ export const BOOK_DATES = (dates, item) => {
 };
 
 
+export const ADD_RENTAL_TO_ITEM = (rental, item) => {
+  db.collection('items').doc(item)
+    .update({
+      rentals: firebase.firestore.FieldValue.arrayUnion(rental),
+    });
+};
+
 export const ADD_CONVO_TO_ITEM = (convo, item, userId, ownerId) => {
   const conversation = {
     conversationId: convo,

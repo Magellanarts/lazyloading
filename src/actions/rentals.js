@@ -4,10 +4,11 @@ import { db } from '@/auth';
 
 import {
   BOOK_DATES,
+  ADD_RENTAL_TO_ITEM,
 } from '@/actions/item';
 
 import {
-  ADD_RENTAL,
+  ADD_RENTAL_TO_USER,
 } from '@/actions/user';
 
 import {
@@ -17,7 +18,16 @@ import {
 } from '@/actions/conversations';
 
 
-export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, deposit, name, chargeId) => {
+export const RENT_ITEM = async (
+  itemId,
+  dates,
+  ownerId,
+  totalDays,
+  totalPrice,
+  deposit,
+  name,
+  chargeId,
+) => {
   const { userId } = store.getters;
 
   // update item's booked dates
@@ -54,15 +64,17 @@ export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, d
     CREATE_CONVERSATION(itemId, ownerId, message, name);
   }
 
-
   db.collection('rentals').add(rental).then((res) => {
     // res.id has id of rental transaction
 
+    // add rentalID to item
+    ADD_RENTAL_TO_ITEM(res.id, itemId);
+
     // add transaction reference to renter's rentals list
-    ADD_RENTAL(res.id, userId);
+    ADD_RENTAL_TO_USER(res.id, userId);
 
     // add transaction reference to owner's rentals list
-    ADD_RENTAL(res.id, ownerId);
+    ADD_RENTAL_TO_USER(res.id, ownerId);
   });
 };
 

@@ -29,7 +29,6 @@ export default {
       this.active = !this.active
     },
     applyDate (result) {
-      // console.log(result)
       this.active = false
     }
   }

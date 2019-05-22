@@ -14,8 +14,13 @@
 <script>
 import uuid from 'uuid/v4';
 import {
+  GET_CONVERSATION_BY_FIELDS,
+} from '@/actions/conversations';
+import {
   RENT_ITEM,
 } from '@/actions/rentals';
+
+import router from '@/router';
 
 require('dotenv').config();
 
@@ -46,12 +51,16 @@ export default {
     };
   },
   props: {
-    amount: {
-      type: Number,
+    item: {
+      type: Object,
       required: true,
     },
-    name: {
-      type: String,
+    dates: {
+      type: Array,
+      required: true,
+    },
+    amount: {
+      type: Number,
       required: true,
     },
   },
@@ -60,7 +69,7 @@ export default {
     card.mount(this.$refs.card);
   },
   methods: {
-    submitPayment() {
+    async submitPayment() {
       stripe.createToken(card)
         .then((result) => {
           // result.token has token
@@ -69,7 +78,7 @@ export default {
             body: JSON.stringify({
               token: result.token,
               amount: this.amount,
-              description: this.name,
+              description: this.item.name,
               idempotency_key: uuid(),
             }),
           })
@@ -85,12 +94,22 @@ export default {
                       this.dates,
                       this.item.user,
                       this.dates.length,
-                      parseInt((this.dates.length * this.item.dailyPrice), 10) + parseInt(this.item.deposit, 10),
+                      parseInt((
+                        this.dates.length * this.item.dailyPrice
+                      ), 10)
+                      + parseInt(this.item.deposit, 10),
                       this.item.deposit,
                       this.item.name,
                       chargeDetails.id,
                     );
+
+                    const convo = GET_CONVERSATION_BY_FIELDS(this.item.ID, this.item.user, localStorage.userId);
+                    return convo;
                   }
+                  return null;
+                }).then((convo) => {
+                  // direct user to dashboard and messages section with this convo active
+                  router.push(`/dashboard/messages/${convo[0].id}`);
                 });
             });
         });

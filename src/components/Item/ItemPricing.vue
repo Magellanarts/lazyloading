@@ -18,11 +18,11 @@ export default {
       required: true,
     },
     dailyPrice: {
-      type: Number,
+      type: String,
       required: true,
     },
     deposit: {
-      type: Number,
+      type: String,
       required: true,
     },
   },

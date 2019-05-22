@@ -29,7 +29,8 @@
 
             <h3>Payment</h3>
             <checkout-form
-              :name="item.name"
+              :item="item"
+              :dates="dates"
               :amount="amount"
             />
 

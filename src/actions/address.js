@@ -7,7 +7,6 @@ import { db } from '@/auth';
 
 export const UPDATE_ADDRESS = (address) => {
   const addressToPublish = { ...address };
-  console.log(addressToPublish);
 
   if (!addressToPublish._geoloc) {
     axios.get(`https://open.mapquestapi.com/nominatim/v1/search.php?key=WWoKqSLir2hzGkpTBhbJbFXeyC8Gz96S&format=json&q=${address.streetAddress} ${address.city}, ${address.state}`)

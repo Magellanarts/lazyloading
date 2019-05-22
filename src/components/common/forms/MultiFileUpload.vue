@@ -71,7 +71,6 @@ export default {
     deletePhoto(url, image) {
       this.localURLs = this.localURLs.filter(e => e.url !== url);
       // this.localImages = this.localImages.filter(e => e !== image);
-      console.log(image.constructor);
       this.$emit('imageDeleted', image);
     },
   },

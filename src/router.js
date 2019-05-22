@@ -80,6 +80,14 @@ const router = new Router({
           ],
         },
         {
+          name: 'dashboard-rentals',
+          path: '/dashboard/rentals/',
+          component: () => import(/* webpackChunkName: "dashboard-rentals" */'./views/DashboardRentals.vue'),
+          meta: {
+            authRequried: true,
+          },
+        },
+        {
           name: 'dashboard-edit-address',
           path: '/dashboard/edit-address/',
           component: () => import(/* webpackChunkName: "dashboard-edit-address" */'./views/DashboardEditAddress.vue'),

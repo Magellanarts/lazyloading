@@ -83,7 +83,7 @@ export const GET_USER_CONVERSATIONS = () => new Promise((resolve) => {
 });
 
 
-export const ADD_RENTAL = (rental, user) => {
+export const ADD_RENTAL_TO_USER = (rental, user) => {
   db.collection('users').doc(user)
     .update({
       rentals: firebase.firestore.FieldValue.arrayUnion(rental),

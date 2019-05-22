@@ -68,6 +68,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  margin-bottom: 16px;
+}
 .dashboard-section {
   margin-bottom: 48px;
 }

@@ -68,7 +68,6 @@ export default {
       return false;
     },
     updateMain(url, index) {
-      console.log(url);
       this.activeIndex = index;
       itemBus.$emit('updateMain', url);
     },

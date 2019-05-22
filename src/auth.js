@@ -55,33 +55,3 @@ export const updateAlgolia = (item) => {
     process.exit(0);
   });
 };
-
-/*
-// This was set up to get the existing items from firestore into Algolia
-const records = [];
-
-db.collection('items').get()
-  .then((snapshot) => {
-    snapshot.forEach((doc) => {
-      const childKey = doc.id;
-      const childData = doc.data();
-
-      childData.objectID = childKey;
-
-      records.push(childData);
-    });
-
-    // Add or update new objects
-    index.saveObjects(records).then(() => {
-      console.log('Documents imported into Algolia');
-      process.exit(0);
-    })
-      .catch((error) => {
-        console.error('Error when importing documents into Algolia', error);
-        process.exit(1);
-      });
-  })
-  .catch((err) => {
-    console.error('Error getting documents', err);
-  });
-  */

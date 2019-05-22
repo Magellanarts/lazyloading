@@ -25,13 +25,19 @@
       >
         Messages
       </router-link>
+      <router-link
+      to="/dashboard/rentals"
+      active-class="active"
+      >
+        Rentals
+      </router-link>
     </nav>
 
-    <transition name="fade" mode="out-in">
-      <div class="l-site-container">
-        <router-view />
-      </div>
-    </transition>
+    <div class="l-site-container">
+      <transition name="fade" mode="out-in">
+          <router-view />
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -60,6 +66,7 @@
     }
   }
 }
+
 .dashboard-nav {
   margin-bottom: 32px;
   padding-top: 16px;
