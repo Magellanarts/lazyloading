@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <checkout-form />
+
 </div>
 </template>
 
@@ -52,7 +52,6 @@ import ItemActions from '@/components/Item/ItemActions.vue';
 import moment from 'moment';
 import Owner from '@/components/Owner.vue';
 import ItemTags from './ItemTags.vue';
-import CheckoutForm from '@/components/common/CheckoutForm.vue';
 
 export default {
   data() {
@@ -75,7 +74,6 @@ export default {
     DatePicker: VueHotelDatepicker,
     Owner,
     ItemActions,
-    CheckoutForm,
   },
   computed: {
     bookedFutureDates() {

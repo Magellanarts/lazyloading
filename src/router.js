@@ -119,6 +119,11 @@ const router = new Router({
         },
       ],
     },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: () => import(/* webpackChunkName: "sign-up" */'./views/Checkout.vue'),
+    },
   ],
 });
 
@@ -137,6 +142,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next('/log-in');
     } */
+    // TODO: Fix user status of being logged in
     if (store.getters.userId === null) {
       store.watch(store.getters.getUserMethod, (userId) => {
         if (userId) {

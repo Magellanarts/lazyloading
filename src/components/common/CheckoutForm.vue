@@ -3,13 +3,19 @@
 
     <!-- Stripe inserts fields here -->
     <div ref="card"></div>
-
-    <button @click="submitPayment" class="checkout-form__submit">Submit Payment</button>
+    <button
+      @click="submitPayment" class="checkout-form__submit button action"
+    >
+      Submit Payment
+    </button>
   </div>
 </template>
 
 <script>
 import uuid from 'uuid/v4';
+import {
+  RENT_ITEM,
+} from '@/actions/rentals';
 
 require('dotenv').config();
 
@@ -34,6 +40,21 @@ const style = {
 };
 
 export default {
+  data() {
+    return {
+      purchase: '',
+    };
+  },
+  props: {
+    amount: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
   mounted() {
     card = elements.create('card', { style });
     card.mount(this.$refs.card);
@@ -43,34 +64,69 @@ export default {
       stripe.createToken(card)
         .then((result) => {
           // result.token has token
-          console.log(result.token);
           fetch(`${process.env.VUE_APP_LAMBDA_ENDPOINT}purchase`, {
             method: 'POST',
             body: JSON.stringify({
               token: result.token,
-              amount: '500',
+              amount: this.amount,
+              description: this.name,
               idempotency_key: uuid(),
             }),
           })
             .then((res) => {
-              console.log(res);
+              res.json()
+                .then((chargeDetails) => {
+                  // contains and ID and paid status
+                  // if paid is true,
+                  // create payment in firebase
+                  if (chargeDetails.paid === true) {
+                    RENT_ITEM(
+                      this.item.ID,
+                      this.dates,
+                      this.item.user,
+                      this.dates.length,
+                      parseInt((this.dates.length * this.item.dailyPrice), 10) + parseInt(this.item.deposit, 10),
+                      this.item.deposit,
+                      this.item.name,
+                      chargeDetails.id,
+                    );
+                  }
+                });
             });
         });
     },
   },
 };
 
-
-// Token is being created, and read in purchase.js.
-// Next, submit the stripe.create() with relevant info
 </script>
 
 <style lang="scss" scoped>
-.checkout-form {
-  padding: 32px 0;
+.StripeElement {
+  box-sizing: border-box;
+  margin-bottom: 18px;
 
-  input {
-    background: #fff;
-  }
+  height: 40px;
+
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
 }
 </style>

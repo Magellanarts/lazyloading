@@ -1,12 +1,12 @@
 <template>
   <div
     v-if="mainImage"
-    :ref="mainImage"
+    :ref="mutableMainImage"
     class="image-container"
-    :class="noBG ? 'no-bg' : ''"
+    :class="{'no-bg' : noBG, autoHeight : autoHeight }"
     v-touch:swipe="swipeHandler"
     alt="">
-      <img :src="mainImage">
+      <img :src="mutableMainImage">
   </div>
   <!-- :style="{backgroundImage: `url(${mainImage})`}" -->
 </template>
@@ -17,11 +17,24 @@ import 'firebase/storage';
 import { itemBus } from '@/components/Item/ItemHeader.vue';
 
 export default {
+  data() {
+    return {
+      mutableMainImage: this.mainImage,
+    };
+  },
+  watch: {
+    mainImage() {
+      this.mutableMainImage = this.mainImage;
+    },
+  },
   props: {
     mainImage: {
       required: true,
     },
     noBG: {
+      type: Boolean,
+    },
+    autoHeight: {
       type: Boolean,
     },
   },
@@ -31,11 +44,12 @@ export default {
     },
   },
   created() {
-    if (this.mainImage) {
+    if (this.mutableMainImage) {
       const storageRef = firebase.storage().ref();
-      storageRef.child(this.mainImage).getDownloadURL()
+      storageRef.child(this.mutableMainImage).getDownloadURL()
         .then((url) => {
-          itemBus.$emit('updateMain', url);
+          this.mutableMainImage = url;
+          // itemBus.$emit('updateMain', url);
         });
     }
   },
@@ -50,6 +64,10 @@ export default {
     align-items: center;
     justify-content: center;
     order: 2;
+
+    &.autoHeight {
+      height: auto !important;
+    }
 
     &.no-bg {
         background-size: 0 0;

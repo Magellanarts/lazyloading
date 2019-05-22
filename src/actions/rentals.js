@@ -17,9 +17,8 @@ import {
 } from '@/actions/conversations';
 
 
-export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, deposit, name) => {
-  console.log('rented');
-  /* const { userId } = store.getters;
+export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, deposit, name, chargeId) => {
+  const { userId } = store.getters;
 
   // update item's booked dates
   BOOK_DATES(dates, itemId);
@@ -34,6 +33,7 @@ export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, d
     totalPrice,
     deposit,
     name,
+    chargeId,
   };
 
   const convos = await GET_CONVERSATION_BY_FIELDS(itemId, ownerId, userId);
@@ -63,7 +63,7 @@ export const RENT_ITEM = async (itemId, dates, ownerId, totalDays, totalPrice, d
 
     // add transaction reference to owner's rentals list
     ADD_RENTAL(res.id, ownerId);
-  }); */
+  });
 };
 
 

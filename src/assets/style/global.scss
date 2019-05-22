@@ -125,7 +125,7 @@ h5 {
   }
 
   &.action {
-    background: $blue;
+    background: linear-gradient(to left, rgb(86, 116, 247), rgba(86, 116, 247, .92));
     color: #fff;
     font-size: 20px;
     padding: 8px 16px;

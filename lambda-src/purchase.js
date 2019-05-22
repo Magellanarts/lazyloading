@@ -27,6 +27,7 @@ exports.handler = function (event, context, callback) {
     !data.token
     || !data.amount
     || !data.idempotency_key
+    || !data.description
   ) {
     console.error('Required information is missing.');
 
@@ -42,10 +43,20 @@ exports.handler = function (event, context, callback) {
     const charge = await stripe.charges.create({
       amount: data.amount,
       currency: 'usd',
-      description: 'Testing a charge',
+      description: data.description,
       source: data.token.id,
     }, {
       idempotency_key: data.idempotency_key,
+    });
+
+    callback(null, {
+      transActionID: charge.id,
+      statusCode,
+      headers,
+      body: JSON.stringify({
+        id: charge.id,
+        paid: charge.paid,
+      }),
     });
   })();
 };

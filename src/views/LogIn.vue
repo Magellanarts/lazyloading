@@ -5,7 +5,6 @@
       @submit.prevent="submitForm"
       novalidate
     >
-
       <text-input
         name="email"
         label="Email"
@@ -78,6 +77,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-</style>

@@ -20,7 +20,6 @@ export default {
   },
   mounted() {
     if (this.lat) {
-      console.log('new map', this.lat);
       /*  GoogleMapsLoader.KEY = 'AIzaSyAs2RUHr98KDYRCjGvJ3XuNZC5ae3ilQAg';
       GoogleMapsLoader.VERSION = '3.34';
       GoogleMapsLoader.load((google) => {

@@ -1,15 +1,17 @@
 // TODO: Account Page
 // TODO: Reviews for item
 // TODO: Limit search results to 10. Add a View More button to take to a search page
-// TODO: Payment processing
+// TODO: Fix slugs for new items. generate unique id?
 // TODO: fix forms. not every field should be required
 // TODO: Show User name on product
 //        link to user’s page?
-//          need to build user’s page
+//        need to build user’s page
 //        other items offered by this user
+//        response rate of user
 // TODO: other similar items in the area
 // TODO: Action to ‘rent’ item
 //        Renting is in place but doesn't include a purchase transaction
+// TODO: Add weekly/monthly prices
 
 // https://paletton.com/#uid=53S0u0knNXQc0ZwirYGt8VYFPRD
 

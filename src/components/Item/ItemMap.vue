@@ -8,7 +8,7 @@
     >
       <GmapCircle
         :center="{lat:item._geoloc.lat, lng:item._geoloc.lng}"
-        :radius="1000"
+        :radius="500"
         :options="{strokeColor: 'rgb(86, 116, 247)',fillColor:'rgb(86, 116, 247)',fillOpacity:.4
           }"
       />
