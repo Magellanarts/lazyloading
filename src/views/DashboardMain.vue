@@ -28,7 +28,7 @@
               @click.native="setItem(item)"
               :to="`/dashboard/list-item/${item.ID}`"
             >Edit</router-link>
-            <router-link :to="`item/${item.slug}`">View</router-link>
+            <router-link :to="`/item/${item.slug}`">View</router-link>
           </div>
         </li>
       </ul>

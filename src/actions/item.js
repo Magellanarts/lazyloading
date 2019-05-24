@@ -34,7 +34,6 @@ export const GET_ITEM_DATA_BY_NAME = itemRef => new Promise((resolve) => {
     });
 });
 
-// TODO: Rebuilding CREATE_ITEM/UPDATE_ITEM as actions outside of store
 
 export const UPDATE_ITEM = (item) => {
   const itemToPublish = { ...item };
@@ -145,7 +144,6 @@ export const EDIT_ITEM = (item) => {
   // set the user to the userID we get from our getters
   itemToPublish.user = userId;
 
-
   // Main image First
   if (item.mainImage) {
     if (item.mainImage.constructor === FileList || item.mainImage.constructor === File) {
@@ -172,7 +170,7 @@ export const EDIT_ITEM = (item) => {
   }
 
   // create slug
-  itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.city} ${itemToPublish.state}`);
+  itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.addressDetails.city} ${itemToPublish.addressDetails.state}`);
 
   // push to firestore
   if (item.ID) {

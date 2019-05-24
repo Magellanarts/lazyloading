@@ -9,8 +9,6 @@
 //        other items offered by this user
 //        response rate of user
 // TODO: other similar items in the area
-// TODO: Action to ‘rent’ item
-//        Renting is in place but doesn't include a purchase transaction
 // TODO: Add weekly/monthly prices
 
 // https://paletton.com/#uid=53S0u0knNXQc0ZwirYGt8VYFPRD

@@ -26,6 +26,24 @@
       />
 
       <text-input
+        name="weeklyPrice"
+        label="Weekly Price"
+        v-model="item.weeklyPrice"
+        :errors="errors"
+        required
+        labelClass="text-label--two-lines"
+      />
+
+      <text-input
+        name="monthlyPrice"
+        label="Monthly Price"
+        v-model="item.monthlyPrice"
+        :errors="errors"
+        required
+        labelClass="text-label--two-lines"
+      />
+
+      <text-input
         name="deposit"
         label="Deposit"
         v-model="item.deposit"
@@ -58,6 +76,9 @@
             :selected="{true: item.address == address.ID}"
             :lat="address._geoloc.lat"
             :lng="address._geoloc.lng"
+            :city="address.city"
+            :state="address.state"
+            :zipCode="address.zipCode"
           >
             {{ address.label }}
           </option>
@@ -138,6 +159,8 @@ export default {
       item: {
         name: '',
         dailyPrice: '',
+        weeklyPrice: '',
+        monthlyPrice: '',
         deposit: '',
         description: '',
         tagsSearchbale: [],
@@ -145,6 +168,7 @@ export default {
         mainImage: '',
         address: '',
         _geoloc: {},
+        addressDetails: {},
       },
       errors: {
         name: false,
@@ -216,6 +240,12 @@ export default {
       this.item._geoloc = {
         lat: parseFloat(options[options.selectedIndex].attributes.lat.nodeValue),
         lng: parseFloat(options[options.selectedIndex].attributes.lng.nodeValue),
+      };
+      console.log(options[options.selectedIndex].attributes);
+      this.item.addressDetails = {
+        city: options[options.selectedIndex].attributes.city.nodeValue,
+        state: options[options.selectedIndex].attributes.state.nodeValue,
+        zipCode: options[options.selectedIndex].attributes.zipcode.nodeValue,
       };
     },
   },

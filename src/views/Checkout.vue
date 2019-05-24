@@ -23,7 +23,11 @@
               <item-pricing
                 :dates="dates"
                 :dailyPrice="item.dailyPrice"
+                :weeklyDiscount="weeklyDiscount"
+                :monthlyDiscount="monthlyDiscount"
                 :deposit="item.deposit"
+                :subTotal="subTotal"
+                :totalPrice="totalPrice"
               />
             </div>
 
@@ -31,13 +35,10 @@
             <checkout-form
               :item="item"
               :dates="dates"
-              :amount="amount"
+              :amount="totalPrice * 100"
             />
-
           </div>
         </div>
-
-
       </div>
   </div>
 </template>
@@ -51,6 +52,12 @@ import ItemPricing from '@/components/Item/ItemPricing.vue';
 import {
   GET_ITEM_DATA_BY_DOC_ID,
 } from '@/actions/item';
+
+import {
+  CALCULATE_WEEKLY_DISCOUNT,
+  CALCULATE_MONTHLY_DISCOUNT,
+  CALCULATE_TOTAL_PRICE,
+} from '@/actions/rentals';
 
 export const itemBus = new Vue();
 
@@ -66,6 +73,20 @@ export default {
     MainImage,
     ItemPricing,
   },
+  computed: {
+    subTotal() {
+      return this.dates.length * this.item.dailyPrice;
+    },
+    weeklyDiscount() {
+      return CALCULATE_WEEKLY_DISCOUNT(this.dates.length, this.item.weeklyPrice, this.item.dailyPrice);
+    },
+    monthlyDiscount() {
+      return CALCULATE_MONTHLY_DISCOUNT(this.dates.length, this.item.monthlyPrice, this.item.dailyPrice);
+    },
+    totalPrice() {
+      return CALCULATE_TOTAL_PRICE(this.dates.length, this.item.deposit, this.item.dailyPrice, this.item.monthlyPrice, this.item.weeklyPrice);
+    },
+  },
   mounted() {
     itemBus.$on('updateMain', (value) => {
       this.setMain(value);
@@ -75,13 +96,6 @@ export default {
     if (this.$route.query.itemID) {
       this.item = await GET_ITEM_DATA_BY_DOC_ID(this.$route.query.itemID);
     }
-  },
-  computed: {
-    amount() {
-      return (
-        (parseInt(this.$route.query.dates.length * this.item.dailyPrice, 10)
-        + parseInt(this.item.deposit, 10)) * 100);
-    },
   },
 };
 </script>

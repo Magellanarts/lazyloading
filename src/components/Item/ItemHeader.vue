@@ -15,8 +15,24 @@
     </div>
 
     <div class="item_title">
-      <h2><span>(Daily Price)</span> ${{ item.dailyPrice }}</h2>
       <h1>{{ item.name }}</h1>
+
+      <div class="item-prices">
+        <div class="item-price">
+          <div class="item-price__value">${{ item.dailyPrice }}</div>
+          <div class="item-price__label">Daily Price</div>
+        </div>
+
+        <div class="item-price" v-if="item.weeklyPrice">
+          <div class="item-price__value">${{ item.weeklyPrice }}</div>
+          <div class="item-price__label">Weekly Price</div>
+        </div>
+
+        <div class="item-price"  v-if="item.monthlyPrice">
+          <div class="item-price__value">${{ item.monthlyPrice }}</div>
+          <div class="item-price__label">Monthly Price</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -78,25 +94,30 @@ export default {
     text-align: center;
     margin-bottom: 16px;
   }
+}
 
-  h2 {
-    color: #3153F2;
+.item-prices {
+  display: flex;
+  max-width: 300px;
+  margin: 16px auto 0;
+  text-align: center;
+}
 
-    span {
-      color: #666;
-      font-size: 35%;
-    }
+.item-price {
+  flex: 1;
+  font-family: 'Nunito';
+
+  &__value {
+    font-size: 20px;
   }
 
-  h3 {
-    color: #3153F2;
-
-    span {
-      color: #666;
-      font-size: 35%;
-    }
+  &__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
   }
 }
+
 
 @media screen and (min-width: 760px) {
   .item-header {
@@ -120,16 +141,11 @@ export default {
 
   .item_title {
     position: relative;
-    top: -20%;
+    top: -10%;
     h1 {
       font-size: 40px;
       line-height: 44px;
       margin-bottom: 0;
-    }
-
-    h2 {
-      text-align: right;
-      font-size: 30px;
     }
   }
 }
@@ -149,9 +165,22 @@ export default {
       font-size: 52px;
       line-height: 56px;
     }
+  }
+}
 
-    h2 {
-      font-size: 34px;
+
+@media screen and (min-width: 1250px) {
+
+  .item-prices {
+    max-width: 350px;
+  }
+  .item-price {
+    &__value {
+      font-size: 36px;
+    }
+
+    &__label {
+      font-size: 12px;
     }
   }
 }

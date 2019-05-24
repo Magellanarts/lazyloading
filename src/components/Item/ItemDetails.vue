@@ -11,7 +11,6 @@
 
     <div class="description" v-html="item.description" />
 
-
     <item-tags
       :tags="item.tags"
     />
@@ -40,8 +39,6 @@
       </transition>
     </div>
   </div>
-
-
 </div>
 </template>
 

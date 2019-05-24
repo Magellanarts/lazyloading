@@ -79,6 +79,26 @@ export const RENT_ITEM = async (
 };
 
 
-export const something = () => {
+export const CALCULATE_WEEKLY_DISCOUNT = (length, weeklyPrice, dailyPrice) => {
+  if (length >= 7 && weeklyPrice && length / 30 < 1) {
+    const totalWeeks = Math.floor(length / 7);
+    const fullPricedWeekTotal = dailyPrice * 7;
+    const discountWeekDifference = fullPricedWeekTotal - weeklyPrice;
 
+    return totalWeeks * discountWeekDifference;
+  }
+  return '';
 };
+
+export const CALCULATE_MONTHLY_DISCOUNT = (length, monthlyPrice, dailyPrice) => {
+  if (length >= 30 && monthlyPrice) {
+    const totalMonths = Math.floor(length / 30);
+    const fullPricedMonthTotal = dailyPrice * 30;
+    const discountMonthDifference = fullPricedMonthTotal - monthlyPrice;
+
+    return totalMonths * discountMonthDifference;
+  }
+  return '';
+};
+
+export const CALCULATE_TOTAL_PRICE = (length, deposit, dailyPrice, monthlyPrice, weeklyPrice) => parseInt((length * dailyPrice), 10) + parseInt(deposit, 10) - CALCULATE_MONTHLY_DISCOUNT(length, monthlyPrice, dailyPrice) - CALCULATE_WEEKLY_DISCOUNT(length, weeklyPrice, dailyPrice);

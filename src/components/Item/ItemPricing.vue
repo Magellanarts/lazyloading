@@ -2,11 +2,23 @@
 <div>
   <div class="pricing__sub">Total Days: {{ dates.length }}</div><br />
   <div class="pricing__sub border-bottom"> x Daily Price: {{ dailyPrice }}</div><br />
-  <div class="pricing__sub pricing__subtotal"> Subtotal: {{ dates.length * dailyPrice }}</div><br />
+  <div class="pricing__sub pricing__subtotal"> Subtotal: {{ subTotal }}</div><br />
+
+  <template v-if="weeklyDiscount">
+    <div class="pricing__sub">
+      - Weekly Discount: {{ weeklyDiscount }}
+    </div>
+    <br />
+  </template>
+  <template v-if="monthlyDiscount">
+    <div class="pricing__sub">
+      - Monthly Discount: {{ monthlyDiscount }}
+    </div>
+    <br />
+  </template>
+
   <div class="pricing__sub border-bottom"> + Deposit: {{ deposit }}</div>
-  <div class="pricing__total">Total Price: ${{
-  parseInt((dates.length * dailyPrice), 10) + parseInt(deposit, 10)
-  }}</div>
+  <div class="pricing__total">Total Price: ${{ totalPrice }}</div>
 </div>
 </template>
 
@@ -21,7 +33,21 @@ export default {
       type: String,
       required: true,
     },
+    weeklyDiscount: {
+      type: String,
+    },
+    monthlyDiscount: {
+      type: String,
+    },
     deposit: {
+      type: String,
+      required: true,
+    },
+    subTotal: {
+      type: String,
+      required: true,
+    },
+    totalPrice: {
       type: String,
       required: true,
     },
