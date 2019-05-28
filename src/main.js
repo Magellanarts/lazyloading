@@ -10,6 +10,9 @@
 //        response rate of user
 // TODO: other similar items in the area
 // TODO: Add weekly/monthly prices
+// TODO: Adjust site wanting user's location all the time
+// TODO: Add loading animations while waiting for component
+//  show when images are loading
 
 // https://paletton.com/#uid=53S0u0knNXQc0ZwirYGt8VYFPRD
 
@@ -31,26 +34,8 @@ Vue.use(Vue2TouchEvents);
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyAs2RUHr98KDYRCjGvJ3XuNZC5ae3ilQAg',
-    libraries: 'places', // This is required if you use the Autocomplete plugin
-    // OR: libraries: 'places,drawing'
-    // OR: libraries: 'places,drawing,visualization'
-    // (as you require)
-
-    // // If you want to set the version, you can do so:
-    // v: '3.26',
+    libraries: 'places',
   },
-
-  // // If you intend to programmatically custom event listener code
-  // // (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
-  // // instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
-  // // you might need to turn this on.
-  // autobindAllEvents: false,
-
-  // // If you want to manually install components, e.g.
-  // // import {GmapMarker} from 'vue2-google-maps/src/components/marker'
-  // // Vue.component('GmapMarker', GmapMarker)
-  // // then disable the following:
-  // installComponents: true,
 });
 
 require('@/assets/style/global.scss');

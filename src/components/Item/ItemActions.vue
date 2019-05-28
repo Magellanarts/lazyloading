@@ -10,7 +10,25 @@
         :subTotal="subTotal"
         :totalPrice="totalPrice"
       />
-      <button @click="rentItem" class="button action" type="button">Rent me!</button>
+      <template v-if="$store.getters.userId">
+        <button
+          v-if="$store.getters.userId"
+          @click="rentItem"
+          class="button action"
+          type="button"
+        >
+          Rent me!
+        </button>
+      </template>
+
+      <template v-else>
+        <div>
+          <router-link to="/sign-up/">Sign up</router-link>
+          or
+          <router-link to="/log-in/">Log In</router-link>
+        </div>
+        to rent this item
+      </template>
     </div>
   </div>
 </template>
@@ -49,18 +67,35 @@ export default {
       });
     },
   },
+  mounted() {
+    console.log(this.$store.getters.userId);
+  },
   computed: {
     subTotal() {
       return this.dates.length * this.item.dailyPrice;
     },
     weeklyDiscount() {
-      return CALCULATE_WEEKLY_DISCOUNT(this.dates.length, this.item.weeklyPrice, this.item.dailyPrice);
+      return CALCULATE_WEEKLY_DISCOUNT(
+        this.dates.length,
+        this.item.weeklyPrice,
+        this.item.dailyPrice,
+      );
     },
     monthlyDiscount() {
-      return CALCULATE_MONTHLY_DISCOUNT(this.dates.length, this.item.monthlyPrice, this.item.dailyPrice);
+      return CALCULATE_MONTHLY_DISCOUNT(
+        this.dates.length,
+        this.item.monthlyPrice,
+        this.item.dailyPrice,
+      );
     },
     totalPrice() {
-      return CALCULATE_TOTAL_PRICE(this.dates.length, this.item.deposit, this.item.dailyPrice, this.item.monthlyPrice, this.item.weeklyPrice);
+      return CALCULATE_TOTAL_PRICE(
+        this.dates.length,
+        this.item.deposit,
+        this.item.dailyPrice,
+        this.item.monthlyPrice,
+        this.item.weeklyPrice,
+      );
     },
   },
 };

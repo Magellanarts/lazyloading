@@ -1,23 +1,26 @@
 <template>
-  <div class="alert-modal">
-    <div class="alert-header">
+  <div class="alert-modal" ref="modal">
+    <div v-if="showClose" class="alert-modal__close" @click="$emit('closeModal')"></div>
+    <div class="alert-header" ref="header">
       <i
         class="alert-modal__icon fa"
         :class="`fa-${fontType}`"
       >
       </i>
       <div class="alert-header__heading">{{ heading }}</div>
-      <div v-if="content">
-        {{ content }}
-      </div>
+    </div>
+    <div class="alert-modal__content" ref="content">
+      <slot />
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
+    showClose: {
+      type: Boolean,
+    },
     type: {
       type: String,
       required: true,
@@ -33,10 +36,6 @@ export default {
       type: String,
       required: true,
     },
-    content: {
-      type: String,
-      required: false,
-    },
   },
   computed: {
     fontType() {
@@ -50,10 +49,16 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$refs.modal.style.height = `${this.$refs.header.offsetHeight + this.$refs.content.offsetHeight}px`;
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+a {
+  color: #5673F7;
+}
   .alert-modal {
     width: 280px;
     padding: 20px;
@@ -67,8 +72,36 @@ export default {
     right: 0;
     bottom: 0;
     margin: auto;
-    height: 100px;
     z-index: 1000;
+  }
+
+  .alert-modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+
+    &:before,
+    &:after {
+      content: '';
+      height: 20px;
+      width: 2px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      background: #5673F7;
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+    &:after {
+      transform: rotate(-45deg);
+    }
   }
 
   .alert-modal__icon {
@@ -90,5 +123,10 @@ export default {
 
   .alert-header__heading {
     font-size: 22px;
+  }
+
+  .alert-modal__content {
+    padding: 16px 0;
+    line-height: 1.3;
   }
 </style>

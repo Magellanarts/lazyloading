@@ -103,7 +103,11 @@ export default {
                       chargeDetails.id,
                     );
 
-                    const convo = GET_CONVERSATION_BY_FIELDS(this.item.ID, this.item.user, localStorage.userId);
+                    const convo = GET_CONVERSATION_BY_FIELDS(
+                      this.item.ID,
+                      this.item.user,
+                      localStorage.userId,
+                    );
                     return convo;
                   }
                   return null;

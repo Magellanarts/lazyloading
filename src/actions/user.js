@@ -102,5 +102,3 @@ export const ADD_CONVO_TO_USER = (convo, userId, partnerId) => {
       conversations: firebase.firestore.FieldValue.arrayUnion(conversation),
     });
 };
-// TODO: once rental is complete, check to see if we need to create a new convo
-// or add to existing convo]

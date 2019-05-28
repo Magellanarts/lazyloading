@@ -101,4 +101,21 @@ export const CALCULATE_MONTHLY_DISCOUNT = (length, monthlyPrice, dailyPrice) => 
   return '';
 };
 
-export const CALCULATE_TOTAL_PRICE = (length, deposit, dailyPrice, monthlyPrice, weeklyPrice) => parseInt((length * dailyPrice), 10) + parseInt(deposit, 10) - CALCULATE_MONTHLY_DISCOUNT(length, monthlyPrice, dailyPrice) - CALCULATE_WEEKLY_DISCOUNT(length, weeklyPrice, dailyPrice);
+export const CALCULATE_TOTAL_PRICE = (
+  length,
+  deposit,
+  dailyPrice,
+  monthlyPrice,
+  weeklyPrice,
+) => parseInt((length * dailyPrice), 10)
+  + parseInt(deposit, 10)
+  - CALCULATE_MONTHLY_DISCOUNT(
+    length,
+    monthlyPrice,
+    dailyPrice,
+  )
+  - CALCULATE_WEEKLY_DISCOUNT(
+    length,
+    weeklyPrice,
+    dailyPrice,
+  );

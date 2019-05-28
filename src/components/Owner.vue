@@ -1,7 +1,7 @@
 <template>
   <div class="owner-block">
     <div class="owner-name">{{ owner.firstName }} {{ owner.lastName }}</div>
-    <div class="message-seller" @click="showOwner = true">Message Owner</div>
+    <div class="message-seller" @click="messageOwner">Message Owner</div>
 
     <div
       class="owner-message"
@@ -27,13 +27,30 @@
         <button class="button" type="submit">Submit</button>
       </form>
     </div>
+
+    <transition name="fade" mode="out-in">
+      <alert-modal
+        v-if="showNotLoggedInModal"
+        type="fail"
+        heading="Must be logged in."
+        ref="log-in-modal"
+        showClose
+        @closeModal="showNotLoggedInModal = false"
+      >
+        <div>
+          <router-link to="/sign-up/">Sign up</router-link>
+          or
+          <router-link to="/log-in/">Log In</router-link>
+        </div>
+        to message owner
+      </alert-modal>
+    </transition>
   </div>
 </template>
 
 <script>
-// TODO: if user is not logged in, they can't message owner.
-// Instead, have them see a modal that tells them to sign up
 import TextInput from '@/components/common/forms/TextInput.vue';
+import AlertModal from '@/components/common/AlertModal.vue';
 
 import {
   MESSAGE_OWNER,
@@ -44,6 +61,7 @@ export default {
     return {
       message: '',
       showOwner: false,
+      showNotLoggedInModal: false,
       errors: {
         message: false,
       },
@@ -51,6 +69,7 @@ export default {
   },
   components: {
     TextInput,
+    AlertModal,
   },
   props: {
     owner: {
@@ -84,6 +103,13 @@ export default {
 
         this.showOwner = false;
         this.message = '';
+      }
+    },
+    messageOwner() {
+      if (this.$store.getters.userId) {
+        this.showOwner = true;
+      } else {
+        this.showNotLoggedInModal = true;
       }
     },
   },

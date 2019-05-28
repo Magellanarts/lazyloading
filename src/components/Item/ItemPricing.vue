@@ -44,11 +44,11 @@ export default {
       required: true,
     },
     subTotal: {
-      type: String,
+      type: Number,
       required: true,
     },
     totalPrice: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

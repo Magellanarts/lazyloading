@@ -50,7 +50,7 @@ export default {
     justify-content: center;
 
     img {
-      flex: 0;
+      // flex: 0;
       max-width: 100%;
       max-height: 100%;
     }

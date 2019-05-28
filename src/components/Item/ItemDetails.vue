@@ -43,6 +43,9 @@
 </template>
 
 <script>
+
+// TODO: finish modal to show people who aren't logged in and try to message owner.
+// need to pass variable to owner component and add logic to check that
 import VueHotelDatepicker from '@/components/public/VueHotelDatePicker/components/VueHotelDatepicker.vue';
 import ItemActions from '@/components/Item/ItemActions.vue';
 
@@ -94,7 +97,6 @@ export default {
       const startDate = new Date(date.start);
       const endDate = new Date(date.end);
 
-
       if (date.start && date.end) {
         // create array containing each day that is selected
         // convert dates to MM/DD/YYYY format
@@ -111,8 +113,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 h2 {
   margin-bottom: 12px;
 }

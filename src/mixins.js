@@ -32,18 +32,20 @@ export const formValidation = {
       // TODO: Fix this for-in loop
       // loop through user values checking for null or empty string
       // if null/empty, add it to the errors object
-      for (const key in fields) {
+      Object.keys(fields).map((key) => {
         if (fields[key] === null || fields[key] === '') {
           this.errors[key] = true;
           errors = true;
         } else {
           this.errors[key] = false;
         }
-      }
+        return null;
+      });
 
       return errors;
     },
     validateEmail(email) {
+      // eslint-disable-next-line no-useless-escape
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     },
@@ -91,7 +93,7 @@ export const convertToBlob = {
       const ia = new Uint8Array(ab);
 
       // set the bytes of the buffer to the correct values
-      for (let i = 0; i < byteString.length; i++) {
+      for (let i = 0; i < byteString.length; i += 1) {
         ia[i] = byteString.charCodeAt(i);
       }
 
