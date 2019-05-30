@@ -28,8 +28,6 @@ export const formValidation = {
         }
       }
 
-
-      // TODO: Fix this for-in loop
       // loop through user values checking for null or empty string
       // if null/empty, add it to the errors object
       Object.keys(fields).map((key) => {

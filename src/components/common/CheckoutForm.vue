@@ -13,14 +13,10 @@
 
 <script>
 import uuid from 'uuid/v4';
-import {
-  GET_CONVERSATION_BY_FIELDS,
-} from '@/actions/conversations';
+
 import {
   RENT_ITEM,
 } from '@/actions/rentals';
-
-import router from '@/router';
 
 require('dotenv').config();
 
@@ -102,18 +98,7 @@ export default {
                       this.item.name,
                       chargeDetails.id,
                     );
-
-                    const convo = GET_CONVERSATION_BY_FIELDS(
-                      this.item.ID,
-                      this.item.user,
-                      localStorage.userId,
-                    );
-                    return convo;
                   }
-                  return null;
-                }).then((convo) => {
-                  // direct user to dashboard and messages section with this convo active
-                  router.push(`/dashboard/messages/${convo[0].id}`);
                 });
             });
         });

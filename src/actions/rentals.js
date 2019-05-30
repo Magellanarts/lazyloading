@@ -17,6 +17,7 @@ import {
   CREATE_CONVERSATION,
 } from '@/actions/conversations';
 
+import router from '@/router';
 
 export const RENT_ITEM = async (
   itemId,
@@ -28,7 +29,7 @@ export const RENT_ITEM = async (
   name,
   chargeId,
 ) => {
-  const { userId } = store.getters;
+  const { userId, userEmail } = store.getters;
 
   // update item's booked dates
   BOOK_DATES(dates, itemId);
@@ -46,14 +47,13 @@ export const RENT_ITEM = async (
     chargeId,
   };
 
-  const convos = await GET_CONVERSATION_BY_FIELDS(itemId, ownerId, userId);
-
   const message = {
     message: `${name} has been rented`,
     sender: 'SYSTEM',
     timestamp: new Date(),
   };
 
+  const convos = await GET_CONVERSATION_BY_FIELDS(itemId, ownerId, userId);
 
   if (convos.length > 0) {
     // this user has already contacted the owner about this item
@@ -75,7 +75,28 @@ export const RENT_ITEM = async (
 
     // add transaction reference to owner's rentals list
     ADD_RENTAL_TO_USER(res.id, ownerId);
+
+    // send email
+    fetch(`${process.env.VUE_APP_LAMBDA_ENDPOINT}send-email`, {
+      method: 'POST',
+      body: JSON.stringify({
+        rentalID: res.id,
+        name,
+        dates,
+        userEmail,
+      }),
+    });
   });
+
+  // create convo
+  const convo = await GET_CONVERSATION_BY_FIELDS(
+    itemId,
+    ownerId,
+    localStorage.userId,
+  );
+
+  // direct user to messages page
+  router.push(`/dashboard/messages/${convo[0].id}`);
 };
 
 

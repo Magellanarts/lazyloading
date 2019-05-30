@@ -9,12 +9,15 @@
 //        other items offered by this user
 //        response rate of user
 // TODO: other similar items in the area
-// TODO: Add weekly/monthly prices
 // TODO: Adjust site wanting user's location all the time
 // TODO: Add loading animations while waiting for component
 //  show when images are loading
+// TODO: Send email notification when item is rented
 
-// https://paletton.com/#uid=53S0u0knNXQc0ZwirYGt8VYFPRD
+
+// IDEA: https://jariz.github.io/vibrant.js/
+//        user uploads image and grab colors to generate site colors
+// IDEA: https://paletton.com/#uid=53S0u0knNXQc0ZwirYGt8VYFPRD
 
 
 import Vue from 'vue';

@@ -2,7 +2,11 @@ import Vue from 'vue';
 import VueFire from 'vuefire';
 
 import store from '@/store/store';
-import { SET_USER_ID, GET_USER_DETAILS } from '@/store/types';
+import {
+  SET_USER_ID,
+  GET_USER_DETAILS,
+  SET_USER_EMAIL,
+} from '@/store/types';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -24,6 +28,7 @@ export function getUserID(user) {
   if (user.uid) {
     localStorage.setItem('userId', user.uid);
     store.dispatch(SET_USER_ID, user.uid);
+    store.dispatch(SET_USER_EMAIL, user.email);
     store.dispatch(GET_USER_DETAILS, user.uid);
   }
 }

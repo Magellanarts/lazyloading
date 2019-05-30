@@ -8,7 +8,9 @@ import {
   MUTATE_USER_ITEMS,
   STORE_LOG_OUT_USER,
   MUTATE_USER_ID,
+  MUTATE_USER_EMAIL,
   SET_USER_ID,
+  SET_USER_EMAIL,
   GET_USER_ID,
   GET_USER_ADDRESSES,
   MUTATE_USER_ADDRESSES,
@@ -74,5 +76,8 @@ export default {
   // Update user info in store
   [SET_USER_ID]: ({ commit }, userId) => {
     commit(MUTATE_USER_ID, userId);
+  },
+  [SET_USER_EMAIL]: ({ commit }, userEmail) => {
+    commit(MUTATE_USER_EMAIL, userEmail);
   },
 };

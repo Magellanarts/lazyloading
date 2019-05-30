@@ -37,11 +37,7 @@ export const CREATE_CONVERSATION = (itemId, partnerId, message, name) => {
     userId,
     ownerId: partnerId,
     messages: [
-      {
-        timestamp: new Date(),
-        message,
-        sender: userId,
-      },
+      message,
     ],
   };
   db.collection('conversations').add(convo).then((res) => {

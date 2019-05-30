@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="l-site-container">
     <h1>Log In</h1>
     <form
       @submit.prevent="submitForm"

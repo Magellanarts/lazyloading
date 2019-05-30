@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="l-site-container">
     <h1>Sign up</h1>
     <form
       @submit.prevent="submitForm"
