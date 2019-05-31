@@ -4,7 +4,6 @@ import VueFire from 'vuefire';
 import store from '@/store/store';
 import {
   SET_USER_ID,
-  GET_USER_DETAILS,
   SET_USER_EMAIL,
 } from '@/store/types';
 

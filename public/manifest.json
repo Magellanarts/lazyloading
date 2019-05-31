@@ -1,0 +1,8 @@
+{
+  "short_name": "Lazy Loading",
+  "name": "Lazy Loading App",
+  "start_url": "/",
+  "background_color" : "#5673F7",
+  "display": "standalone",
+  "theme_color": "#5673F7"
+}
