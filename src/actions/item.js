@@ -34,7 +34,6 @@ export const GET_ITEM_DATA_BY_NAME = itemRef => new Promise((resolve) => {
     });
 });
 
-
 export const UPDATE_ITEM = (item) => {
   const itemToPublish = { ...item };
   // set up tags
@@ -62,7 +61,6 @@ export const UPDATE_ITEM = (item) => {
       }
     });
   }
-
 
   db.collection('items').doc(itemToPublish.ID)
     .update(itemToPublish).then(() => {

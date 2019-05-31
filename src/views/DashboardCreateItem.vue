@@ -30,7 +30,6 @@
         label="Weekly Price"
         v-model="item.weeklyPrice"
         :errors="errors"
-        required
         labelClass="text-label--two-lines"
       />
 
@@ -39,7 +38,6 @@
         label="Monthly Price"
         v-model="item.monthlyPrice"
         :errors="errors"
-        required
         labelClass="text-label--two-lines"
       />
 
@@ -85,7 +83,6 @@
         </select>
 
         <br>
-
         <router-link class="button" to="/dashboard/edit-address">Add New Address</router-link>
       </div>
 
@@ -156,6 +153,7 @@ export default {
       submitSuccess: false,
       numThumbs: 0,
       userAddresses: [],
+      diffIndexes: [],
       item: {
         name: '',
         dailyPrice: '',
@@ -165,6 +163,7 @@ export default {
         description: '',
         tagsSearchbale: [],
         otherImages: [],
+        otherImagesURLs: [],
         mainImage: '',
         address: '',
         _geoloc: {},
@@ -222,14 +221,39 @@ export default {
     mainImageUploaded(file) {
       this.item.mainImage = file;
     },
-    otherImagesUploaded(file) {
+    otherImagesUploaded(upload) {
       // the newly uploaded image is getting added correclty.
       // in actions, will need to loop through each in array
       // to see if any need to be uploaded to storage
-      this.item.otherImages.push(file);
+      this.item.otherImages.push(upload.file);
+      this.item.otherImagesURLs.push(upload.dataURL);
+    },
+    arrayDiff(a, b) {
+      return a.filter((i) => {
+        if (b.indexOf(i) < 0) {
+          this.diffIndexes.push(a.indexOf(i));
+          return true;
+        }
+        return false;
+      });
     },
     handleImageDelete(image) {
-      this.item.otherImages = this.item.otherImages.filter(e => e !== image);
+      // image contains image and dataURL
+      // duplicate our array of image urls
+      const otherImagesURLsDUPLICATE = [...this.item.otherImagesURLs];
+
+      // remove the deleted image from array of image urls
+      this.item.otherImagesURLs = this.item.otherImagesURLs.filter(e => e !== image);
+
+      // compare the duplicate array with the array we just removed the deleted image from
+      // this will set this.diffIndexes to the index of the removed image
+      this.arrayDiff(otherImagesURLsDUPLICATE, this.item.otherImagesURLs);
+
+      // remove the item at the index that was set in the arrayDiff function
+      this.item.otherImages.splice(this.diffIndexes, 1);
+
+      // set diffIndexes array back to empty
+      this.diffIndexes = [];
     },
     handleTagChange(tags) {
       this.item.tagsSearchbale = tags;
@@ -241,7 +265,6 @@ export default {
         lat: parseFloat(options[options.selectedIndex].attributes.lat.nodeValue),
         lng: parseFloat(options[options.selectedIndex].attributes.lng.nodeValue),
       };
-      console.log(options[options.selectedIndex].attributes);
       this.item.addressDetails = {
         city: options[options.selectedIndex].attributes.city.nodeValue,
         state: options[options.selectedIndex].attributes.state.nodeValue,
@@ -253,6 +276,7 @@ export default {
     this.userAddresses = await GET_USER_ADDRESSES();
     if (this.$route.params.id) {
       this.item = await GET_ITEM_DATA_BY_DOC_ID(this.$route.params.id);
+      this.item.otherImagesURLs = [...this.item.otherImages];
     }
   },
 };

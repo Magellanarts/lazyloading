@@ -22,13 +22,10 @@
             {{ displayDate(new Date(message.timestamp.seconds * 1000)) }}
           </div>
         </div>
-
       </div>
 
       <div class="chat__input">
-        <textarea v-model="message">
-
-        </textarea>
+        <textarea v-model="message" />
         <button @click="addMessage">Send</button>
       </div>
     </div>
@@ -50,7 +47,6 @@ import {
 export default {
   data() {
     return {
-      // chat: [],
       message: '',
     };
   },
@@ -78,6 +74,7 @@ export default {
     },
   },
   created() {
+    this.chat.itemName = 'test';
     this.bindConvo(this.$route.params.id);
   },
   updated() {

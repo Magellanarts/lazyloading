@@ -1,6 +1,5 @@
 /* eslint-disable func-names */
 const SparkPost = require('sparkpost');
-// import SparkPost from 'sparkpost';
 
 require('dotenv').config();
 
@@ -56,20 +55,4 @@ exports.handler = function (event, context, callback) {
         },
       ],
     });
-  /* .then(() => {
-      callback(null, {
-        statusCode: 200,
-        body: 'sent',
-      });
-    })
-    .catch(() => {
-      callback(null, {
-        statusCode,
-        headers,
-        body: 'caught',
-      });
-    }); */
 };
-
-// TODO: Emails are sending. Hook them up to the rental
-// Email receipt should include name of item, dates and rental transaction ID

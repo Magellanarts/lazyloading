@@ -43,9 +43,6 @@
 </template>
 
 <script>
-
-// TODO: finish modal to show people who aren't logged in and try to message owner.
-// need to pass variable to owner component and add logic to check that
 import VueHotelDatepicker from '@/components/public/VueHotelDatePicker/components/VueHotelDatepicker.vue';
 import ItemActions from '@/components/Item/ItemActions.vue';
 

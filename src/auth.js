@@ -29,7 +29,6 @@ export function getUserID(user) {
     localStorage.setItem('userId', user.uid);
     store.dispatch(SET_USER_ID, user.uid);
     store.dispatch(SET_USER_EMAIL, user.email);
-    store.dispatch(GET_USER_DETAILS, user.uid);
   }
 }
 

@@ -67,9 +67,6 @@ export default {
       });
     },
   },
-  mounted() {
-    console.log(this.$store.getters.userId);
-  },
   computed: {
     subTotal() {
       return this.dates.length * this.item.dailyPrice;

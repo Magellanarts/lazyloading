@@ -1,6 +1,6 @@
 <template>
   <div class="l-site-container home u-align-center">
-    <h1>Rent some stuff and <br><span class="action">{{ actions[index] }}</span></h1>
+    <h1>Rent something and <br><span class="action">{{ actions[index] }}</span></h1>
     <search />
   </div>
 </template>

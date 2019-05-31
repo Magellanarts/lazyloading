@@ -25,7 +25,6 @@
 </template>
 
 <script>
-// TODO: Make sure deleting works when you delete a just added image
 import firebase from 'firebase/app';
 import 'firebase/storage';
 
@@ -58,8 +57,8 @@ export default {
           this.localURLs.push({ url: dataURL, image: dataURL });
 
           // tell parent component the image has been uploaded
-          // the parent component will be passed the file
-          this.$emit('uploadComplete', file);
+          // the parent component will be passed the file and dataURL
+          this.$emit('uploadComplete', { file, dataURL });
         };
 
         reader.readAsDataURL(file);
@@ -70,7 +69,6 @@ export default {
     },
     deletePhoto(url, image) {
       this.localURLs = this.localURLs.filter(e => e.url !== url);
-      // this.localImages = this.localImages.filter(e => e !== image);
       this.$emit('imageDeleted', image);
     },
   },

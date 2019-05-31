@@ -13,6 +13,8 @@
 // TODO: Add loading animations while waiting for component
 //  show when images are loading
 // TODO: Send email notification when item is rented
+// TODO: When creating image, make sure URL isn't a duplicate.
+//        Need to check existing URLs OR add random number to end of url
 
 
 // IDEA: https://jariz.github.io/vibrant.js/
