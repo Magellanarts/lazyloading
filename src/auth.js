@@ -19,7 +19,7 @@ Vue.use(VueFire);
 firebase.initializeApp({
   projectId: 'lazyloading-c3f8a',
   databaseURL: 'https://lazyloading-c3f8a.firebaseio.com',
-  apiKey: 'AIzaSyCQb0GOSMlEM5RiQKVebLiQVENziV61JfQ',
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
   storageBucket: 'lazyloading-c3f8a.appspot.com',
 });
 
@@ -45,9 +45,9 @@ firebase.auth().onAuthStateChanged((user) => {
 export const db = firebase.firestore();
 
 // Initialize Algolia search info
-const algolia = algoliasearch(
-  '9AURVLYOP7',
-  '99e4ec81fd5a69e533c04ecc64dccd57',
+export const algolia = algoliasearch(
+  process.env.VUE_APP_ALGOLIA_APP_ID,
+  process.env.VUE_APP_ALGOLIA_API_KEY,
 );
 
 const index = algolia.initIndex('items');

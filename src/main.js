@@ -38,7 +38,7 @@ Vue.use(Vue2TouchEvents);
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyAs2RUHr98KDYRCjGvJ3XuNZC5ae3ilQAg',
+    key: process.env.VUE_APP_GOOGLE_MAP_KEY,
     libraries: 'places',
   },
 });

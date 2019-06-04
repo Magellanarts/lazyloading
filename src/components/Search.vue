@@ -78,15 +78,10 @@
 </template>
 
 <script>
-import algoliasearch from 'algoliasearch/lite';
+// import algoliasearch from 'algoliasearch/lite';
 import ItemCard from '@/components/Item/Card/ItemCard.vue';
 import axios from 'axios';
-// import gmapsInit from '@/gmaps';
-// https://markus.oberlehner.net/blog/using-the-google-maps-api-with-vue/
-const algolia = algoliasearch(
-  '9AURVLYOP7',
-  '94f720be87cbb56ec79609495979cad9',
-);
+import algolia from '@/auth';
 
 const index = algolia.initIndex('items');
 
