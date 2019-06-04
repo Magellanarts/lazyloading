@@ -205,11 +205,6 @@ export default {
       // success, show saved modal
         this.showModal();
         EDIT_ITEM(this.item);
-        /* if (this.item.ID) {
-          UPDATE_ITEM(this.item);
-        } else {
-          CREATE_ITEM(this.item, this.$store.getters.userId);
-        } */
       }
     },
     showModal() {

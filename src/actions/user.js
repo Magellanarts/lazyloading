@@ -36,7 +36,7 @@ export const LOG_IN_USER = (user) => {
   firebase.auth()
     .signInWithEmailAndPassword(user.email, user.password)
     .then(() => {
-      router.push('/dashboard');
+      router.push('/dashboard/user');
     })
     .catch((err) => {
       // TODO: Error Handling

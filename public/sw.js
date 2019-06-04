@@ -3,7 +3,6 @@ const CACHE_NAME = 'lazy-loading-cache-v1';
 const urlsToCache = [
   '/',
   '/app.js',
-  'https://use.fontawesome.com/releases/v5.8.1/css/all.css',
 ];
 
 self.addEventListener('install', (event) => {
@@ -33,8 +32,8 @@ self.addEventListener('fetch', (event) => {
       }),
   );
 });
-*/
 
+*/
 
 self.addEventListener('fetch', (e) => {
   e.respondWith((async function () {
@@ -50,6 +49,7 @@ self.addEventListener('fetch', (e) => {
       'https://maxcdn.bootstrapcdn.com',
       'https://use.fontawesome.com',
       'https://fonts.gstatic.com',
+      'https://firebasestorage.googleapis.com',
     ];
 
     if (hosts.some(host => e.request.url.startsWith(host))) {

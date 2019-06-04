@@ -54,6 +54,7 @@ if (process.env.NODE_ENV === 'development') {
 
 Vue.use(InstantSearch);
 
+/*
 // Creating serviceWorker
 if ('serviceWorker in navigator') {
   window.addEventListener('load', () => {
@@ -67,7 +68,7 @@ if ('serviceWorker in navigator') {
       });
   });
 }
-
+*/
 new Vue({
   router,
   store,
