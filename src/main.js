@@ -36,6 +36,7 @@ import App from './App.vue';
 // handle swipe
 Vue.use(Vue2TouchEvents);
 
+// set up vue google maps
 Vue.use(VueGoogleMaps, {
   load: {
     key: process.env.VUE_APP_GOOGLE_MAP_KEY,
@@ -46,7 +47,6 @@ Vue.use(VueGoogleMaps, {
 require('@/assets/style/global.scss');
 
 Vue.config.productionTip = false;
-
 
 if (process.env.NODE_ENV === 'development') {
   Vue.config.devtools = true;

@@ -78,10 +78,9 @@
 </template>
 
 <script>
-// import algoliasearch from 'algoliasearch/lite';
 import ItemCard from '@/components/Item/Card/ItemCard.vue';
 import axios from 'axios';
-import algolia from '@/auth';
+import { algolia } from '@/auth';
 
 const index = algolia.initIndex('items');
 
