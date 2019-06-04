@@ -77,9 +77,8 @@ import TextInput from '@/components/common/forms/TextInput.vue';
 import { formValidation } from '@/mixins';
 
 import {
-  UPDATE_ADDRESS,
-  CREATE_ADDRESS,
   GET_ADDRESS,
+  EDIT_ADDRESS,
 } from '@/actions/address';
 
 export default {
@@ -116,10 +115,10 @@ export default {
         // send to firebase
         if (this.$route.params.id) {
           // we are editing an address and not adding a new one
-          UPDATE_ADDRESS(this.address);
+          EDIT_ADDRESS(this.address, false);
         } else {
           this.address.user = this.$store.getters.userId;
-          CREATE_ADDRESS(this.address);
+          EDIT_ADDRESS(this.address, true);
         }
       }
     },

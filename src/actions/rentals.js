@@ -19,17 +19,36 @@ import {
 
 import router from '@/router';
 
+// Handle the rental process
+// PARAMS:
+//    itemID:
+//      id of item being rented
+//    dates:
+//      array of dates item is being rented
+//    ownerId:
+//      id of the owner of item
+//    totalPrice:
+//      price of rental
+//    desposit:
+//      amount of deposit required
+//    name:
+//      name of item being rented
+//    chargeId:
+//      id of the charge on Stripe
 export const RENT_ITEM = async (
   itemId,
   dates,
   ownerId,
-  totalDays,
   totalPrice,
   deposit,
   name,
   chargeId,
 ) => {
+  // get id and email of current user
   const { userId, userEmail } = store.getters;
+
+  // calculate total days of rental
+  const totalDays = dates.length;
 
   // update item's booked dates
   BOOK_DATES(dates, itemId);
@@ -47,14 +66,20 @@ export const RENT_ITEM = async (
     chargeId,
   };
 
+  // create message object
+  // includes message text, sender (in this case SYSTEM) and timestamp
   const message = {
     message: `${name} has been rented`,
     sender: 'SYSTEM',
     timestamp: new Date(),
   };
 
+  // try to retrieve a conversation based on this item and set of users
+  // is an async call and will wait for response
   const convos = await GET_CONVERSATION_BY_FIELDS(itemId, ownerId, userId);
 
+  // if previous call has a result, that means there is already
+  // a conversation between these users about this item
   if (convos.length > 0) {
     // this user has already contacted the owner about this item
     // add the message to their existing convo
@@ -99,10 +124,17 @@ export const RENT_ITEM = async (
   router.push(`/dashboard/messages/${convo[0].id}`);
 };
 
-
-export const CALCULATE_WEEKLY_DISCOUNT = (length, weeklyPrice, dailyPrice) => {
-  if (length >= 7 && weeklyPrice && length / 30 < 1) {
-    const totalWeeks = Math.floor(length / 7);
+// Helper function to calculate the weekly discount (if applicable)
+// PARAMS:
+//    numberOfDays:
+//      number of days for rental
+//    weeklyPrice:
+//      weekly price for renting an item
+//    dailyPrice:
+//      daily price for renting an item
+export const CALCULATE_WEEKLY_DISCOUNT = (numberOfDays, weeklyPrice, dailyPrice) => {
+  if (numberOfDays >= 7 && weeklyPrice && numberOfDays / 30 < 1) {
+    const totalWeeks = Math.floor(numberOfDays / 7);
     const fullPricedWeekTotal = dailyPrice * 7;
     const discountWeekDifference = fullPricedWeekTotal - weeklyPrice;
 
@@ -111,9 +143,17 @@ export const CALCULATE_WEEKLY_DISCOUNT = (length, weeklyPrice, dailyPrice) => {
   return '';
 };
 
-export const CALCULATE_MONTHLY_DISCOUNT = (length, monthlyPrice, dailyPrice) => {
-  if (length >= 30 && monthlyPrice) {
-    const totalMonths = Math.floor(length / 30);
+// Helper function to calculate the monthly discount (if applicable)
+// PARAMS:
+//    numberOfDays:
+//      number of days for rental
+//    monthlyPrice:
+//      monthly price for renting an item
+//    dailyPrice:
+//      daily price for renting an item
+export const CALCULATE_MONTHLY_DISCOUNT = (numberOfDays, monthlyPrice, dailyPrice) => {
+  if (numberOfDays >= 30 && monthlyPrice) {
+    const totalMonths = Math.floor(numberOfDays / 30);
     const fullPricedMonthTotal = dailyPrice * 30;
     const discountMonthDifference = fullPricedMonthTotal - monthlyPrice;
 
@@ -122,21 +162,33 @@ export const CALCULATE_MONTHLY_DISCOUNT = (length, monthlyPrice, dailyPrice) => 
   return '';
 };
 
+// Helper function to calculate total price of rental
+// PARAMS:
+//    numberOfDays:
+//      number of days for rental
+//    deposit:
+//      amount of deposit required
+//    dailyPrice:
+//      daily price for renting an item
+//    weeklyPrice:
+//      weekly price for renting an item
+//    monthlyPrice:
+//      monthly price for renting an item
 export const CALCULATE_TOTAL_PRICE = (
-  length,
+  numberOfDays,
   deposit,
   dailyPrice,
   monthlyPrice,
   weeklyPrice,
-) => parseInt((length * dailyPrice), 10)
+) => parseInt((numberOfDays * dailyPrice), 10)
   + parseInt(deposit, 10)
   - CALCULATE_MONTHLY_DISCOUNT(
-    length,
+    numberOfDays,
     monthlyPrice,
     dailyPrice,
   )
   - CALCULATE_WEEKLY_DISCOUNT(
-    length,
+    numberOfDays,
     weeklyPrice,
     dailyPrice,
   );

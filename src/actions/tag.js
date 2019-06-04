@@ -1,13 +1,17 @@
+/* eslint-disable import/prefer-default-export */
 import { db } from '@/auth';
 
-// eslint-disable-next-line import/prefer-default-export
+// Get all items with a certain tag
+// PARAMS:
+//    tag:
+//      tag to search for
 export const GET_TAG_ITEMS = tag => new Promise((resolve) => {
   db.collection('items').where(`tags.${tag}`, '==', true).get()
     .then((querySnapshot) => {
       const items = [];
-      for (const item of querySnapshot.docs) {
+      querySnapshot.docs.forEach((item) => {
         items.push(item.data());
-      }
+      });
       resolve(items);
     });
 });

@@ -13,7 +13,18 @@ import {
 } from '@/actions/item';
 
 
+// Create a conversation
+// PARAMS:
+//    itemId:
+//      id of item the conversation is about
+//    partnerId:
+//      id of second person in conversation
+//    message:
+//      message object with the initial message (message, sender, timestamp)
+//    name:
+//      name of object
 export const CREATE_CONVERSATION = (itemId, partnerId, message, name) => {
+  // get userId from strore
   const { userId } = store.getters;
 
   // submit the message
@@ -60,6 +71,12 @@ export const CREATE_CONVERSATION = (itemId, partnerId, message, name) => {
   });
 };
 
+// Add message to a conversation
+// PARAMS:
+//    message:
+//      object with message info (message, sender, timestamp)
+//    convoID:
+//      id of conversation to add message to
 export const ADD_MESSAGE = (message, convoId) => new Promise((resolve) => {
   db.collection('conversations').doc(convoId)
     .update({
@@ -67,6 +84,10 @@ export const ADD_MESSAGE = (message, convoId) => new Promise((resolve) => {
     }).then(doc => resolve(doc));
 });
 
+// Get a conversatino by conversation ID
+// PARAMS:
+//    convoID:
+//      id of conversation to get
 export const GET_CONVERSATION_BY_ID = convoID => new Promise((resolve) => {
   // After sync, set the item's main image into separate mainIMage var in store
   db.collection('conversations').doc(convoID).get()
@@ -74,6 +95,14 @@ export const GET_CONVERSATION_BY_ID = convoID => new Promise((resolve) => {
 });
 
 
+// Get a conversation by item and users in conversation
+// PARAMS:
+//    itemId:
+//      id of item in conversation
+//    ownerId:
+//      id of owner of item
+//    userId:
+//      id of current user
 export const GET_CONVERSATION_BY_FIELDS = (itemId, ownerId, userId) => new Promise((resolve) => {
   db.collection('conversations')
     .where('ownerId', '==', ownerId)
@@ -85,6 +114,13 @@ export const GET_CONVERSATION_BY_FIELDS = (itemId, ownerId, userId) => new Promi
     });
 });
 
+
+// Send message to owner
+// PARAMS:
+//    itemId:
+//      id of item being messaged about
+//    ownerId:
+//      owner of item/person being messaged
 export const MESSAGE_OWNER = async (itemId, ownerId, message, name) => {
   const { userId } = store.getters;
 

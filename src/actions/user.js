@@ -9,7 +9,11 @@ import router from '@/router';
 
 // Sign up user account
 // On Success, create user in users list too
+// PARAMS:
+//    user:
+//      user object
 export const SIGN_UP_USER = (user) => {
+  // call to firebase to create user with this email and password
   firebase.auth()
     .createUserWithEmailAndPassword(user.email, user.password)
     .then((res) => {
@@ -32,6 +36,9 @@ export const SIGN_UP_USER = (user) => {
 
 // Log user into their account
 // On Success, take them to dashboard
+// PARAMS:
+//    user:
+//      user object
 export const LOG_IN_USER = (user) => {
   firebase.auth()
     .signInWithEmailAndPassword(user.email, user.password)
@@ -45,6 +52,8 @@ export const LOG_IN_USER = (user) => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
+// Get addresses for current user
+// PARAMS: NONE
 export const GET_USER_ADDRESSES = () => new Promise((resolve) => {
   const { userId } = store.getters;
   const addresses = [];
@@ -63,7 +72,8 @@ export const GET_USER_ADDRESSES = () => new Promise((resolve) => {
     });
 });
 
-
+// Get conversations for current user
+// PARAMS: NONE
 export const GET_USER_CONVERSATIONS = () => new Promise((resolve) => {
   const { userId } = store.getters;
 
@@ -82,17 +92,31 @@ export const GET_USER_CONVERSATIONS = () => new Promise((resolve) => {
     });
 });
 
-
-export const ADD_RENTAL_TO_USER = (rental, user) => {
-  db.collection('users').doc(user)
+// Add a rental transaction to a user in firebase
+// PARAMS:
+//    rentalId:
+//      id of rental transaction
+//    userId:
+//      id of user to add rental transaction to
+//      can't grab current user's id because this is also used to add rental to owner's table
+export const ADD_RENTAL_TO_USER = (rentalId, userId) => {
+  db.collection('users').doc(userId)
     .update({
-      rentals: firebase.firestore.FieldValue.arrayUnion(rental),
+      rentals: firebase.firestore.FieldValue.arrayUnion(rentalId),
     });
 };
 
-export const ADD_CONVO_TO_USER = (convo, userId, partnerId) => {
+// Add conversation to current user
+// PARAMS:
+//    conversationId:
+//      id of conversation
+//    userId:
+//      id of user this conversation is being added to
+//    partnerId:
+//      id of other user in this conversation
+export const ADD_CONVO_TO_USER = (conversationId, userId, partnerId) => {
   const conversation = {
-    conversationId: convo,
+    conversationId,
     userId,
     partnerId,
   };

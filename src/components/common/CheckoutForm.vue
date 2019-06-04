@@ -89,7 +89,6 @@ export default {
                       this.item.ID,
                       this.dates,
                       this.item.user,
-                      this.dates.length,
                       parseInt((
                         this.dates.length * this.item.dailyPrice
                       ), 10)
