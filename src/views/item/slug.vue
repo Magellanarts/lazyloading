@@ -16,6 +16,11 @@
       :item="item"
     />
 
+    <item-reviews
+      v-if="item && item.reviews"
+      :reviewIds="item.reviews"
+      :score="item.totalScore / item.reviews.length"
+    />
   </div>
 </template>
 
@@ -23,6 +28,7 @@
 import ItemDetails from '@/components/Item/ItemDetails.vue';
 import ItemMap from '@/components/Item/ItemMap.vue';
 import ItemHeader from '@/components/Item/ItemHeader.vue';
+import ItemReviews from '@/components/Item/ItemReviews.vue';
 
 import {
   GET_ITEM_DATA_BY_DOC_ID,
@@ -43,6 +49,7 @@ export default {
     ItemHeader,
     ItemDetails,
     ItemMap,
+    ItemReviews,
   },
   async created() {
     // grab data from firestore for this item
@@ -53,7 +60,6 @@ export default {
     // - swapping can be done easily
     if (this.$route.params.docID) {
       this.item = await GET_ITEM_DATA_BY_DOC_ID(this.$route.params.docID);
-      // await this.getDataByDocID(this.$route.params.docID);
     } else {
       this.item = await GET_ITEM_DATA_BY_NAME(this.$route.params.slug);
 

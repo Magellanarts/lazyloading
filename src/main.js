@@ -1,7 +1,6 @@
 // TODO: Account Page
 // TODO: Reviews for item
 // TODO: Limit search results to 10. Add a View More button to take to a search page
-// TODO: Fix slugs for new items. generate unique id?
 // TODO: fix forms. not every field should be required
 // TODO: Show User name on product
 //        link to user’s page?
@@ -12,10 +11,6 @@
 // TODO: Adjust site wanting user's location all the time
 // TODO: Add loading animations while waiting for component
 //  show when images are loading
-// TODO: Send email notification when item is rented
-// TODO: When creating image, make sure URL isn't a duplicate.
-//        Need to check existing URLs OR add random number to end of url
-
 
 // IDEA: https://jariz.github.io/vibrant.js/
 //        user uploads image and grab colors to generate site colors

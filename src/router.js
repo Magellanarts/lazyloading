@@ -86,6 +86,16 @@ const router = new Router({
           meta: {
             authRequried: true,
           },
+          children: [
+            {
+              path: ':id',
+              name: 'dashboard-rentals-item',
+              component: () => import(/* webpackChunkName: "dashboard-rentals-item" */'./views/DashboardRentalsItem.vue'),
+              meta: {
+                authRequried: true,
+              },
+            },
+          ],
         },
         {
           name: 'dashboard-edit-address',

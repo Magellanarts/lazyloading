@@ -19,9 +19,20 @@ import {
 
 import router from '@/router';
 
+// Get rental by ID
+// PARAMS:
+//    rentalId:
+//      id of rental to return
+export const GET_RENTAL_BY_ID = rentalId => new Promise((resolve) => {
+  // After sync, set the item's main image into separate mainIMage var in store
+  db.collection('rentals').doc(rentalId).get()
+    .then(doc => resolve(doc.data()));
+});
+
+
 // Handle the rental process
 // PARAMS:
-//    itemID:
+//    itemId:
 //      id of item being rented
 //    dates:
 //      array of dates item is being rented
@@ -91,6 +102,10 @@ export const RENT_ITEM = async (
 
   db.collection('rentals').add(rental).then((res) => {
     // res.id has id of rental transaction
+    rental.ID = res.id;
+
+    db.collection('rentals').doc(rental.ID)
+      .update(rental);
 
     // add rentalID to item
     ADD_RENTAL_TO_ITEM(res.id, itemId);

@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/storage';
 import { slugify } from '@/mixins';
 import store from '@/store/store';
+import uuid from 'uuid/v4';
 
 import { db, updateAlgolia } from '@/auth';
 
@@ -61,11 +62,12 @@ export const EDIT_ITEM = (item) => {
       // if the value in mainImage is a file,
       // set the item's mainImage value to be the uploaded
       // file's name with size and last modified values to keep unique
+      const uniqueMainImageID = uuid();
       const mainImage = itemToPublish.mainImage[0];
-      itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`;
+      itemToPublish.mainImage = `${mainImage.lastModified}-${mainImage.size}-${mainImage.name}-${uniqueMainImageID}`;
 
       // put the image in firestore
-      storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}`).put(mainImage);
+      storageRef.child(`${mainImage.lastModified}-${mainImage.size}-${mainImage.name}-${uniqueMainImageID}`).put(mainImage);
     }
   }
 
@@ -77,8 +79,9 @@ export const EDIT_ITEM = (item) => {
     // loop through each item in otherImages array
     item.otherImages.forEach((photo, index) => {
       if (photo.constructor === FileList || photo.constructor === File) {
-        storageRef.child(`${photo.lastModified}-${photo.size}-${photo.name}`).put(photo);
-        itemToPublish.otherImages[index] = `${photo.lastModified}-${photo.size}-${photo.name}`;
+        const uniqueImageID = uuid();
+        storageRef.child(`${photo.lastModified}-${photo.size}-${photo.name}-${uniqueImageID}`).put(photo);
+        itemToPublish.otherImages[index] = `${photo.lastModified}-${photo.size}-${photo.name}-${uniqueImageID}`;
       } else {
         itemToPublish.otherImages[index] = photo;
       }
@@ -86,7 +89,8 @@ export const EDIT_ITEM = (item) => {
   }
 
   // create slug
-  itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.addressDetails.city} ${itemToPublish.addressDetails.state}`);
+  const uniqueId = uuid();
+  itemToPublish.slug = slugify.sanitizeTitle(`${itemToPublish.name} ${itemToPublish.addressDetails.city} ${itemToPublish.addressDetails.state} ${uniqueId}`);
 
   // push to firestore
   if (item.ID) {
@@ -162,5 +166,30 @@ export const ADD_CONVO_TO_ITEM = (conversationId, itemId, userId, ownerId) => {
   db.collection('items').doc(itemId)
     .update({
       conversations: firebase.firestore.FieldValue.arrayUnion(conversation),
+    });
+};
+
+// Increment the item's total score
+// PARAMS:
+//    score:
+//      score to add to item's score
+//    itemId:
+//      id of item to add conversation to
+export const INCREMENT_ITEM_SCORE = (score, itemId) => {
+  const increment = firebase.firestore.FieldValue.increment(score);
+
+  db.collection('items').doc(itemId).update({ totalScore: increment });
+};
+
+// Add review to an item
+// PARAMS:
+//    reviewId:
+//      id of review
+//    itemId:
+//      id of item to add conversation to
+export const ADD_REVIEW_TO_ITEM = (reviewId, itemId) => {
+  db.collection('items').doc(itemId)
+    .update({
+      reviews: firebase.firestore.FieldValue.arrayUnion(reviewId),
     });
 };

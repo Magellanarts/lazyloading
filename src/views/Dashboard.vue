@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .dashboard-section {
   margin-bottom: 48px;
 }
@@ -92,6 +92,42 @@
 
     &:hover {
       color: darken(rgb(86, 116, 247),20%);
+    }
+  }
+}
+
+.dashboard-panels {
+  display: flex;
+  border: 1px solid #ddd;
+  min-height: 60vh;
+  flex-direction: column;
+
+
+  &__nav {
+    border-right: 1px solid #ddd;
+
+    &__link {
+      padding: 16px 24px;
+      display: block;
+      cursor: pointer;
+      background: #eee;
+      border-bottom: 1px solid #ccc;
+
+      &.active {
+        color: rgb(86, 116, 247);
+      }
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  @media screen and (min-width: 760px) {
+    flex-direction: row;
+
+    &__nav {
+      flex: 0 0 225px;
     }
   }
 }

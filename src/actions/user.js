@@ -76,7 +76,6 @@ export const GET_USER_ADDRESSES = () => new Promise((resolve) => {
 // PARAMS: NONE
 export const GET_USER_CONVERSATIONS = () => new Promise((resolve) => {
   const { userId } = store.getters;
-
   const convos = [];
 
   db.collection('users').doc(userId).get()
@@ -87,6 +86,37 @@ export const GET_USER_CONVERSATIONS = () => new Promise((resolve) => {
             const conversation = res.data();
             convos.push(conversation);
             resolve(convos);
+          });
+      }
+    });
+});
+
+export const GET_USER_NAME = () => new Promise((resolve) => {
+  const { userId } = store.getters;
+
+  db.collection('users').doc(userId).get()
+    .then((userData) => {
+      resolve({
+        first: userData.data().firstName,
+        last: userData.data().lastName,
+      });
+    });
+});
+
+// Get conversations for current user
+// PARAMS: NONE
+export const GET_USER_RENTALS = () => new Promise((resolve) => {
+  const { userId } = store.getters;
+  const rentals = [];
+
+  db.collection('users').doc(userId).get()
+    .then((userData) => {
+      for (const rental of userData.data().rentals) {
+        db.collection('rentals').doc(rental).get()
+          .then((res) => {
+            const rentalInfo = res.data();
+            rentals.push(rentalInfo);
+            resolve(rentals);
           });
       }
     });
@@ -103,6 +133,20 @@ export const ADD_RENTAL_TO_USER = (rentalId, userId) => {
   db.collection('users').doc(userId)
     .update({
       rentals: firebase.firestore.FieldValue.arrayUnion(rentalId),
+    });
+};
+
+// Add a review transaction to user in firebase
+// PARAMS:
+//    reviewId:
+//      id of review transaction
+//    userId:
+//      id of user to add rental transaction to
+//      can't grab current user's id because this is also used to add rental to owner's table
+export const ADD_REVIEW_TO_USER = (reviewId, userId) => {
+  db.collection('users').doc(userId)
+    .update({
+      reviews: firebase.firestore.FieldValue.arrayUnion(reviewId),
     });
 };
 

@@ -15,6 +15,17 @@
     </div>
 
     <div class="item_title">
+      <a href="#reviews" class="review-score">
+        <div class="review-score__number">
+          {{ item.totalScore / item.reviews.length }}
+          <span class="review-score__number__total">/5</span>
+        </div>
+        <div class="fas fa-star review-score__star"></div>
+        <div class="review-score__number-reviews">
+          {{ item.reviews.length }} reviews
+        </div>
+      </a>
+
       <h1>{{ item.name }}</h1>
 
       <div class="item-prices">
@@ -118,6 +129,33 @@ export default {
   }
 }
 
+.review-score {
+  color: #5673F7;
+  margin-bottom: 16px;
+  display: block;
+  text-align: center;
+
+  &__star {
+    font-size: 26px;
+    padding-left: 6px;
+    display: inline-block;
+  }
+
+  &__number {
+    font-size: 38px;
+    position: relative;
+    top: -2px;
+    display: inline-block;
+
+    &__total {
+      font-size: 20px;
+    }
+  }
+
+  &__number-reviews {
+    font-size: 13px;
+  }
+}
 
 @media screen and (min-width: 760px) {
   .item-header {

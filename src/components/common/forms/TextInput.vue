@@ -15,6 +15,7 @@
         :id="name"
         v-model="content"
         @blur="handleBlur"
+        :placeholder="placeholder"
       />
     </template>
     <template v-else>
@@ -117,6 +118,10 @@ export default {
     },
     textarea: {
       type: Boolean,
+      required: false,
+    },
+    placeholder: {
+      type: String,
       required: false,
     },
   },

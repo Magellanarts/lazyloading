@@ -74,7 +74,10 @@ export default {
     },
   },
   created() {
-    this.chat.itemName = 'test';
+    this.chat.itemName = '  ';
+    this.chat.messages = {
+      message: 'hello',
+    };
     this.bindConvo(this.$route.params.id);
   },
   updated() {
