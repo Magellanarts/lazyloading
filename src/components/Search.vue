@@ -43,11 +43,14 @@
           class="ui-tab-view"
         >
           <div class="search-results__list">
-            <item-card
-              v-for="result in results"
-              :key="result.objectID"
-              :item="result"
-            />
+            <div
+              class="search-results__item"
+              v-for="result in results" :key="result.objectID"
+            >
+              <item-card
+                :item="result"
+              />
+            </div>
           </div>
         </div>
 
@@ -221,14 +224,23 @@ input {
 }
 
 .search-results__list {
-  @media screen and (min-width: 760px) {
+  flex-wrap: wrap;
+
+  @media screen and (min-width: 640px) {
     display: flex;
     justify-content: space-between;
+  }
+}
 
-    > a {
-      flex: 1;
-      max-width: 32%;
-    }
+.search-results__item {
+  @media screen and (min-width: 640px) {
+    flex: 0 0 47%;
+    max-width: 47%;
+  }
+
+  @media screen and (min-width: 900px) {
+    flex: 0 0 30%;
+    max-width: 30%;
   }
 }
 </style>

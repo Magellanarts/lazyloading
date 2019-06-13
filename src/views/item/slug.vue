@@ -17,7 +17,7 @@
     />
 
     <item-reviews
-      v-if="item && item.reviews"
+      v-if="item && item.reviews && item.totalScore"
       :reviewIds="item.reviews"
       :score="item.totalScore / item.reviews.length"
     />

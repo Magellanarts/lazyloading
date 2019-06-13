@@ -43,8 +43,8 @@ export default {
 }
   .image-container {
     background-size: 0 0;
-
-    height: 460px;
+    background-color: #fff;
+    height: 340px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,6 +53,7 @@ export default {
       // flex: 0;
       max-width: 100%;
       max-height: 100%;
+      display: block;
     }
 
     &.no-bg {
@@ -60,11 +61,13 @@ export default {
         background-image: none !important;
     }
 
-    @media screen and (min-width: 760px) {
+    @media screen and (min-width: 640px) {
       background-size: cover;
       display: flex;
       flex: 1;
       height: 300px;
+      background-position: center center;
+     
       img {
         display: none;
       }

@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .image-container {
     background-size: 0 0;
     height: 400px;

@@ -15,7 +15,11 @@
     </div>
 
     <div class="item_title">
-      <a href="#reviews" class="review-score">
+      <a
+        v-if="item.totalScore"
+        href="#reviews"
+        class="review-score"
+      >
         <div class="review-score__number">
           {{ item.totalScore / item.reviews.length }}
           <span class="review-score__number__total">/5</span>
