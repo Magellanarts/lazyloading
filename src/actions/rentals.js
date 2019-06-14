@@ -139,6 +139,17 @@ export const RENT_ITEM = async (
   router.push(`/dashboard/messages/${convo[0].id}`);
 };
 
+// Set an item as reviewed.
+// this will let us know whether to show the review actions on the dashboard
+// PARAMS:
+//    rentalId:
+//      id of rental to mark as reviewed
+export const SET_RENTAL_TO_REVIEWED = (rentalId) => {
+  db.collection('rentals').doc(rentalId).update({
+    reviewed: true,
+  });
+};
+
 // Helper function to calculate the weekly discount (if applicable)
 // PARAMS:
 //    numberOfDays:

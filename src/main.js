@@ -1,5 +1,4 @@
 // TODO: Account Page
-// TODO: Reviews for item
 // TODO: Limit search results to 10. Add a View More button to take to a search page
 // TODO: fix forms. not every field should be required
 // TODO: Show User name on product

@@ -44,7 +44,7 @@ export default {
   .image-container {
     background-size: 0 0;
     background-color: #fff;
-    height: 340px;
+    height: 240px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,7 +67,7 @@ export default {
       flex: 1;
       height: 300px;
       background-position: center center;
-     
+
       img {
         display: none;
       }

@@ -7,11 +7,15 @@ import {
 } from '@/actions/user';
 
 import {
+  SET_RENTAL_TO_REVIEWED,
+} from '@/actions/rentals';
+
+import {
   ADD_REVIEW_TO_ITEM,
   INCREMENT_ITEM_SCORE,
 } from '@/actions/item';
 
-// Create a Reviewg
+// Create a Review
 // PARAMS:
 //    score:
 //      score of review
@@ -56,6 +60,9 @@ export const CREATE_REVIEW = async (score, reviewText, itemId, ownerId, rentalId
 
       // Add review ID (res.id) to reviewer
       ADD_REVIEW_TO_USER(res.id, userId);
+
+      // Set reviewed to true on the rental
+      SET_RENTAL_TO_REVIEWED(rentalId);
     });
 };
 
