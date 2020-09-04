@@ -29,7 +29,7 @@
     "uuid": "^3.3.2",
     "vue": "^2.6.6",
     "vue-instantsearch": "^2.0.1",
-    "vue-moment": "^4.0.0",
+    "vue-moment": "^4.1.0",
     "vue-router": "^3.0.1",
     "vue-wysiwyg": "^1.7.2",
     "vue2-google-maps": "^0.10.6",
