@@ -22,7 +22,7 @@
     "dotenv": "^8.0.0",
     "firebase": "^5.8.5",
     "google-maps": "^3.3.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "netlify-lambda": "^1.4.11",
     "sparkpost": "^2.1.3",
     "stripe": "^7.0.0",
